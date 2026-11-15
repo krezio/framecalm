@@ -394,6 +394,7 @@ public sealed class SettingsVM(MainVM m) : Observable, IRefresh
 {
     public bool ReduceMotion { get => m.S.Settings.ReduceMotion; set { m.S.Settings.ReduceMotion = value; Motion.ForceReduced = value; m.SaveSettings(); Raise(); } }
     public bool CheckUpdates { get => m.S.Settings.CheckUpdates; set { m.S.Settings.CheckUpdates = value; m.SaveSettings(); Raise(); } }
+    public bool NotStore => !Framecalm.App.Services.Packaged.IsPackaged;
     public bool CloseToTray { get => m.S.Settings.CloseToTray; set { m.S.Settings.CloseToTray = value; m.SaveSettings(); Raise(); } }
     public bool LaunchFramecalm { get => m.StartupPage.LaunchFramecalm; set { m.StartupPage.LaunchFramecalm = value; Raise(); } }
     public System.Windows.Input.ICommand CheckNowCmd => new AsyncCmd(() => m.CheckForUpdateAsync(manual: true));

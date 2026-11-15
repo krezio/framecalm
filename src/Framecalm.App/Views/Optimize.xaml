@@ -374,7 +374,7 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-                <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource Line2}" BorderThickness="1" CornerRadius="10" Padding="20,14" Margin="0,18,0,0">
+                <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource Line2}" BorderThickness="1" CornerRadius="10" Padding="20,14" Margin="0,18,0,0" Visibility="{Binding NotStore, Converter={StaticResource VisIf}}">
                     <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding LaunchFramecalm}">
                         <StackPanel>
                             <TextBlock Text="Framecalm itself" Style="{StaticResource Strong}" FontSize="14.5" />

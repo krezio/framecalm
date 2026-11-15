@@ -26,6 +26,21 @@ public static class LaunchAtLogin
     }
 }
 
+/// <summary>True when running as the Microsoft Store (MSIX) package.</summary>
+public static class Packaged
+{
+    [System.Runtime.InteropServices.DllImport("kernel32.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
+    static extern int GetCurrentPackageFullName(ref int length, System.Text.StringBuilder? name);
+
+    public static readonly bool IsPackaged = Check();
+
+    static bool Check()
+    {
+        try { int len = 0; return GetCurrentPackageFullName(ref len, null) != 15700; } // 15700 = APPMODEL_ERROR_NO_PACKAGE
+        catch { return false; }
+    }
+}
+
 /// <summary>Asks GitHub for the newest public release. Sends nothing about the PC or the person:
 /// just a request for the release list, with a generic user agent.</summary>
 public static class UpdateCheck
@@ -36,6 +51,7 @@ public static class UpdateCheck
 
     public static async Task<Result?> RunAsync()
     {
+        if (Packaged.IsPackaged) return null; // the Store installs updates itself
         try
         {
             using var http = new HttpClient { Timeout = TimeSpan.FromSeconds(8) };

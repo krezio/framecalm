@@ -14,6 +14,7 @@ public sealed class StartupVM(MainVM m) : Observable, IRefresh
     public bool HasApps => Apps.Count > 0;
 
     bool _demoLaunch;
+    public bool NotStore => !Packaged.IsPackaged;
     public bool LaunchFramecalm
     {
         get => m.IsDemo ? _demoLaunch : SafeIsOn();

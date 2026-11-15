@@ -223,7 +223,8 @@ public sealed class FirstRunVM(MainVM m) : Observable
     public string Found { get; private set; } = "";
     public string FoundDetail { get; private set; } = "";
     public ICommand StartCmd => new AsyncCmd(Start);
-    public bool WantUpdates { get; set; } = true;
+    public bool NotStore => !Framecalm.App.Services.Packaged.IsPackaged;
+    public bool WantUpdates { get; set; } = !Framecalm.App.Services.Packaged.IsPackaged;
     public bool WantTray { get; set; } = true;
 
     async Task Start()

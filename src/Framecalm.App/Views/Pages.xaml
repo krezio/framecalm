@@ -148,7 +148,7 @@
                     </Button>
                     <TextBlock Text="Free. No account. Everything can be undone." Style="{StaticResource Body}" FontSize="13" Foreground="{StaticResource Faint}" TextAlignment="Center" Margin="0,18,0,0" />
                     <StackPanel HorizontalAlignment="Center" Margin="0,30,0,0" Width="380">
-                        <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding WantUpdates}" Margin="0,0,0,10">
+                        <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding WantUpdates}" Margin="0,0,0,10" Visibility="{Binding NotStore, Converter={StaticResource VisIf}}">
                             <TextBlock Text="Tell me when there's a new version" Style="{StaticResource Body}" FontSize="13" Foreground="#D4D1F7" />
                         </CheckBox>
                         <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding WantTray}">
@@ -1121,11 +1121,11 @@
                 <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding DownloadCovers}" Margin="0,14">
                     <StackPanel><TextBlock Text="Download cover art" Style="{StaticResource Strong}" /><TextBlock Text="Fetches each game's official cover once from Steam or the Microsoft Store and keeps it on this PC. Off means generated covers and no downloads." Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
                 </CheckBox>
-                <Border Style="{StaticResource Rule}" />
-                <Grid Margin="0,14">
+                <Border Style="{StaticResource Rule}" Visibility="{Binding NotStore, Converter={StaticResource VisIf}}" />
+                <Grid Margin="0,14" Visibility="{Binding NotStore, Converter={StaticResource VisIf}}">
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
                     <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding CheckUpdates}">
-                        <StackPanel><TextBlock Text="Check for updates" Style="{StaticResource Strong}" /><TextBlock Text="When Framecalm opens, it asks GitHub whether there's a newer version and shows a note in the sidebar. Nothing about you or your PC is sent." Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
+                        <StackPanel><TextBlock Text="Check for updates" Style="{StaticResource Strong}" /><TextBlock Text="When Framecalm opens, it asks GitHub whether there's a newer version and shows a note at the top. Nothing about you or your PC is sent." Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
                     </CheckBox>
                     <Button Grid.Column="1" Style="{StaticResource Ghost}" Content="Check now" Command="{Binding CheckNowCmd}" Padding="14,7" FontSize="13" Margin="20,0,0,0" VerticalAlignment="Center" />
                 </Grid>
@@ -1133,8 +1133,8 @@
                 <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding CloseToTray}" Margin="0,14">
                     <StackPanel><TextBlock Text="Keep running in the tray when closed" Style="{StaticResource Strong}" /><TextBlock Text="Closing the window hides Framecalm next to the clock, so Game Session can start and stop with your games. Right-click the icon to quit." Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
                 </CheckBox>
-                <Border Style="{StaticResource Rule}" />
-                <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding LaunchFramecalm}" Margin="0,14">
+                <Border Style="{StaticResource Rule}" Visibility="{Binding NotStore, Converter={StaticResource VisIf}}" />
+                <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding LaunchFramecalm}" Margin="0,14" Visibility="{Binding NotStore, Converter={StaticResource VisIf}}">
                     <StackPanel><TextBlock Text="Open Framecalm when Windows starts" Style="{StaticResource Strong}" /><TextBlock Text="Starts quietly in the tray, not as a window." Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
                 </CheckBox>
                 <Border Style="{StaticResource Rule}" />
