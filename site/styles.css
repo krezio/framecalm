@@ -459,3 +459,10 @@ body:has(.article) .top { background: rgba(14, 11, 46, .9); border-bottom-color:
   .zoom-stick { position: static; height: auto; }
   .grain { animation: none; }
 }
+
+/* GitHub star buttons */
+.nav-cta { display: flex; gap: 8px; align-items: center; }
+.star-btn { gap: 8px; }
+.star-btn svg { color: var(--amber); flex: none; }
+.star-count { font-weight: 600; padding-left: 9px; margin-left: 1px; border-left: 1px solid var(--rule-2); font-variant-numeric: tabular-nums; }
+@media (max-width: 600px) { .nav-cta .star-btn span { display: none; } }

@@ -302,3 +302,27 @@
   }));
   search?.addEventListener("input", filter);
 })();
+
+// live GitHub star count on the star buttons
+(() => {
+  const els = document.querySelectorAll(".star-count");
+  if (!els.length) return;
+  const KEY = "framecalm-stars";
+  const show = (n) => {
+    if (typeof n !== "number" || n < 1) return;
+    const text = n >= 1000 ? `${(n / 1000).toFixed(1)}k` : String(n);
+    els.forEach((el) => { el.textContent = text; el.hidden = false; });
+  };
+  try {
+    const cached = JSON.parse(sessionStorage.getItem(KEY) || "null");
+    if (cached && Date.now() - cached.t < 10 * 60 * 1000) return show(cached.n);
+  } catch {}
+  fetch("https://api.github.com/repos/krezio/framecalm", { headers: { Accept: "application/vnd.github+json" } })
+    .then((r) => (r.ok ? r.json() : null))
+    .then((d) => {
+      if (!d) return;
+      show(d.stargazers_count);
+      try { sessionStorage.setItem(KEY, JSON.stringify({ n: d.stargazers_count, t: Date.now() })); } catch {}
+    })
+    .catch(() => {});
+})();
