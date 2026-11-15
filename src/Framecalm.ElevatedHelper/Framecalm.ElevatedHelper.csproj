@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Framecalm.ElevatedHelper</RootNamespace>
+    <AssemblyName>Framecalm.ElevatedHelper</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Framecalm.Windows\Framecalm.Windows.csproj" />
+  </ItemGroup>
+</Project>
