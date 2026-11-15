@@ -28,6 +28,11 @@
   <ItemGroup Condition="Exists('Assets\framecalm.ico')">
     <Resource Include="Assets\framecalm.ico" />
   </ItemGroup>
+  <!-- Onest, the same typeface as the website (SIL Open Font License, see Assets/Fonts/OFL.txt) -->
+  <ItemGroup>
+    <Resource Include="Assets\Fonts\*.ttf" />
+    <None Include="Assets\Fonts\OFL.txt" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
   <!-- The capture helper and (when fetched by tools/fetch-presentmon.ps1) PresentMon sit next to the app. -->
   <Target Name="CopyCaptureTools" AfterTargets="Build" Condition="'$(_IsPublishing)' != 'true' and '$(RuntimeIdentifier)' == ''">
     <MSBuild Projects="..\Framecalm.ElevatedHelper\Framecalm.ElevatedHelper.csproj" Properties="Configuration=$(Configuration)" />

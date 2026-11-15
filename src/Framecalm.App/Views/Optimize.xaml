@@ -51,7 +51,7 @@
             <Grid>
                 <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
                 <StackPanel>
-                    <TextBlock Text="Optimize" Style="{StaticResource H1}" FontSize="34" />
+                    <TextBlock Text="Tweaks" Style="{StaticResource H1}" FontSize="44" />
                     <TextBlock Style="{StaticResource Body}" MaxWidth="620" HorizontalAlignment="Left" Margin="0,4,0,0"
                                Text="Pick what you want changed. Each switch shows what's true on this PC right now. Nothing changes until you apply, and everything can be switched back." />
                 </StackPanel>
@@ -129,7 +129,7 @@
                             <ItemsControl ItemsSource="{Binding Rows}" Focusable="False">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border x:Name="card" Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="8" Padding="18,14,16,14" Margin="0,0,0,6">
+                                        <Border x:Name="card" Background="Transparent" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1" CornerRadius="0" Padding="14,18,12,18">
                                             <Grid>
                                                 <Grid.ColumnDefinitions><ColumnDefinition Width="30" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
                                                 <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource TierMeter}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,3,0,0" />
@@ -173,7 +173,7 @@
                                         </Border>
                                         <DataTemplate.Triggers>
                                             <DataTrigger Binding="{Binding Pending}" Value="True">
-                                                <Setter TargetName="card" Property="BorderBrush" Value="{StaticResource Accent}" />
+                                                <Setter TargetName="card" Property="Background" Value="#14FFB224" />
                                                 <Setter TargetName="status" Property="Foreground" Value="{StaticResource Accent}" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Available}" Value="False"><Setter TargetName="card" Property="Opacity" Value="0.55" /></DataTrigger>
@@ -238,7 +238,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="PlanRow">
-        <Border x:Name="card" Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="6" Padding="16,12" Margin="0,0,0,6">
+        <Border x:Name="card" Background="Transparent" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1" Padding="8,16">
             <Grid>
                 <Grid.ColumnDefinitions><ColumnDefinition Width="34" /><ColumnDefinition Width="30" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
                 <CheckBox x:Name="tick" Style="{StaticResource Tick}" IsChecked="{Binding Include}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,1,0,0" AutomationProperties.Name="{Binding Name}" />
@@ -263,7 +263,7 @@
             <Grid>
                 <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
                 <StackPanel>
-                    <Button Style="{StaticResource Link}" Command="{Binding BackCmd}" HorizontalAlignment="Left" FontSize="12.5" Foreground="{StaticResource Muted}" Content="&#x2190;  Dashboard" />
+                    <Button Style="{StaticResource Link}" Command="{Binding BackCmd}" HorizontalAlignment="Left" FontSize="12.5" Foreground="{StaticResource Muted}" Content="&#x2190;  Home" />
                     <TextBlock Text="Optimize this PC" Style="{StaticResource H1}" FontSize="34" Margin="0,8,0,0" />
                     <TextBlock Text="{Binding Lede}" Style="{StaticResource Body}" MaxWidth="640" HorizontalAlignment="Left" Margin="0,4,0,0" />
                 </StackPanel>
@@ -358,7 +358,7 @@
                 <ItemsControl ItemsSource="{Binding Apps}" Focusable="False" c:Entrance.Delay="60">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="10" Padding="20,14" Margin="0,0,0,8">
+                            <Border Background="Transparent" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1" Padding="6,16">
                                 <Grid>
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
                                     <Border Width="36" Height="36" CornerRadius="9" Background="#2B2773" Margin="0,0,16,0" VerticalAlignment="Center">
@@ -438,52 +438,115 @@
         </Setter>
     </Style>
 
+    <!-- a floating line-art part: drifts up and down forever, glows like the website's -->
+    <Style x:Key="Drift" TargetType="Viewbox">
+        <Setter Property="RenderTransform"><Setter.Value><TranslateTransform /></Setter.Value></Setter>
+        <Setter Property="Effect"><Setter.Value><DropShadowEffect Color="#8F8BFF" BlurRadius="22" ShadowDepth="0" Opacity="0.7" /></Setter.Value></Setter>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                <BeginStoryboard>
+                    <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" From="-9" To="11" Duration="0:0:4.6"><DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction></DoubleAnimation>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
+
     <DataTemplate DataType="{x:Type vm:DashboardVM}">
         <Grid>
-            <c:LightBeams Strength="0.55" />
-            <c:StarField Density="0.7" />
-            <Grid Margin="44,26,44,28">
-                <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
-                <StackPanel>
-                    <TextBlock Text="{Binding Greeting}" FontFamily="{StaticResource UiDisplay}" FontSize="22" Foreground="{StaticResource Text}" />
-                    <TextBlock Text="{Binding Machine}" Style="{StaticResource Body}" FontSize="13" Foreground="{StaticResource Faint}" />
-                </StackPanel>
+            <c:LightBeams Strength="0.5" />
+            <c:StarField Density="0.6" />
 
-                <!-- the one thing to do -->
-                <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" c:Entrance.Delay="60">
-                    <Grid Width="380" Height="330" HorizontalAlignment="Center">
-                        <c:Tach Value="{Binding Opt.OnCount}" Max="{Binding Opt.Available}" Target="{Binding PlanTarget}">
-                            <c:Tach.Effect><DropShadowEffect Color="#FFB224" BlurRadius="18" ShadowDepth="0" Opacity="0.5" /></c:Tach.Effect>
-                        </c:Tach>
-                        <Button Style="{StaticResource BigGo}" Width="196" Height="196" Command="{Binding OptimizeCmd}" Margin="0,8,0,0" AutomationProperties.Name="Optimize this PC">
-                            <StackPanel HorizontalAlignment="Center">
-                                <TextBlock Text="{Binding GoIcon}" FontFamily="{StaticResource Icons}" FontSize="26" HorizontalAlignment="Center" Foreground="{StaticResource Ink}" />
-                                <TextBlock Text="{Binding GoText}" FontFamily="{StaticResource UiDisplay}" FontSize="26" HorizontalAlignment="Center" Margin="0,6,0,0" Foreground="{StaticResource Ink}" />
-                                <TextBlock Text="{Binding GoSub}" FontSize="12.5" FontWeight="SemiBold" HorizontalAlignment="Center" Foreground="#5A3A00" Margin="0,2,0,0" />
+            <!-- the parts, floating in the light on the right -->
+            <Canvas IsHitTestVisible="False" HorizontalAlignment="Right" Width="560" Margin="0,0,30,0">
+                <Viewbox Style="{StaticResource Drift}" Canvas.Left="120" Canvas.Top="40" Width="290">
+                    <Canvas Width="220" Height="110">
+                        <Canvas.RenderTransform><RotateTransform Angle="-12" CenterX="110" CenterY="55" /></Canvas.RenderTransform>
+                        <Rectangle Canvas.Left="4" Canvas.Top="14" Width="200" Height="82" RadiusX="10" RadiusY="10" Fill="#1E1A63" Stroke="#8F8BFF" StrokeThickness="2" />
+                        <Rectangle Canvas.Left="204" Canvas.Top="22" Width="12" Height="66" RadiusX="2" RadiusY="2" Fill="#2E2992" Stroke="#8F8BFF" StrokeThickness="2" />
+                        <Ellipse Canvas.Left="32" Canvas.Top="25" Width="60" Height="60" Fill="#2E2992" Stroke="#8F8BFF" StrokeThickness="2" />
+                        <Ellipse Canvas.Left="116" Canvas.Top="25" Width="60" Height="60" Fill="#2E2992" Stroke="#8F8BFF" StrokeThickness="2" />
+                        <Path Data="M62,25 V85 M32,55 H92 M41,34 L83,76 M83,34 L41,76 M146,25 V85 M116,55 H176 M125,34 L167,76 M167,34 L125,76" Stroke="#8F8BFF" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                        <Ellipse Canvas.Left="54" Canvas.Top="47" Width="16" Height="16" Fill="#1E1A63" Stroke="#8F8BFF" StrokeThickness="2" />
+                        <Ellipse Canvas.Left="138" Canvas.Top="47" Width="16" Height="16" Fill="#1E1A63" Stroke="#8F8BFF" StrokeThickness="2" />
+                    </Canvas>
+                </Viewbox>
+                <Viewbox Style="{StaticResource Drift}" Canvas.Left="400" Canvas.Top="250" Width="120">
+                    <Canvas Width="120" Height="120">
+                        <Path Data="M30,10 V22 M45,10 V22 M60,10 V22 M75,10 V22 M90,10 V22 M30,98 V110 M45,98 V110 M60,98 V110 M75,98 V110 M90,98 V110 M10,30 H22 M10,45 H22 M10,60 H22 M10,75 H22 M10,90 H22 M98,30 H110 M98,45 H110 M98,60 H110 M98,75 H110 M98,90 H110" Stroke="#8F8BFF" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                        <Rectangle Canvas.Left="22" Canvas.Top="22" Width="76" Height="76" RadiusX="8" RadiusY="8" Fill="#1E1A63" Stroke="#8F8BFF" StrokeThickness="2" />
+                        <Rectangle Canvas.Left="38" Canvas.Top="38" Width="44" Height="44" RadiusX="4" RadiusY="4" Fill="#2E2992" Stroke="#8F8BFF" StrokeThickness="2" />
+                    </Canvas>
+                </Viewbox>
+                <Viewbox Style="{StaticResource Drift}" Canvas.Left="60" Canvas.Top="380" Width="280">
+                    <Canvas Width="240" Height="60">
+                        <Canvas.RenderTransform><RotateTransform Angle="-18" CenterX="120" CenterY="30" /></Canvas.RenderTransform>
+                        <Path Data="M4,8 H236 V48 H126 V56 H114 V48 H4 Z" Fill="#1E1A63" Stroke="#8F8BFF" StrokeThickness="2" StrokeLineJoin="Round" />
+                        <Rectangle Canvas.Left="16" Canvas.Top="16" Width="30" Height="22" RadiusX="2" RadiusY="2" Fill="#2E2992" Stroke="#8F8BFF" StrokeThickness="2" />
+                        <Rectangle Canvas.Left="56" Canvas.Top="16" Width="30" Height="22" RadiusX="2" RadiusY="2" Fill="#2E2992" Stroke="#8F8BFF" StrokeThickness="2" />
+                        <Rectangle Canvas.Left="96" Canvas.Top="16" Width="30" Height="22" RadiusX="2" RadiusY="2" Fill="#2E2992" Stroke="#8F8BFF" StrokeThickness="2" />
+                        <Rectangle Canvas.Left="136" Canvas.Top="16" Width="30" Height="22" RadiusX="2" RadiusY="2" Fill="#2E2992" Stroke="#8F8BFF" StrokeThickness="2" />
+                        <Rectangle Canvas.Left="176" Canvas.Top="16" Width="30" Height="22" RadiusX="2" RadiusY="2" Fill="#2E2992" Stroke="#8F8BFF" StrokeThickness="2" />
+                    </Canvas>
+                </Viewbox>
+                <Viewbox Style="{StaticResource Drift}" Canvas.Left="70" Canvas.Top="210" Width="34">
+                    <Viewbox.Effect><DropShadowEffect Color="#FFB224" BlurRadius="24" ShadowDepth="0" Opacity="0.9" /></Viewbox.Effect>
+                    <Canvas Width="60" Height="120">
+                        <Path Data="M30,4 L54,38 L30,116 L6,38 Z" Fill="#FFB224" Stroke="#FFE3A6" StrokeThickness="2" StrokeLineJoin="Round" />
+                        <Path Data="M6,38 H54 M30,4 L18,38 L30,116 L42,38 Z" Stroke="#8A5A00" StrokeThickness="2" StrokeLineJoin="Round" />
+                    </Canvas>
+                </Viewbox>
+                <Viewbox Style="{StaticResource Drift}" Canvas.Left="470" Canvas.Top="70" Width="44">
+                    <Viewbox.Effect><DropShadowEffect Color="#7CF5C0" BlurRadius="22" ShadowDepth="0" Opacity="0.85" /></Viewbox.Effect>
+                    <Canvas Width="100" Height="100">
+                        <Path Data="M50,6 L92,28 V72 L50,94 L8,72 V28 Z" Fill="#7CF5C0" Stroke="#D6FFEE" StrokeThickness="2" StrokeLineJoin="Round" />
+                        <Path Data="M8,28 L50,50 L92,28 M50,50 V94" Stroke="#2E8F6A" StrokeThickness="2" StrokeLineJoin="Round" />
+                    </Canvas>
+                </Viewbox>
+            </Canvas>
+
+            <!-- the words and the one button, like the website's hero -->
+            <Grid Margin="56,10,56,40">
+                <Grid.RowDefinitions><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+                <StackPanel VerticalAlignment="Center" MaxWidth="640" HorizontalAlignment="Left" c:Entrance.Delay="40">
+                    <TextBlock Text="{Binding Machine}" FontSize="14" Foreground="{StaticResource Faint}" />
+                    <TextBlock Text="{Binding HomeTitle}" FontSize="68" FontWeight="Medium" Foreground="{StaticResource Text}" LineHeight="70" LineStackingStrategy="BlockLineHeight" Margin="0,14,0,0" TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding StatusText}" FontSize="17" LineHeight="27" Foreground="{StaticResource Muted}" TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left" Margin="0,22,0,30" />
+                    <StackPanel Orientation="Horizontal">
+                        <Button Style="{StaticResource Primary}" Command="{Binding OptimizeCmd}" Padding="26,16" FontSize="17" AutomationProperties.Name="Optimize this PC">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding ButtonText}" FontWeight="SemiBold" VerticalAlignment="Center" />
+                                <Border Background="{StaticResource Ink}" CornerRadius="8" Width="34" Height="34" Margin="16,-6,-12,-6">
+                                    <TextBlock Text="{Binding GoIcon}" FontFamily="{StaticResource Icons}" FontSize="13" Foreground="{StaticResource Accent}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
                             </StackPanel>
                         </Button>
-                    </Grid>
-                    <TextBlock Text="{Binding StatusText}" Style="{StaticResource Body}" FontSize="15" Foreground="#D4D1F7" TextAlignment="Center" MaxWidth="520" Margin="0,10,0,0" />
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,14,0,0">
-                        <Button Style="{StaticResource Link}" Content="Review the plan first" Command="{Binding GoCmd}" CommandParameter="auto" FontSize="13.5" />
-                        <TextBlock Text="or" Style="{StaticResource Body}" FontSize="13.5" Foreground="{StaticResource Faint}" Margin="10,0" VerticalAlignment="Center" />
-                        <Button Style="{StaticResource Link}" Content="pick tweaks yourself" Command="{Binding GoCmd}" CommandParameter="optimize" FontSize="13.5" />
+                        <Button Style="{StaticResource Link}" Content="Review the plan first" Command="{Binding GoCmd}" CommandParameter="auto" Foreground="{StaticResource Muted}" FontSize="15" Margin="26,0,0,0" VerticalAlignment="Center" />
                     </StackPanel>
                 </StackPanel>
 
-                <!-- three quiet numbers -->
-                <Grid Grid.Row="2" HorizontalAlignment="Center" c:Entrance.Delay="220">
-                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
-                    <Button Style="{StaticResource Plain}" Command="{Binding GoCmd}" CommandParameter="optimize" Margin="0,0,40,0" Cursor="Hand" AutomationProperties.Name="Open Optimize">
-                        <StackPanel Orientation="Horizontal"><TextBlock Text="{Binding Opt.OnCount}" FontFamily="{StaticResource Num}" FontSize="20" Foreground="{StaticResource Text}" /><TextBlock Text="{Binding TweaksSub}" Style="{StaticResource Body}" FontSize="13" Margin="8,0,0,0" VerticalAlignment="Center" /></StackPanel>
+                <!-- three quiet numbers, each one opens its page -->
+                <StackPanel Grid.Row="1" Orientation="Horizontal" c:Entrance.Delay="200">
+                    <Button Style="{StaticResource Plain}" Command="{Binding GoCmd}" CommandParameter="optimize" Margin="0,0,56,0" Cursor="Hand" AutomationProperties.Name="Open Optimize">
+                        <StackPanel>
+                            <TextBlock FontSize="34" FontWeight="Medium" Foreground="{StaticResource Text}"><Run Text="{Binding Opt.OnCount, Mode=OneWay}" /><Run Text="{Binding Opt.Available, Mode=OneWay, StringFormat={} / {0}}" FontSize="18" Foreground="{StaticResource Faint}" /></TextBlock>
+                            <TextBlock Text="tweaks on" FontSize="13.5" Foreground="{StaticResource Muted}" />
+                        </StackPanel>
                     </Button>
-                    <Button Grid.Column="1" Style="{StaticResource Plain}" Command="{Binding GoCmd}" CommandParameter="health" Margin="0,0,40,0" Cursor="Hand" AutomationProperties.Name="Open This PC">
-                        <StackPanel Orientation="Horizontal"><TextBlock Text="{Binding Fixes}" FontFamily="{StaticResource Num}" FontSize="20" Foreground="{StaticResource Text}" /><TextBlock Text="{Binding FixesSub}" Style="{StaticResource Body}" FontSize="13" Margin="8,0,0,0" VerticalAlignment="Center" /></StackPanel>
+                    <Button Style="{StaticResource Plain}" Command="{Binding GoCmd}" CommandParameter="health" Margin="0,0,56,0" Cursor="Hand" AutomationProperties.Name="Open PC fixes">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Fixes}" FontSize="34" FontWeight="Medium" Foreground="{StaticResource Text}" />
+                            <TextBlock Text="{Binding FixesSub}" FontSize="13.5" Foreground="{StaticResource Muted}" />
+                        </StackPanel>
                     </Button>
-                    <Button Grid.Column="2" Style="{StaticResource Plain}" Command="{Binding GoCmd}" CommandParameter="library" Cursor="Hand" AutomationProperties.Name="Open Games">
-                        <StackPanel Orientation="Horizontal"><TextBlock Text="{Binding Games}" FontFamily="{StaticResource Num}" FontSize="20" Foreground="{StaticResource Text}" /><TextBlock Text="{Binding GamesSub}" Style="{StaticResource Body}" FontSize="13" Margin="8,0,0,0" VerticalAlignment="Center" /></StackPanel>
+                    <Button Style="{StaticResource Plain}" Command="{Binding GoCmd}" CommandParameter="library" Cursor="Hand" AutomationProperties.Name="Open Games">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Games}" FontSize="34" FontWeight="Medium" Foreground="{StaticResource Text}" />
+                            <TextBlock Text="{Binding GamesSub}" FontSize="13.5" Foreground="{StaticResource Muted}" />
+                        </StackPanel>
                     </Button>
-                </Grid>
+                </StackPanel>
             </Grid>
         </Grid>
     </DataTemplate>

@@ -37,7 +37,7 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListBoxItem">
-                                <Border x:Name="b" BorderBrush="{StaticResource Line2}" BorderThickness="1" CornerRadius="6" Padding="14,7" Background="Transparent">
+                                <Border x:Name="b" BorderBrush="{StaticResource Line2}" BorderThickness="1" CornerRadius="14" Padding="14,7" Background="Transparent">
                                     <TextBlock x:Name="t" Text="{Binding Name}" FontSize="13" Foreground="{StaticResource Muted}" />
                                 </Border>
                                 <ControlTemplate.Triggers>
@@ -59,7 +59,7 @@
     <DataTemplate x:Key="StepRow" DataType="{x:Type vm:StepVM}">
         <Grid Margin="0,0,0,14">
             <Grid.ColumnDefinitions><ColumnDefinition Width="34" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
-            <Border x:Name="dot" Width="22" Height="22" CornerRadius="6" BorderThickness="1.5" BorderBrush="{StaticResource Line2}" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Border x:Name="dot" Width="22" Height="22" CornerRadius="14" BorderThickness="1.5" BorderBrush="{StaticResource Line2}" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <TextBlock x:Name="g" Text="{Binding Glyph}" Style="{StaticResource Icon}" FontSize="11" HorizontalAlignment="Center" Foreground="{StaticResource Ink}" />
             </Border>
             <StackPanel Grid.Column="1">
@@ -99,7 +99,7 @@
 
     <!-- prompt shown while waiting for the player -->
     <DataTemplate x:Key="Prompt">
-        <Border BorderBrush="{StaticResource Accent}" BorderThickness="0" CornerRadius="6" Background="{StaticResource Surface}" Padding="24,20" Margin="0,0,0,24">
+        <Border BorderBrush="{StaticResource Accent}" BorderThickness="0" CornerRadius="14" Background="{StaticResource Surface}" Padding="24,20" Margin="0,0,0,24">
             <StackPanel>
                 <TextBlock Text="Waiting for you" Style="{StaticResource LabelAccent}" />
                 <TextBlock Text="{Binding PromptTitle}" Style="{StaticResource H2}" Margin="0,6,0,6" />
@@ -178,10 +178,10 @@
             <Button.RenderTransform><ScaleTransform /></Button.RenderTransform>
             <StackPanel Width="184">
                 <Grid Height="276">
-                    <Border CornerRadius="6" x:Name="art">
+                    <Border CornerRadius="14" x:Name="art">
                         <Border.Background><ImageBrush ImageSource="{Binding Art}" Stretch="UniformToFill" AlignmentY="Top" /></Border.Background>
                     </Border>
-                    <Border CornerRadius="6" x:Name="ring" BorderBrush="{StaticResource Accent}" BorderThickness="0" />
+                    <Border CornerRadius="14" x:Name="ring" BorderBrush="{StaticResource Accent}" BorderThickness="0" />
                 </Grid>
                 <TextBlock Text="{Binding Name}" Style="{StaticResource Strong}" Margin="0,11,0,2" TextTrimming="CharacterEllipsis" />
                 <TextBlock Text="{Binding Status}" x:Name="status" Style="{StaticResource Body}" FontSize="12.5" LineHeight="17" Foreground="{StaticResource Faint}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
@@ -229,7 +229,7 @@
                 </Grid>
 
                 <!-- wrong GPU: the single biggest fix on laptops -->
-                <Border Margin="0,26,0,0" Background="{StaticResource WarnSoft}" BorderBrush="{StaticResource Warn}" BorderThickness="0" CornerRadius="6" Padding="20,14"
+                <Border Margin="0,26,0,0" Background="{StaticResource WarnSoft}" BorderBrush="{StaticResource Warn}" BorderThickness="0" CornerRadius="14" Padding="20,14"
                         Visibility="{Binding WrongGpu, Converter={StaticResource VisIf}}">
                     <Grid>
                         <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
@@ -290,7 +290,7 @@
                         <TextBlock Text="←  LIBRARY" Style="{StaticResource Label}" Foreground="{StaticResource Muted}" />
                     </Button>
                     </StackPanel>
-                    <Border Grid.Row="1" Width="138" Height="207" CornerRadius="6" Margin="0,14,28,0" VerticalAlignment="Top" BorderBrush="#33FFFFFF" BorderThickness="1">
+                    <Border Grid.Row="1" Width="138" Height="207" CornerRadius="14" Margin="0,14,28,0" VerticalAlignment="Top" BorderBrush="#33FFFFFF" BorderThickness="1">
                         <Border.Background><ImageBrush ImageSource="{Binding Art}" Stretch="UniformToFill" AlignmentY="Top" /></Border.Background>
                     </Border>
                     <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,12,0,0">
@@ -325,7 +325,7 @@
                     </StackPanel>
                 </Grid>
 
-                <Border HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,18,32,0" Background="#CC09090B" Padding="8,4" CornerRadius="6"
+                <Border HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,18,32,0" Background="#CC09090B" Padding="8,4" CornerRadius="14"
                         Visibility="{Binding DemoData, Converter={StaticResource VisIf}}">
                     <TextBlock Text="Demo data, simulated numbers" Style="{StaticResource Label}" Foreground="{StaticResource Warn}" />
                 </Border>
@@ -355,7 +355,7 @@
 
                         <!-- automatic game whose file we can't safely read: fail closed -->
                         <StackPanel Visibility="{Binding IsAuto, Converter={StaticResource VisIf}}">
-                            <Border Background="{StaticResource WarnSoft}" BorderBrush="{StaticResource Warn}" BorderThickness="0" CornerRadius="6" Padding="18,12" Margin="0,0,0,8"
+                            <Border Background="{StaticResource WarnSoft}" BorderBrush="{StaticResource Warn}" BorderThickness="0" CornerRadius="14" Padding="18,12" Margin="0,0,0,8"
                                     Visibility="{Binding CanTune, Converter={StaticResource VisIfNot}}">
                                 <StackPanel>
                                     <TextBlock Text="In-game steps" Style="{StaticResource Label}" Foreground="{StaticResource Warn}" />
@@ -462,7 +462,7 @@
                     <TextBlock Style="{StaticResource Label}" Foreground="{StaticResource Muted}"><Run Text="←  " /><Run Text="{Binding Game.Name, Mode=OneWay}" /></TextBlock>
                 </Button>
                 <Grid Margin="0,10,0,0">
-                    <StackPanel Orientation="Horizontal"><Border Width="40" Height="60" CornerRadius="6" Margin="0,0,16,0" VerticalAlignment="Center"><Border.Background><ImageBrush ImageSource="{Binding Game.Art}" Stretch="UniformToFill" /></Border.Background></Border><TextBlock Style="{StaticResource H1}" VerticalAlignment="Center"><Run Text="Tune " /><Run Text="{Binding Game.Name, Mode=OneWay}" /></TextBlock></StackPanel>
+                    <StackPanel Orientation="Horizontal"><Border Width="40" Height="60" CornerRadius="14" Margin="0,0,16,0" VerticalAlignment="Center"><Border.Background><ImageBrush ImageSource="{Binding Game.Art}" Stretch="UniformToFill" /></Border.Background></Border><TextBlock Style="{StaticResource H1}" VerticalAlignment="Center"><Run Text="Tune " /><Run Text="{Binding Game.Name, Mode=OneWay}" /></TextBlock></StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Height="34" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=pick}">
                         <RadioButton Style="{StaticResource Nav}" Content="To a target FPS" IsChecked="{Binding ModeTarget}" />
                         <RadioButton Style="{StaticResource Nav}" Content="By profile" IsChecked="{Binding ModeProfile}" Margin="0" />
@@ -645,10 +645,10 @@
                 <Grid.Style><Style TargetType="Grid"><Style.Triggers><DataTrigger Binding="{Binding Stage}" Value="results"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style></Grid.Style>
                 <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="420" /></Grid.ColumnDefinitions>
                 <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,8,0,24"><Border Width="40" Height="60" CornerRadius="6" Margin="0,0,16,0" VerticalAlignment="Center"><Border.Background><ImageBrush ImageSource="{Binding Game.Art}" Stretch="UniformToFill" /></Border.Background></Border><TextBlock Text="{Binding Title}" Style="{StaticResource H1}" VerticalAlignment="Center" /></StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,24"><Border Width="40" Height="60" CornerRadius="14" Margin="0,0,16,0" VerticalAlignment="Center"><Border.Background><ImageBrush ImageSource="{Binding Game.Art}" Stretch="UniformToFill" /></Border.Background></Border><TextBlock Text="{Binding Title}" Style="{StaticResource H1}" VerticalAlignment="Center" /></StackPanel>
                     <ContentControl Content="{Binding}" ContentTemplate="{StaticResource Prompt}" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=prompt}" Focusable="False" />
                     <StackPanel Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=failed|partial}" Margin="0,0,0,24" MaxWidth="600" HorizontalAlignment="Left">
-                        <Border BorderBrush="{StaticResource Bad}" BorderThickness="0" CornerRadius="6" Background="{StaticResource BadSoft}" Padding="20,14">
+                        <Border BorderBrush="{StaticResource Bad}" BorderThickness="0" CornerRadius="14" Background="{StaticResource BadSoft}" Padding="20,14">
                             <StackPanel>
                                 <TextBlock Text="Stopped safely" Style="{StaticResource Label}" Foreground="{StaticResource Bad}" />
                                 <TextBlock Text="{Binding Message}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" Margin="0,4,0,0" />
@@ -682,7 +682,7 @@
                         <TextBlock Style="{StaticResource LabelAccent}"><Run Text="{Binding Game.Name, Mode=OneWay}" /><Run Text=", result" /></TextBlock>
                         <TextBlock Text="{Binding HeadlineDone}" Style="{StaticResource H1}" Margin="0,6,0,0" />
                     </StackPanel>
-                    <Border HorizontalAlignment="Right" VerticalAlignment="Top" Padding="8,4" CornerRadius="6" BorderBrush="{StaticResource Warn}" BorderThickness="1" Visibility="{Binding IsDemoData, Converter={StaticResource VisIf}}">
+                    <Border HorizontalAlignment="Right" VerticalAlignment="Top" Padding="8,4" CornerRadius="14" BorderBrush="{StaticResource Warn}" BorderThickness="1" Visibility="{Binding IsDemoData, Converter={StaticResource VisIf}}">
                         <TextBlock Text="Demo data, simulated numbers" Style="{StaticResource Label}" Foreground="{StaticResource Warn}" />
                     </Border>
                 </Grid>
@@ -774,7 +774,7 @@
             <Grid.ColumnDefinitions><ColumnDefinition Width="460" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
             <StackPanel>
                 <TextBlock Style="{StaticResource LabelAccent}"><Run Text="AUTO-TUNE  ·  " /><Run Text="{Binding Game.Name, Mode=OneWay}" /></TextBlock>
-                <StackPanel Orientation="Horizontal" Margin="0,8,0,0"><Border Width="32" Height="48" CornerRadius="6" Margin="0,0,12,0" VerticalAlignment="Center"><Border.Background><ImageBrush ImageSource="{Binding Game.Art}" Stretch="UniformToFill" /></Border.Background></Border><TextBlock Text="{Binding Status}" Style="{StaticResource H2}" VerticalAlignment="Center" /></StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,8,0,0"><Border Width="32" Height="48" CornerRadius="14" Margin="0,0,12,0" VerticalAlignment="Center"><Border.Background><ImageBrush ImageSource="{Binding Game.Art}" Stretch="UniformToFill" /></Border.Background></Border><TextBlock Text="{Binding Status}" Style="{StaticResource H2}" VerticalAlignment="Center" /></StackPanel>
                 <Grid Width="420" Height="330" HorizontalAlignment="Left" Margin="0,10,0,0">
                     <c:Tach Value="{Binding Now}" Target="{Binding Target}" Max="{Binding GaugeMax}" AutomationProperties.Name="Current FPS against target" />
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,30,0,0">
@@ -783,7 +783,7 @@
                     </StackPanel>
                 </Grid>
                 <TextBlock Text="{Binding Detail}" Style="{StaticResource Body}" MaxWidth="420" HorizontalAlignment="Left" />
-                <Border Visibility="{Binding IsDemoData, Converter={StaticResource VisIf}}" HorizontalAlignment="Left" Margin="0,14,0,0" Padding="8,4" CornerRadius="6" BorderBrush="{StaticResource Warn}" BorderThickness="1">
+                <Border Visibility="{Binding IsDemoData, Converter={StaticResource VisIf}}" HorizontalAlignment="Left" Margin="0,14,0,0" Padding="8,4" CornerRadius="14" BorderBrush="{StaticResource Warn}" BorderThickness="1">
                     <TextBlock Text="Demo data, simulated numbers" Style="{StaticResource Label}" Foreground="{StaticResource Warn}" />
                 </Border>
             </StackPanel>
@@ -927,7 +927,7 @@
                     <ItemsControl ItemsSource="{Binding Fixes}" Focusable="False" Margin="0,18,0,0">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="6" Padding="18,14" Margin="0,0,0,10">
+                                <Border Background="Transparent" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1" Padding="6,20">
                                     <Grid>
                                         <Grid.ColumnDefinitions><ColumnDefinition Width="36" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
                                         <CheckBox Style="{StaticResource Tick}" IsChecked="{Binding Include}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,2,0,0" AutomationProperties.Name="{Binding Title, StringFormat=Include {0}}" />
@@ -1058,7 +1058,7 @@
             <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
             <Grid>
                 <StackPanel>
-                    <TextBlock Text="{Binding Summary}" Style="{StaticResource H1}" FontSize="34" Margin="0,0,0,18" />
+                    <TextBlock Text="{Binding Summary}" Style="{StaticResource H1}" FontSize="34" Margin="0,0,220,18" TextWrapping="Wrap" />
                 </StackPanel>
                 <Button Style="{StaticResource Ghost}" Content="Undo everything" Command="{Binding UndoAllCmd}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,0,0" />
             </Grid>
@@ -1111,7 +1111,7 @@
                 <TextBlock Text="Settings" Style="{StaticResource H1}" FontSize="34" Margin="0,0,0,18" />
                 <Border Style="{StaticResource Rule}" />
                 <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding ReduceMotion}" Margin="0,14">
-                    <StackPanel><TextBlock Text="Reduce motion" Style="{StaticResource Strong}" /><TextBlock Text="No counting numbers or drawing charts. Also follows Windows' Animation effects setting." Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
+                    <StackPanel><TextBlock Text="Reduce motion" Style="{StaticResource Strong}" /><TextBlock Text="Stops the moving light, page transitions and counting numbers. Turn it on if motion bothers you or on a very slow PC." Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
                 </CheckBox>
                 <Border Style="{StaticResource Rule}" />
                 <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding AutoSession}" Margin="0,14">
@@ -1161,7 +1161,7 @@
 
     <!-- ===================== CONFLICT DIALOG ===================== -->
     <DataTemplate DataType="{x:Type vm:ConflictVM}">
-        <Border Width="560" Background="{StaticResource Surface2}" BorderBrush="{StaticResource Line2}" BorderThickness="1" CornerRadius="6" Padding="28,24">
+        <Border Width="560" Background="{StaticResource Surface2}" BorderBrush="{StaticResource Line2}" BorderThickness="1" CornerRadius="14" Padding="28,24">
             <StackPanel>
                 <TextBlock Text="Conflict" Style="{StaticResource Label}" Foreground="{StaticResource Warn}" />
                 <TextBlock Text="{Binding Title}" Style="{StaticResource H2}" Margin="0,6,0,8" />

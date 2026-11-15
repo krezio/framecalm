@@ -330,7 +330,10 @@ public sealed class DashboardVM(MainVM m) : Observable, IRefresh
     bool _busy;
     public bool Busy { get => _busy; private set { _busy = value; RaiseAll(); } }
     int Left => m.HealthPage.Fixes.Count + Opt.SafeLeft;
-    public string GoIcon => Busy ? "\uE895" : Left == 0 ? "\uE73E" : "\uE945";
+    public string GoIcon => Busy ? "\uE895" : "\uE72A";
+    string Pc => m.Hw.IsLaptop ? "laptop" : "desktop";
+    public string HomeTitle => Busy ? $"Tuning this {Pc}." : Left == 0 ? $"This {Pc} is tuned." : $"Ready to tune this {Pc}.";
+    public string ButtonText => Busy ? "Working" : Left == 0 ? "Go further" : "Optimize now";
     public string GoText => Busy ? "Working" : Left == 0 ? "All set" : "Optimize";
     public string GoSub => Busy ? "restore point first" : Left == 0 ? "go further" : $"{Left} change{(Left == 1 ? "" : "s")}";
     public string StatusText => Busy

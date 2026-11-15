@@ -3,22 +3,22 @@
                     xmlns:c="clr-namespace:Framecalm.App.Controls">
 
     <!-- ===== color tokens: blue-graphite base, amber for actions; tiers use mint / amber / red with a bar count so color is never the only signal ===== -->
-    <Color x:Key="BgColor">#100E33</Color>
+    <Color x:Key="BgColor">#0E0B2E</Color>
     <Color x:Key="AccentColor">#FFB224</Color>
-    <SolidColorBrush x:Key="Bg" Color="#100E33" />
-    <SolidColorBrush x:Key="Surface" Color="#18154A" />
-    <SolidColorBrush x:Key="Side" Color="#0C0A29" />
-    <SolidColorBrush x:Key="Surface2" Color="#211D5E" />
-    <SolidColorBrush x:Key="Hover" Color="#2B2773" />
-    <SolidColorBrush x:Key="Line" Color="#272366" />
-    <SolidColorBrush x:Key="Line2" Color="#3B368A" />
-    <SolidColorBrush x:Key="Text" Color="#F1F0FF" />
-    <SolidColorBrush x:Key="Muted" Color="#ABA8DA" />
-    <SolidColorBrush x:Key="Faint" Color="#7C78B5" />
+    <SolidColorBrush x:Key="Bg" Color="#0E0B2E" />
+    <SolidColorBrush x:Key="Surface" Color="#161344" />
+    <SolidColorBrush x:Key="Side" Color="#0A0824" />
+    <SolidColorBrush x:Key="Surface2" Color="#1F1B5A" />
+    <SolidColorBrush x:Key="Hover" Color="#26216A" />
+    <SolidColorBrush x:Key="Line" Color="#2A2670" />
+    <SolidColorBrush x:Key="Line2" Color="#3A358A" />
+    <SolidColorBrush x:Key="Text" Color="#F3F2FF" />
+    <SolidColorBrush x:Key="Muted" Color="#B6B3E3" />
+    <SolidColorBrush x:Key="Faint" Color="#7E7AB8" />
     <SolidColorBrush x:Key="Accent" Color="#FFB224" />
     <SolidColorBrush x:Key="AccentDim" Color="#8C6420" />
     <SolidColorBrush x:Key="AccentSoft" Color="#1FFFB224" />
-    <SolidColorBrush x:Key="Ink" Color="#100E33" />
+    <SolidColorBrush x:Key="Ink" Color="#0A0824" />
     <SolidColorBrush x:Key="Good" Color="#7CF5C0" />
     <SolidColorBrush x:Key="Warn" Color="#FF9F5A" />
     <SolidColorBrush x:Key="Bad" Color="#FF6B6B" />
@@ -26,13 +26,13 @@
     <SolidColorBrush x:Key="WarnSoft" Color="#1AFF9F5A" />
     <SolidColorBrush x:Key="BadSoft" Color="#1AFF6B6B" />
 
-    <!-- ===== type: Segoe UI Variable Display Semibold for headings and numbers, Segoe UI Variable for reading ===== -->
-    <FontFamily x:Key="Ui">Segoe UI Variable Text, Segoe UI</FontFamily>
-    <FontFamily x:Key="UiDisplay">Segoe UI Variable Display Semibold, Segoe UI Semibold</FontFamily>
-    <FontFamily x:Key="Num">Segoe UI Variable Display Semibold, Segoe UI Semibold</FontFamily>
-    <FontFamily x:Key="NumLight">Segoe UI Variable Display Light, Segoe UI Light</FontFamily>
-    <FontFamily x:Key="Tag">Segoe UI Variable Text, Segoe UI</FontFamily>
-    <FontFamily x:Key="Tech">Segoe UI Variable Text, Segoe UI</FontFamily>
+    <!-- ===== type: Onest everywhere, the same typeface as the website ===== -->
+    <FontFamily x:Key="Ui">pack://application:,,,/Framecalm;component/Assets/Fonts/#Onest, Segoe UI</FontFamily>
+    <FontFamily x:Key="UiDisplay">pack://application:,,,/Framecalm;component/Assets/Fonts/#Onest, Segoe UI</FontFamily>
+    <FontFamily x:Key="Num">pack://application:,,,/Framecalm;component/Assets/Fonts/#Onest, Segoe UI</FontFamily>
+    <FontFamily x:Key="NumLight">pack://application:,,,/Framecalm;component/Assets/Fonts/#Onest, Segoe UI</FontFamily>
+    <FontFamily x:Key="Tag">pack://application:,,,/Framecalm;component/Assets/Fonts/#Onest, Segoe UI</FontFamily>
+    <FontFamily x:Key="Tech">pack://application:,,,/Framecalm;component/Assets/Fonts/#Onest, Segoe UI</FontFamily>
     <FontFamily x:Key="Code">Cascadia Mono, Consolas</FontFamily>
     <FontFamily x:Key="Icons">Segoe Fluent Icons, Segoe MDL2 Assets</FontFamily>
 
@@ -66,8 +66,8 @@
     </Style>
     <Style x:Key="H1" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource UiDisplay}" />
-        <Setter Property="FontSize" Value="30" />
-        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="FontSize" Value="44" />
+        <Setter Property="FontWeight" Value="Medium" />
         <Setter Property="Foreground" Value="{StaticResource Text}" />
         <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
@@ -127,7 +127,7 @@
         <Setter Property="FontFamily" Value="{StaticResource Ui}" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="FontWeight" Value="SemiBold" />
-        <Setter Property="Padding" Value="20,11" />
+        <Setter Property="Padding" Value="22,13" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -139,11 +139,11 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="b" Background="{TemplateBinding Background}" CornerRadius="7">
+                    <Border x:Name="b" Background="{TemplateBinding Background}" CornerRadius="12">
                         <Border.Effect><DropShadowEffect x:Name="glow" Color="#FFB224" BlurRadius="22" ShadowDepth="0" Opacity="0.45" /></Border.Effect>
                         <Grid>
                             <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center" TextElement.Foreground="{TemplateBinding Foreground}" />
-                            <Rectangle x:Name="sheen" RadiusX="7" RadiusY="7" IsHitTestVisible="False">
+                            <Rectangle x:Name="sheen" RadiusX="12" RadiusY="12" IsHitTestVisible="False">
                                 <Rectangle.Triggers>
                                 <EventTrigger RoutedEvent="FrameworkElement.Loaded">
                                     <BeginStoryboard>
@@ -186,7 +186,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="b" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="7" Padding="{TemplateBinding Padding}">
+                    <Border x:Name="b" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center" TextElement.Foreground="{TemplateBinding Foreground}" />
                     </Border>
                     <ControlTemplate.Triggers>
@@ -291,7 +291,7 @@
                         <ContentPresenter VerticalAlignment="Center" Margin="0,0,14,0" />
                         <TextBlock x:Name="state" Grid.Column="1" Text="Off" FontFamily="{StaticResource Tag}" FontWeight="SemiBold" FontSize="11.5" Foreground="{StaticResource Faint}" VerticalAlignment="Center" Margin="0,0,8,0" Width="24" TextAlignment="Right" />
                         <Border x:Name="track" Grid.Column="2" Width="40" Height="22" CornerRadius="11" BorderThickness="1" BorderBrush="{StaticResource Line2}" Background="{StaticResource Surface2}">
-                            <Border x:Name="knob" Width="14" Height="14" CornerRadius="7" Background="{StaticResource Muted}" HorizontalAlignment="Left" Margin="3,0" />
+                            <Border x:Name="knob" Width="14" Height="14" CornerRadius="12" Background="{StaticResource Muted}" HorizontalAlignment="Left" Margin="3,0" />
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>

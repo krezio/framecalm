@@ -8,7 +8,7 @@
         FontFamily="{StaticResource Ui}" WindowStartupLocation="CenterScreen"
         UseLayoutRounding="True" TextOptions.TextFormattingMode="Ideal">
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="48" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False" />
+        <WindowChrome CaptionHeight="64" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False" />
     </WindowChrome.WindowChrome>
     <Window.Resources>
         <ResourceDictionary>
@@ -16,135 +16,174 @@
                 <ResourceDictionary Source="Views/Pages.xaml" />
                 <ResourceDictionary Source="Views/Optimize.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- top navigation: plain words, the current one in white with a glowing amber line under it -->
+            <Style x:Key="TopNav" TargetType="RadioButton">
+                <Setter Property="FocusVisualStyle" Value="{StaticResource Focus}" />
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Foreground" Value="{StaticResource Muted}" />
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="FontWeight" Value="Medium" />
+                <Setter Property="Margin" Value="0,0,30,0" />
+                <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Grid Background="Transparent">
+                                <ContentPresenter VerticalAlignment="Center" Margin="0,0,0,2" />
+                                <Rectangle x:Name="bar" Height="2" Fill="{StaticResource Accent}" VerticalAlignment="Bottom" Margin="0,0,0,14" RadiusX="1" RadiusY="1" Opacity="0">
+                                    <Rectangle.Effect><DropShadowEffect Color="#FFB224" BlurRadius="10" ShadowDepth="0" Opacity="0.8" /></Rectangle.Effect>
+                                </Rectangle>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True"><Setter Property="Foreground" Value="{StaticResource Text}" /></Trigger>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Foreground" Value="{StaticResource Text}" />
+                                    <Setter TargetName="bar" Property="Opacity" Value="1" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- tabs inside a section: smaller, a soft filled chip for the current one -->
+            <Style x:Key="SubTab" TargetType="RadioButton">
+                <Setter Property="FocusVisualStyle" Value="{StaticResource Focus}" />
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Foreground" Value="{StaticResource Muted}" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontWeight" Value="Medium" />
+                <Setter Property="Margin" Value="0,0,6,0" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Border x:Name="b" CornerRadius="10" Padding="14,7" Background="Transparent" BorderThickness="1" BorderBrush="Transparent">
+                                <ContentPresenter VerticalAlignment="Center" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True"><Setter Property="Foreground" Value="{StaticResource Text}" /></Trigger>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Foreground" Value="{StaticResource Text}" />
+                                    <Setter TargetName="b" Property="Background" Value="#241F66" />
+                                    <Setter TargetName="b" Property="BorderBrush" Value="{StaticResource Line2}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid x:Name="Root" Background="{StaticResource Bg}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+    <Grid x:Name="Root">
+        <!-- the same indigo glow as the website, lit from the top right -->
+        <Grid.Background>
+            <RadialGradientBrush Center="0.72,0" GradientOrigin="0.72,0" RadiusX="0.9" RadiusY="0.8">
+                <GradientStop Color="#2A2580" Offset="0" />
+                <GradientStop Color="#16124A" Offset="0.45" />
+                <GradientStop Color="#0E0B2E" Offset="1" />
+            </RadialGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <!-- ===== sidebar ===== -->
-        <Border Width="236" Background="{StaticResource Side}" BorderBrush="{StaticResource Line}" BorderThickness="0,0,1,0"
-                Visibility="{Binding ShowNav, Converter={StaticResource VisIf}}">
-            <DockPanel>
-                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="64" Margin="22,0,0,0">
-                    <Viewbox Width="26" Height="26" VerticalAlignment="Center">
-                        <Canvas Width="24" Height="24">
-                            <Rectangle Width="24" Height="24" RadiusX="5" RadiusY="5" Fill="{StaticResource Accent}" />
-                            <Path Data="M9.2,19 V9.6 A4,4 0 0 1 13.2,5.6 H14.5 M5.4,12.2 H19" Stroke="{StaticResource Ink}" StrokeThickness="2.7" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" />
-                        </Canvas>
-                    </Viewbox>
-                    <TextBlock Text="framecalm" FontFamily="{StaticResource UiDisplay}" FontSize="19" Margin="10,0,0,2" VerticalAlignment="Center" />
-                </StackPanel>
-
-                <StackPanel DockPanel.Dock="Bottom" Margin="0,0,0,14">
-                    <Border Visibility="{Binding HasUpdate, Converter={StaticResource VisIf}}" Background="#2B2773" CornerRadius="10" Padding="14,12" Margin="16,0,16,14">
-                        <StackPanel>
-                            <TextBlock Text="{Binding UpdateText}" Style="{StaticResource Strong}" FontSize="13" />
-                            <TextBlock Text="A newer Framecalm is ready." Style="{StaticResource Body}" FontSize="12" />
-                            <Button Style="{StaticResource Link}" Content="Get it" Command="{Binding GetUpdateCmd}" HorizontalAlignment="Left" FontSize="12.5" Margin="0,6,0,0" />
-                        </StackPanel>
-                    </Border>
-                    <Border Visibility="{Binding IsDemo, Converter={StaticResource VisIf}}" BorderBrush="{StaticResource Warn}" BorderThickness="1" CornerRadius="3" Padding="8,3" Margin="22,0,22,12" HorizontalAlignment="Left"
-                            ToolTip="Demo mode: a made-up laptop with made-up numbers. None of your games or settings are read or changed.">
-                        <TextBlock Text="Demo PC" Style="{StaticResource Label}" FontSize="11.5" Foreground="{StaticResource Warn}" />
-                    </Border>
-                    <RadioButton Style="{StaticResource SideNav}" IsChecked="{Binding TabSettings}" AutomationProperties.Name="Settings" WindowChrome.IsHitTestVisibleInChrome="True">
-                        <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE713;" Style="{StaticResource Icon}" FontSize="15" Width="28" /><TextBlock Text="Settings" /></StackPanel>
-                    </RadioButton>
-                </StackPanel>
-
-                <StackPanel Margin="0,6,0,0" KeyboardNavigation.TabNavigation="Once" KeyboardNavigation.DirectionalNavigation="Cycle">
-                    <RadioButton Style="{StaticResource SideNav}" IsChecked="{Binding GroupHome}" AutomationProperties.Name="Home">
-                        <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE80F;" Style="{StaticResource Icon}" FontSize="15" Width="28" /><TextBlock Text="Home" /></StackPanel>
-                    </RadioButton>
-                    <RadioButton Style="{StaticResource SideNav}" IsChecked="{Binding GroupOptimize}" AutomationProperties.Name="Optimize: tweaks, PC fixes and startup apps">
-                        <Grid Width="178" HorizontalAlignment="Left">
-                            <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE945;" Style="{StaticResource Icon}" FontSize="15" Width="28" /><TextBlock Text="Optimize" /></StackPanel>
-                            <TextBlock Text="{Binding OptimizeCount}" HorizontalAlignment="Right" FontFamily="{StaticResource Tech}" FontSize="12.5" FontWeight="Normal" Foreground="{StaticResource Faint}" VerticalAlignment="Center" />
-                        </Grid>
-                    </RadioButton>
-                    <RadioButton Style="{StaticResource SideNav}" IsChecked="{Binding GroupGames}" AutomationProperties.Name="Games: library, Game Session and benchmarks">
-                        <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE7FC;" Style="{StaticResource Icon}" FontSize="15" Width="28" /><TextBlock Text="Games" /></StackPanel>
-                    </RadioButton>
-                    <RadioButton Style="{StaticResource SideNav}" IsChecked="{Binding TabHistory}" AutomationProperties.Name="History and undo">
-                        <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE81C;" Style="{StaticResource Icon}" FontSize="15" Width="28" /><TextBlock Text="History" /></StackPanel>
-                    </RadioButton>
-                </StackPanel>
-            </DockPanel>
-        </Border>
-
-        <!-- ===== content ===== -->
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="52" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <StackPanel Orientation="Horizontal" Margin="44,10,0,0" Height="34" VerticalAlignment="Top" Panel.ZIndex="10" WindowChrome.IsHitTestVisibleInChrome="True"
-                        Visibility="{Binding ShowOptimizeTabs, Converter={StaticResource VisIf}}">
-                <RadioButton Style="{StaticResource Nav}" GroupName="opt" Content="Tweaks" IsChecked="{Binding TabOptimize}" />
-                <RadioButton Style="{StaticResource Nav}" GroupName="opt" Content="PC fixes" IsChecked="{Binding TabHealth}" />
-                <RadioButton Style="{StaticResource Nav}" GroupName="opt" Content="Startup apps" IsChecked="{Binding TabStartup}" />
+        <!-- ===== top bar ===== -->
+        <Grid Margin="32,0,0,0" Panel.ZIndex="10">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Viewbox Width="28" Height="28">
+                    <Canvas Width="24" Height="24">
+                        <Rectangle Width="24" Height="24" RadiusX="5.3" RadiusY="5.3" Fill="{StaticResource Accent}" />
+                        <Path Data="M9.2,19 V9.6 A4,4 0 0 1 13.2,5.6 H14.5 M5.4,12.2 H19" Stroke="{StaticResource Ink}" StrokeThickness="2.7" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="framecalm" FontSize="20" FontWeight="SemiBold" Margin="10,0,0,2" VerticalAlignment="Center" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="44,10,0,0" Height="34" VerticalAlignment="Top" Panel.ZIndex="10" WindowChrome.IsHitTestVisibleInChrome="True"
-                        Visibility="{Binding ShowGamesTabs, Converter={StaticResource VisIf}}">
-                <RadioButton Style="{StaticResource Nav}" GroupName="games" Content="Library" IsChecked="{Binding TabLibrary}" />
-                <RadioButton Style="{StaticResource Nav}" GroupName="games" Content="Game Session" IsChecked="{Binding TabSession}" />
-                <RadioButton Style="{StaticResource Nav}" GroupName="games" Content="Benchmarks" IsChecked="{Binding TabProof}" />
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="56,0,0,0" Visibility="{Binding ShowNav, Converter={StaticResource VisIf}}"
+                        KeyboardNavigation.TabNavigation="Once" KeyboardNavigation.DirectionalNavigation="Cycle">
+                <RadioButton Style="{StaticResource TopNav}" Content="Home" IsChecked="{Binding GroupHome}" AutomationProperties.Name="Home" />
+                <RadioButton Style="{StaticResource TopNav}" IsChecked="{Binding GroupOptimize}" AutomationProperties.Name="Optimize: tweaks, PC fixes and startup apps">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Optimize" />
+                        <TextBlock Text="{Binding OptimizeCount}" FontSize="12.5" FontWeight="Normal" Foreground="{StaticResource Faint}" Margin="8,1,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                </RadioButton>
+                <RadioButton Style="{StaticResource TopNav}" Content="Games" IsChecked="{Binding GroupGames}" AutomationProperties.Name="Games: library, Game Session and benchmarks" />
+                <RadioButton Style="{StaticResource TopNav}" Content="History" IsChecked="{Binding TabHistory}" AutomationProperties.Name="History and undo" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Panel.ZIndex="10">
+
+            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Height="64">
+                <Button Style="{StaticResource Plain}" Command="{Binding GetUpdateCmd}" Visibility="{Binding HasUpdate, Converter={StaticResource VisIf}}" VerticalAlignment="Center" Margin="0,0,18,0"
+                        WindowChrome.IsHitTestVisibleInChrome="True" Cursor="Hand" ToolTip="A newer Framecalm is ready">
+                    <Border Background="#2B2773" BorderBrush="{StaticResource Accent}" BorderThickness="1" CornerRadius="10" Padding="12,6">
+                        <TextBlock FontSize="12.5" FontWeight="Medium"><Run Text="{Binding UpdateText, Mode=OneWay}" /><Run Text="  Get it" Foreground="{StaticResource Accent}" /></TextBlock>
+                    </Border>
+                </Button>
+                <Border Visibility="{Binding IsDemo, Converter={StaticResource VisIf}}" BorderBrush="{StaticResource Warn}" BorderThickness="1" CornerRadius="8" Padding="10,4" VerticalAlignment="Center" Margin="0,0,18,0"
+                        ToolTip="Demo mode: a made-up laptop with made-up numbers. None of your games or settings are read or changed.">
+                    <TextBlock Text="Demo PC" FontSize="12" FontWeight="Medium" Foreground="{StaticResource Warn}" />
+                </Border>
+                <RadioButton Style="{StaticResource TopNav}" IsChecked="{Binding TabSettings}" Margin="0,0,14,0" AutomationProperties.Name="Settings" ToolTip="Settings"
+                             Visibility="{Binding ShowNav, Converter={StaticResource VisIf}}">
+                    <TextBlock Text="&#xE713;" Style="{StaticResource Icon}" FontSize="16" />
+                </RadioButton>
                 <Button x:Name="MinBtn" Style="{StaticResource WinBtn}" Content="&#xE921;" Click="Min_Click" VerticalAlignment="Top" AutomationProperties.Name="Minimize" />
                 <Button x:Name="MaxBtn" Style="{StaticResource WinBtn}" Content="&#xE922;" Click="Max_Click" VerticalAlignment="Top" AutomationProperties.Name="Maximize" />
                 <Button x:Name="CloseBtn" Style="{StaticResource WinBtn}" Content="&#xE8BB;" Click="Close_Click" VerticalAlignment="Top" AutomationProperties.Name="Close" />
             </StackPanel>
-
-            <ContentControl x:Name="PageHost" Content="{Binding Page}" Focusable="False" IsTabStop="False">
-                <ContentControl.Style>
-                    <Style TargetType="ContentControl">
-                        <Setter Property="Grid.Row" Value="1" />
-                        <Setter Property="Margin" Value="0,-12,0,0" />
-                        <Style.Triggers>
-                            <!-- the welcome screen fills the whole window, under the window buttons -->
-                            <DataTrigger Binding="{Binding ShowNav}" Value="False">
-                                <Setter Property="Grid.Row" Value="0" />
-                                <Setter Property="Grid.RowSpan" Value="2" />
-                                <Setter Property="Margin" Value="0" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ContentControl.Style>
-                <ContentControl.RenderTransform><TranslateTransform /></ContentControl.RenderTransform>
-            </ContentControl>
-
-            <!-- ===== toast ===== -->
-            <Border x:Name="ToastBox" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,104" MaxWidth="660"
-                    Background="{StaticResource Surface2}" BorderBrush="{StaticResource Line2}" BorderThickness="1" CornerRadius="6" Padding="18,12"
-                    Visibility="{Binding Toast, Converter={StaticResource VisIf}}">
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Width="3" Margin="0,1,12,1">
-                        <Rectangle.Style>
-                            <Style TargetType="Rectangle">
-                                <Setter Property="Fill" Value="{StaticResource Accent}" />
-                                <Style.Triggers><DataTrigger Binding="{Binding ToastBad}" Value="True"><Setter Property="Fill" Value="{StaticResource Bad}" /></DataTrigger></Style.Triggers>
-                            </Style>
-                        </Rectangle.Style>
-                    </Rectangle>
-                    <TextBlock Text="{Binding Toast}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" MaxWidth="610" AutomationProperties.LiveSetting="Polite" />
-                </StackPanel>
-            </Border>
         </Grid>
 
+        <!-- ===== content: the section's tabs, then the page ===== -->
+        <Grid Grid.Row="1" Visibility="{Binding ShowNav, Converter={StaticResource VisIf}}">
+            <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" Margin="56,4,0,4" Visibility="{Binding ShowOptimizeTabs, Converter={StaticResource VisIf}}">
+                <RadioButton Style="{StaticResource SubTab}" GroupName="opt" Content="Tweaks" IsChecked="{Binding TabOptimize}" />
+                <RadioButton Style="{StaticResource SubTab}" GroupName="opt" Content="PC fixes" IsChecked="{Binding TabHealth}" />
+                <RadioButton Style="{StaticResource SubTab}" GroupName="opt" Content="Startup apps" IsChecked="{Binding TabStartup}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="56,4,0,4" Visibility="{Binding ShowGamesTabs, Converter={StaticResource VisIf}}">
+                <RadioButton Style="{StaticResource SubTab}" GroupName="games" Content="Library" IsChecked="{Binding TabLibrary}" />
+                <RadioButton Style="{StaticResource SubTab}" GroupName="games" Content="Game Session" IsChecked="{Binding TabSession}" />
+                <RadioButton Style="{StaticResource SubTab}" GroupName="games" Content="Benchmarks" IsChecked="{Binding TabProof}" />
+            </StackPanel>
+            <ContentControl x:Name="PageHost" Grid.Row="1" Content="{Binding Page}" Focusable="False" IsTabStop="False">
+                <ContentControl.RenderTransform><TranslateTransform /></ContentControl.RenderTransform>
+            </ContentControl>
+        </Grid>
+
+        <!-- the welcome screen fills the whole window, under the window buttons -->
+        <ContentControl Grid.RowSpan="2" Content="{Binding Page}" Focusable="False" IsTabStop="False" Visibility="{Binding ShowNav, Converter={StaticResource VisIfNot}}" />
+
+        <!-- ===== toast ===== -->
+        <Border x:Name="ToastBox" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,104" MaxWidth="660" Panel.ZIndex="20"
+                Background="{StaticResource Surface2}" BorderBrush="{StaticResource Line2}" BorderThickness="1" CornerRadius="12" Padding="18,12"
+                Visibility="{Binding Toast, Converter={StaticResource VisIf}}">
+            <Border.Effect><DropShadowEffect Color="#000000" BlurRadius="30" ShadowDepth="0" Opacity="0.5" /></Border.Effect>
+            <StackPanel Orientation="Horizontal">
+                <Rectangle Width="3" Margin="0,1,12,1" RadiusX="1.5" RadiusY="1.5">
+                    <Rectangle.Style>
+                        <Style TargetType="Rectangle">
+                            <Setter Property="Fill" Value="{StaticResource Accent}" />
+                            <Style.Triggers><DataTrigger Binding="{Binding ToastBad}" Value="True"><Setter Property="Fill" Value="{StaticResource Bad}" /></DataTrigger></Style.Triggers>
+                        </Style>
+                    </Rectangle.Style>
+                </Rectangle>
+                <TextBlock Text="{Binding Toast}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" MaxWidth="610" AutomationProperties.LiveSetting="Polite" />
+            </StackPanel>
+        </Border>
+
         <!-- ===== dialog ===== -->
-        <Grid Grid.ColumnSpan="2" Visibility="{Binding Dialog, Converter={StaticResource VisIf}}">
-            <Rectangle Fill="#D90C0A29" />
+        <Grid Grid.RowSpan="2" Panel.ZIndex="30" Visibility="{Binding Dialog, Converter={StaticResource VisIf}}">
+            <Rectangle Fill="#D90A0824" />
             <ContentControl Content="{Binding Dialog}" HorizontalAlignment="Center" VerticalAlignment="Center" Focusable="False" />
         </Grid>
 
         <!-- ===== scripted cursor (recordings only) ===== -->
-        <Canvas x:Name="FakeCursorLayer" Grid.ColumnSpan="2" IsHitTestVisible="False" Visibility="Collapsed">
+        <Canvas x:Name="FakeCursorLayer" Grid.RowSpan="2" Panel.ZIndex="40" IsHitTestVisible="False" Visibility="Collapsed">
             <Ellipse x:Name="ClickRing" Width="44" Height="44" Stroke="{StaticResource Accent}" StrokeThickness="2.5" Opacity="0" RenderTransformOrigin="0.5,0.5">
                 <Ellipse.RenderTransform><ScaleTransform /></Ellipse.RenderTransform>
             </Ellipse>
