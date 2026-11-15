@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Framecalm.Demo</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Framecalm.Core\Framecalm.Core.csproj" />
+    <ProjectReference Include="..\Framecalm.Backups\Framecalm.Backups.csproj" />
+    <ProjectReference Include="..\Framecalm.GameAdapters\Framecalm.GameAdapters.csproj" />
+  </ItemGroup>
+</Project>
