@@ -1,0 +1,10 @@
+name: Idea or new tweak
+description: Suggest a tweak, a game, or a change.
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+      description: For a tweak, include the registry value or setting, and how you measured that it helps.
+    validations:
+      required: true

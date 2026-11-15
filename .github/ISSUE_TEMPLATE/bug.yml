@@ -1,0 +1,27 @@
+name: Something isn't right
+description: A tweak didn't do what it says, the app crashed, or something looks wrong.
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what you saw instead. Name the tweak or screen if it's about one.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Framecalm version
+      description: Settings > About.
+      placeholder: "0.5.1"
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: "Windows 11 24H2"
+  - type: textarea
+    id: log
+    attributes:
+      label: Error log (if it crashed)
+      description: Paste the end of %LOCALAPPDATA%\Framecalm\errors.log.
+      render: text

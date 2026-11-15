@@ -23,17 +23,17 @@
 <p align="center">
   <a href="https://github.com/krezio/framecalm-releases/releases/latest/download/Framecalm-Setup.exe"><b>Download for Windows</b></a> &nbsp;&middot;&nbsp;
   <a href="https://framecalm.krezio.xyz">Website</a> &nbsp;&middot;&nbsp;
-  <a href="https://framecalm.krezio.xyz/#tweaks">All 87 tweaks</a>
+  <a href="https://framecalm.krezio.xyz/tweaks/">All 87 tweaks</a>
 </p>
 
 ## What it does
 
 | | |
 |---|---|
-| **Optimize this PC** | One click builds a plan from the hardware (laptop or desktop, GPU, what is already set): PC fixes plus tweaks at Everyday, Competitive or All out level, each line with a reason. Laptops skip tweaks that cost battery and heat. |
-| **Optimize** | 87 tweaks in nine categories (power and CPU, graphics, network, mouse and keyboard, background apps, services, look and feel, privacy, system and security). Each one is a row with a switch, a Safe / Advanced / Extreme tier, what it does, what it costs, and the exact registry values or power settings it writes. Presets (Recommended, Competitive, Extreme) stage changes for review; nothing is written until you apply. |
-| **Dashboard** | What's on, what's left, PC fixes, health checks and recent changes on one screen. Counts what is actually set on the PC, not a made-up score. |
-| **This PC** | Fixes Windows gets wrong on its own: a screen running below its refresh rate, Wi-Fi adapter power saving, background recording, Game Mode, windowed-game optimizations, slow power plans, startup apps. |
+| **Home** | One button. It builds a plan from the hardware (laptop or desktop, GPU, what is already set): PC fixes plus tweaks at Everyday, Competitive or All out level, each line with a reason. Laptops skip tweaks that cost battery and heat. |
+| **Tweaks** | 87 tweaks in nine categories (power and CPU, graphics, network, mouse and keyboard, background apps, services, look and feel, privacy, system and security). Each one is a row with a switch, a Safe / Advanced / Extreme tier, what it does, what it costs, and the exact registry values or power settings it writes. Presets (Recommended, Competitive, Extreme) stage changes for review; nothing is written until you apply. |
+| **PC fixes** | Fixes Windows gets wrong on its own: a screen running below its refresh rate, Wi-Fi adapter power saving, background recording, Game Mode, windowed-game optimizations, slow power plans. |
+| **Startup apps** | Everything that starts with Windows, one switch each. |
 | **Games** | Finds games in Steam, Epic, Riot, Battle.net, the Xbox app, Minecraft and Roblox. Tunes Minecraft Java, Fortnite and Rocket League settings files for your hardware; exact in-game steps for games with strict anti-cheat; pins games to the dedicated GPU on laptops. |
 | **Benchmarks** | Three runs before and three after with PresentMon: average FPS, 1% lows, P95/P99 frame times and a plain verdict, plus whether the CPU or GPU is the limit. |
 | **Game Session** | Fastest power plan and fewer background apps while you play, all put back when the game closes. |
