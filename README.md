@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/krezio/framecalm-releases/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/krezio/framecalm-releases?label=download&amp;color=FFB224&amp;labelColor=0E0B2E"></a>
+  <a href="https://github.com/krezio/framecalm/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/krezio/framecalm?label=download&amp;color=FFB224&amp;labelColor=0E0B2E"></a>
   <img alt="Windows 10 &amp; 11" src="https://img.shields.io/badge/Windows-10%20%7C%2011-F3F2FF?labelColor=0E0B2E">
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-F3F2FF?labelColor=0E0B2E"></a>
   <a href="https://framecalm.krezio.xyz"><img alt="Website" src="https://img.shields.io/badge/site-framecalm.krezio.xyz-FFB224?labelColor=0E0B2E"></a>
@@ -21,7 +21,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/krezio/framecalm-releases/releases/latest/download/Framecalm-Setup.exe"><b>Download for Windows</b></a> &nbsp;&middot;&nbsp;
+  <a href="https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe"><b>Download for Windows</b></a> &nbsp;&middot;&nbsp;
   <a href="https://framecalm.krezio.xyz">Website</a> &nbsp;&middot;&nbsp;
   <a href="https://framecalm.krezio.xyz/tweaks/">All 87 tweaks</a>
 </p>
@@ -68,7 +68,7 @@ Cover art belongs to each game's publisher. It is fetched to your PC for display
 
 ## Install
 
-Grab **Framecalm-Setup.exe** (per-user, no admin needed to install) or the portable zip from [Releases](https://github.com/krezio/framecalm-releases/releases/latest). A Microsoft Store version is on the way.
+Grab **Framecalm-Setup.exe** (per-user, no admin needed to install) or the portable zip from [Releases](https://github.com/krezio/framecalm/releases/latest). A Microsoft Store version is on the way.
 
 ## Build it yourself
 

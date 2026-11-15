@@ -56,7 +56,7 @@ public static class UpdateCheck
         {
             using var http = new HttpClient { Timeout = TimeSpan.FromSeconds(8) };
             http.DefaultRequestHeaders.UserAgent.ParseAdd("Framecalm-update-check");
-            var json = await http.GetStringAsync("https://api.github.com/repos/krezio/framecalm-releases/releases/latest");
+            var json = await http.GetStringAsync("https://api.github.com/repos/krezio/framecalm/releases/latest");
             using var doc = JsonDocument.Parse(json);
             var tag = doc.RootElement.GetProperty("tag_name").GetString() ?? "";
             var url = doc.RootElement.GetProperty("html_url").GetString() ?? "https://framecalm.krezio.xyz";
