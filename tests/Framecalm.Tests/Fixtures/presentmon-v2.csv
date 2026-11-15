@@ -1,0 +1,4 @@
+CPUStartTime,FrameTime,CPUBusy,GPUBusy,GPUFrequency
+0,16.6,8.1,12.0,2100
+1,16.8,8.3,12.2,2090
+2,17.0,8.0,12.1,2080

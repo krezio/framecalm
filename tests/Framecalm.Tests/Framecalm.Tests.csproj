@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="Xunit" />
+    <ProjectReference Include="..\..\src\Framecalm.Core\Framecalm.Core.csproj" />
+    <ProjectReference Include="..\..\src\Framecalm.Backups\Framecalm.Backups.csproj" />
+    <ProjectReference Include="..\..\src\Framecalm.GameAdapters\Framecalm.GameAdapters.csproj" />
+    <ProjectReference Include="..\..\src\Framecalm.Benchmarks\Framecalm.Benchmarks.csproj" />
+    <ProjectReference Include="..\..\src\Framecalm.Discovery\Framecalm.Discovery.csproj" />
+    <ProjectReference Include="..\..\src\Framecalm.Demo\Framecalm.Demo.csproj" />
+    <ProjectReference Include="..\..\src\Framecalm.Windows\Framecalm.Windows.csproj" />
+    <None Include="Fixtures\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

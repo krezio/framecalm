@@ -1,0 +1,12 @@
+version:4189
+renderDistance:12
+simulationDistance:10
+maxFps:144
+graphicsMode:0
+enableVsync:false
+entityShadows:false
+particles:1
+renderClouds:"fast"
+biomeBlendRadius:1
+entityDistanceScaling:1.0
+ao:true
