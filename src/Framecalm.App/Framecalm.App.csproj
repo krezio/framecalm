@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <RootNamespace>Framecalm.App</RootNamespace>
+    <AssemblyName>Framecalm</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Description>Tunes every corner of Windows, and lets you switch it all back.</Description>
+  </PropertyGroup>
+  <PropertyGroup Condition="Exists('Assets\framecalm.ico')">
+    <ApplicationIcon>Assets\framecalm.ico</ApplicationIcon>
+  </PropertyGroup>
+  <!-- WinForms is only here for the tray icon; keep its names out of the global usings -->
+  <ItemGroup>
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Framecalm.Core\Framecalm.Core.csproj" />
+    <ProjectReference Include="..\Framecalm.Backups\Framecalm.Backups.csproj" />
+    <ProjectReference Include="..\Framecalm.Discovery\Framecalm.Discovery.csproj" />
+    <ProjectReference Include="..\Framecalm.GameAdapters\Framecalm.GameAdapters.csproj" />
+    <ProjectReference Include="..\Framecalm.Windows\Framecalm.Windows.csproj" />
+    <ProjectReference Include="..\Framecalm.Benchmarks\Framecalm.Benchmarks.csproj" />
+    <ProjectReference Include="..\Framecalm.Demo\Framecalm.Demo.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="Exists('Assets\framecalm.ico')">
+    <Resource Include="Assets\framecalm.ico" />
+  </ItemGroup>
+  <!-- The capture helper and (when fetched by tools/fetch-presentmon.ps1) PresentMon sit next to the app. -->
+  <Target Name="CopyCaptureTools" AfterTargets="Build" Condition="'$(_IsPublishing)' != 'true' and '$(RuntimeIdentifier)' == ''">
+    <MSBuild Projects="..\Framecalm.ElevatedHelper\Framecalm.ElevatedHelper.csproj" Properties="Configuration=$(Configuration)" />
+    <ItemGroup>
+      <CaptureTool Include="..\Framecalm.ElevatedHelper\bin\$(Configuration)\net10.0-windows\Framecalm.ElevatedHelper.*" />
+      <CaptureTool Include="..\..\dist\presentmon\PresentMon.exe" Condition="Exists('..\..\dist\presentmon\PresentMon.exe')" />
+    </ItemGroup>
+    <Copy SourceFiles="@(CaptureTool)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+  </Target>
+  <!-- Local-only extras (trailer, reels) live outside this repo and are compiled in only when present. -->
+  <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)..\..\..\framecalm-marketing\extras')">
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\framecalm-marketing\extras\*.cs" Link="Extras\%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>

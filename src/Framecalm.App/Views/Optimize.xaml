@@ -1,0 +1,490 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:Framecalm.App.ViewModels"
+                    xmlns:c="clr-namespace:Framecalm.App.Controls">
+
+    <!-- tier meter: one, two or three bars filled, in mint / amber / red, plus the word -->
+    <DataTemplate x:Key="TierMeter">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" ToolTip="{Binding Tier}">
+            <Rectangle x:Name="b1" Width="4" Height="14" Margin="0,0,2,0" Fill="{StaticResource Line2}" />
+            <Rectangle x:Name="b2" Width="4" Height="14" Margin="0,0,2,0" Fill="{StaticResource Line2}" />
+            <Rectangle x:Name="b3" Width="4" Height="14" Fill="{StaticResource Line2}" />
+        </StackPanel>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Tier}" Value="Safe"><Setter TargetName="b1" Property="Fill" Value="{StaticResource Good}" /></DataTrigger>
+            <DataTrigger Binding="{Binding Tier}" Value="Advanced">
+                <Setter TargetName="b1" Property="Fill" Value="{StaticResource Accent}" /><Setter TargetName="b2" Property="Fill" Value="{StaticResource Accent}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Tier}" Value="Extreme">
+                <Setter TargetName="b1" Property="Fill" Value="{StaticResource Bad}" /><Setter TargetName="b2" Property="Fill" Value="{StaticResource Bad}" /><Setter TargetName="b3" Property="Fill" Value="{StaticResource Bad}" />
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <Style x:Key="ThinBar" TargetType="ProgressBar">
+        <Setter Property="Height" Value="4" />
+        <Setter Property="Maximum" Value="1" />
+        <Setter Property="Foreground" Value="{StaticResource Accent}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ProgressBar">
+                    <Grid>
+                        <Border x:Name="PART_Track" Background="{StaticResource Line2}" CornerRadius="1" />
+                        <Border x:Name="PART_Indicator" Background="{TemplateBinding Foreground}" HorizontalAlignment="Left" CornerRadius="1" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ===================== OPTIMIZE ===================== -->
+    <DataTemplate DataType="{x:Type vm:OptimizeVM}">
+        <Grid Margin="44,8,44,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- header -->
+            <Grid>
+                <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="Optimize" Style="{StaticResource H1}" FontSize="34" />
+                    <TextBlock Style="{StaticResource Body}" MaxWidth="620" HorizontalAlignment="Left" Margin="0,4,0,0"
+                               Text="Pick what you want changed. Each switch shows what's true on this PC right now. Nothing changes until you apply, and everything can be switched back." />
+                </StackPanel>
+                <StackPanel Grid.Column="1" VerticalAlignment="Bottom" Width="220">
+                    <TextBlock HorizontalAlignment="Right">
+                        <Run Text="{Binding OnCount, Mode=OneWay}" FontFamily="{StaticResource Num}" FontSize="40" Foreground="{StaticResource Text}" /><Run Text="{Binding Available, Mode=OneWay, StringFormat={} / {0} on}" FontFamily="{StaticResource Tech}" FontSize="16" Foreground="{StaticResource Muted}" />
+                    </TextBlock>
+                    <ProgressBar Style="{StaticResource ThinBar}" Value="{Binding Share, Mode=OneWay}" Margin="0,6,0,0" />
+                </StackPanel>
+            </Grid>
+
+            <!-- presets -->
+            <Border Grid.Row="1" BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,1" Margin="0,18,0,14" Padding="0,12">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                    <TextBlock Text="Start from a preset" Style="{StaticResource Body}" Foreground="{StaticResource Text}" VerticalAlignment="Center" Margin="0,0,16,0" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button Style="{StaticResource Ghost}" Padding="14,7" FontSize="13" Command="{Binding PresetCmd}" CommandParameter="recommended" Margin="0,0,8,0"
+                                ToolTip="Safe changes with a clear benefit. Good for every PC.">
+                            <StackPanel Orientation="Horizontal"><Rectangle Width="4" Height="12" Fill="{StaticResource Good}" Margin="0,0,8,0" /><TextBlock Text="Recommended" /></StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource Ghost}" Padding="14,7" FontSize="13" Command="{Binding PresetCmd}" CommandParameter="competitive" Margin="0,0,8,0"
+                                ToolTip="Recommended, plus Advanced changes that trade power use and convenience for lower latency.">
+                            <StackPanel Orientation="Horizontal"><Rectangle Width="4" Height="12" Fill="{StaticResource Accent}" Margin="0,0,2,0" /><Rectangle Width="4" Height="12" Fill="{StaticResource Accent}" Margin="0,0,8,0" /><TextBlock Text="Competitive" /></StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource Ghost}" Padding="14,7" FontSize="13" Command="{Binding PresetCmd}" CommandParameter="extreme"
+                                ToolTip="Everything, including changes that lower Windows security. Only for a PC that is just for games.">
+                            <StackPanel Orientation="Horizontal"><Rectangle Width="4" Height="12" Fill="{StaticResource Bad}" Margin="0,0,2,0" /><Rectangle Width="4" Height="12" Fill="{StaticResource Bad}" Margin="0,0,2,0" /><Rectangle Width="4" Height="12" Fill="{StaticResource Bad}" Margin="0,0,8,0" /><TextBlock Text="Extreme" /></StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <Button Grid.Column="2" Style="{StaticResource Link}" Content="Switch back everything Framecalm changed" Command="{Binding UndoAllCmd}" VerticalAlignment="Center" FontSize="12.5" Foreground="{StaticResource Muted}" />
+                </Grid>
+            </Border>
+
+            <!-- body -->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions><ColumnDefinition Width="214" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False" Margin="-10,0,14,0">
+                    <ItemsControl ItemsSource="{Binding Categories}" Focusable="False">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <RadioButton Style="{StaticResource SideNav}" GroupName="cat" IsChecked="{Binding Selected}" Height="36" FontSize="13" AutomationProperties.Name="{Binding Name}">
+                                    <Grid Width="164" HorizontalAlignment="Left">
+                                        <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" Margin="0,0,34,0" />
+                                        <TextBlock Text="{Binding Count}" HorizontalAlignment="Right" FontFamily="{StaticResource Tech}" FontWeight="Normal" Foreground="{StaticResource Faint}" />
+                                    </Grid>
+                                </RadioButton>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /><ColumnDefinition Width="220" /></Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center" Margin="0,0,16,0">
+                            <TextBlock Text="{Binding CategoryTitle}" Style="{StaticResource H2}" />
+                            <TextBlock Text="{Binding CategoryAbout}" Style="{StaticResource Body}" FontSize="12.5" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
+                        </StackPanel>
+                        <Border Grid.Column="1" BorderBrush="{StaticResource Line2}" BorderThickness="1,1,0,1" CornerRadius="5" VerticalAlignment="Center" Margin="0,0,10,0" ClipToBounds="True">
+                            <StackPanel Orientation="Horizontal">
+                                <RadioButton Style="{StaticResource Seg}" Content="All" IsChecked="{Binding TierAll}" GroupName="tier" />
+                                <RadioButton Style="{StaticResource Seg}" Content="Safe" IsChecked="{Binding TierSafe}" GroupName="tier" />
+                                <RadioButton Style="{StaticResource Seg}" Content="Advanced" IsChecked="{Binding TierAdvanced}" GroupName="tier" />
+                                <RadioButton Style="{StaticResource Seg}" Content="Extreme" IsChecked="{Binding TierExtreme}" GroupName="tier" />
+                            </StackPanel>
+                        </Border>
+                        <TextBox Grid.Column="2" Style="{StaticResource Search}" Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" Tag="Search tweaks" VerticalAlignment="Center" AutomationProperties.Name="Search tweaks" />
+                    </Grid>
+
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Focusable="False">
+                        <StackPanel Margin="0,0,8,20">
+                            <TextBlock Text="No tweaks match. Clear the search or pick another tier." Style="{StaticResource Body}" Margin="0,20" Visibility="{Binding Empty, Converter={StaticResource VisIf}}" />
+                            <ItemsControl ItemsSource="{Binding Rows}" Focusable="False">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border x:Name="card" Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="8" Padding="18,14,16,14" Margin="0,0,0,6">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions><ColumnDefinition Width="30" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                                <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource TierMeter}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,3,0,0" />
+                                                <StackPanel Grid.Column="1" Margin="0,0,20,0">
+                                                    <TextBlock Text="{Binding Name}" Style="{StaticResource Strong}" FontSize="14.5" />
+                                                    <TextBlock x:Name="what" Text="{Binding What}" Style="{StaticResource Body}" FontSize="12.5" Margin="0,2,0,0" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+                                                    <StackPanel Visibility="{Binding Open, Converter={StaticResource VisIf}}" Margin="0,10,0,0">
+                                                        <WrapPanel Margin="0,0,0,8">
+                                                            <TextBlock x:Name="tier" Text="{Binding Tier}" Style="{StaticResource Label}" FontSize="11.5" Margin="0,0,14,0" />
+                                                            <TextBlock Text="{Binding Impact}" Style="{StaticResource Label}" FontSize="11.5" FontWeight="Normal" Foreground="{StaticResource Muted}" Margin="0,0,14,0" />
+                                                            <TextBlock Text="Restart needed" Style="{StaticResource Label}" FontSize="11.5" FontWeight="Normal" Margin="0,0,14,0" Visibility="{Binding Restart, Converter={StaticResource VisIf}}" />
+                                                            <TextBlock Text="Needs admin" Style="{StaticResource Label}" FontSize="11.5" FontWeight="Normal" Margin="0,0,14,0" Visibility="{Binding Admin, Converter={StaticResource VisIf}}" />
+                                                        </WrapPanel>
+                                                        <TextBlock Style="{StaticResource Body}" FontSize="12.5"><Run Text="Trade-off: " Foreground="{StaticResource Text}" /><Run Text="{Binding Tradeoff, Mode=OneWay}" /></TextBlock>
+                                                        <Border Background="{StaticResource Bg}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="4" Padding="12,8" Margin="0,8,0,0">
+                                                            <ItemsControl ItemsSource="{Binding Atoms}" Focusable="False">
+                                                                <ItemsControl.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <StackPanel Margin="0,3">
+                                                                            <TextBlock Text="{Binding Where}" FontFamily="{StaticResource Code}" FontSize="11.5" Foreground="{StaticResource Muted}" TextWrapping="Wrap" />
+                                                                            <TextBlock FontFamily="{StaticResource Code}" FontSize="11.5"><Run Text="now " Foreground="{StaticResource Faint}" /><Run Text="{Binding Now, Mode=OneWay}" Foreground="{StaticResource Text}" /><Run Text="   on " Foreground="{StaticResource Faint}" /><Run Text="{Binding Set, Mode=OneWay}" Foreground="{StaticResource Accent}" /></TextBlock>
+                                                                        </StackPanel>
+                                                                    </DataTemplate>
+                                                                </ItemsControl.ItemTemplate>
+                                                            </ItemsControl>
+                                                        </Border>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
+                                                    <Button Style="{StaticResource Plain}" Command="{Binding ToggleOpenCmd}" Width="30" Height="30" Margin="0,-3,10,0" Cursor="Hand" AutomationProperties.Name="{Binding Name, StringFormat=Details for {0}}" ToolTip="What it changes">
+                                                        <Border x:Name="chev" CornerRadius="6" Background="Transparent">
+                                                            <TextBlock x:Name="more" Text="&#xE70D;" FontFamily="{StaticResource Icons}" FontSize="11" Foreground="{StaticResource Muted}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                        </Border>
+                                                    </Button>
+                                                    <StackPanel>
+                                                        <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding Desired}" IsEnabled="{Binding Available}" HorizontalAlignment="Right" AutomationProperties.Name="{Binding Name}" />
+                                                        <TextBlock x:Name="status" Text="{Binding StatusText}" Style="{StaticResource Label}" FontSize="11.5" FontWeight="Normal" HorizontalAlignment="Right" Margin="0,6,0,0" />
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Pending}" Value="True">
+                                                <Setter TargetName="card" Property="BorderBrush" Value="{StaticResource Accent}" />
+                                                <Setter TargetName="status" Property="Foreground" Value="{StaticResource Accent}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Available}" Value="False"><Setter TargetName="card" Property="Opacity" Value="0.55" /></DataTrigger>
+                                            <DataTrigger Binding="{Binding StatusText}" Value=""><Setter TargetName="status" Property="Visibility" Value="Collapsed" /></DataTrigger>
+                                            <DataTrigger Binding="{Binding Open}" Value="True"><Setter TargetName="more" Property="Text" Value="&#xE70E;" /><Setter TargetName="what" Property="TextWrapping" Value="Wrap" /><Setter TargetName="chev" Property="Background" Value="{StaticResource Surface2}" /></DataTrigger>
+                                            <DataTrigger Binding="{Binding Tier}" Value="Safe"><Setter TargetName="tier" Property="Foreground" Value="{StaticResource Good}" /></DataTrigger>
+                                            <DataTrigger Binding="{Binding Tier}" Value="Advanced"><Setter TargetName="tier" Property="Foreground" Value="{StaticResource Accent}" /></DataTrigger>
+                                            <DataTrigger Binding="{Binding Tier}" Value="Extreme"><Setter TargetName="tier" Property="Foreground" Value="{StaticResource Bad}" /></DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Grid>
+
+            <!-- staged changes -->
+            <Border Grid.Row="3" Margin="-40,0,-40,0" Background="{StaticResource Surface2}" BorderBrush="{StaticResource Accent}" BorderThickness="0,1,0,0" Padding="40,14"
+                    Visibility="{Binding HasStaged, Converter={StaticResource VisIf}}">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="{Binding StagedText}" Style="{StaticResource Strong}" />
+                        <TextBlock Text="{Binding StagedNote}" Style="{StaticResource Body}" FontSize="12.5" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button Style="{StaticResource Ghost}" Content="Discard" Command="{Binding DiscardCmd}" Margin="0,0,10,0" />
+                        <Button Style="{StaticResource Primary}" Command="{Binding ApplyCmd}"><TextBlock Text="{Binding ApplyText}" /></Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </DataTemplate>
+
+    <!-- ===================== CONFIRM ===================== -->
+    <DataTemplate DataType="{x:Type vm:ConfirmVM}">
+        <Border Width="600" Background="{StaticResource Surface2}" BorderBrush="{StaticResource Line2}" BorderThickness="1" CornerRadius="6" Padding="28,24">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <Rectangle Width="4" Height="14" Fill="{StaticResource Bad}" Margin="0,0,2,0" /><Rectangle Width="4" Height="14" Fill="{StaticResource Bad}" Margin="0,0,2,0" /><Rectangle Width="4" Height="14" Fill="{StaticResource Bad}" />
+                </StackPanel>
+                <TextBlock Text="{Binding Title}" Style="{StaticResource H2}" Margin="0,0,0,8" />
+                <TextBlock Text="{Binding Body}" Style="{StaticResource Body}" />
+                <ItemsControl ItemsSource="{Binding Items}" Margin="0,14,0,0" Focusable="False">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="16" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                <Rectangle Width="6" Height="2" Fill="{StaticResource Bad}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,9,0,0" />
+                                <TextBlock Grid.Column="1" Text="{Binding}" Style="{StaticResource Body}" FontSize="12.5" Foreground="{StaticResource Text}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+                    <Button Style="{StaticResource Ghost}" Content="Go back" Command="{Binding CancelCmd}" Margin="0,0,10,0" />
+                    <Button Style="{StaticResource Primary}" Content="{Binding ConfirmText}" Command="{Binding OkCmd}" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PlanRow">
+        <Border x:Name="card" Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="6" Padding="16,12" Margin="0,0,0,6">
+            <Grid>
+                <Grid.ColumnDefinitions><ColumnDefinition Width="34" /><ColumnDefinition Width="30" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                <CheckBox x:Name="tick" Style="{StaticResource Tick}" IsChecked="{Binding Include}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,1,0,0" AutomationProperties.Name="{Binding Name}" />
+                <ContentPresenter x:Name="meter" Grid.Column="1" Content="{Binding}" ContentTemplate="{StaticResource TierMeter}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,3,0,0" />
+                <TextBlock x:Name="fixicon" Grid.Column="1" Text="&#xE90F;" FontFamily="{StaticResource Icons}" FontSize="14" Foreground="{StaticResource Good}" Margin="0,3,0,0" Visibility="Collapsed" />
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="{Binding Name}" Style="{StaticResource Strong}" FontSize="14" />
+                    <TextBlock Text="{Binding Reason}" Style="{StaticResource Body}" FontSize="12.5" />
+                </StackPanel>
+            </Grid>
+        </Border>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Include}" Value="False"><Setter TargetName="card" Property="Opacity" Value="0.55" /></DataTrigger>
+            <DataTrigger Binding="{Binding Tier}" Value="Fix"><Setter TargetName="meter" Property="Visibility" Value="Collapsed" /><Setter TargetName="fixicon" Property="Visibility" Value="Visible" /></DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <!-- ===================== OPTIMIZE THIS PC ===================== -->
+    <DataTemplate DataType="{x:Type vm:AutoOptimizeVM}">
+        <Grid Margin="44,8,44,0">
+            <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                <StackPanel>
+                    <Button Style="{StaticResource Link}" Command="{Binding BackCmd}" HorizontalAlignment="Left" FontSize="12.5" Foreground="{StaticResource Muted}" Content="&#x2190;  Dashboard" />
+                    <TextBlock Text="Optimize this PC" Style="{StaticResource H1}" FontSize="34" Margin="0,8,0,0" />
+                    <TextBlock Text="{Binding Lede}" Style="{StaticResource Body}" MaxWidth="640" HorizontalAlignment="Left" Margin="0,4,0,0" />
+                </StackPanel>
+                <Border Grid.Column="1" BorderBrush="{StaticResource Line2}" BorderThickness="1,1,0,1" CornerRadius="5" VerticalAlignment="Bottom" ClipToBounds="True">
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton Style="{StaticResource Seg}" GroupName="automode" IsChecked="{Binding ModeEveryday}" ToolTip="Safe changes with a clear benefit.">Everyday</RadioButton>
+                        <RadioButton Style="{StaticResource Seg}" GroupName="automode" IsChecked="{Binding ModeCompetitive}" ToolTip="Adds Advanced changes for lower latency.">Competitive</RadioButton>
+                        <RadioButton Style="{StaticResource Seg}" GroupName="automode" IsChecked="{Binding ModeAllOut}" ToolTip="Adds Extreme changes. For PCs that are only for games.">All out</RadioButton>
+                    </StackPanel>
+                </Border>
+            </Grid>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Focusable="False" Margin="0,20,0,0">
+                <StackPanel Margin="0,0,8,20" MaxWidth="900" HorizontalAlignment="Left">
+                    <StackPanel Visibility="{Binding HasFixes, Converter={StaticResource VisIf}}">
+                        <TextBlock Text="PC fixes" Style="{StaticResource H2}" Margin="0,0,0,10" />
+                        <ItemsControl ItemsSource="{Binding Fixes}" ItemTemplate="{StaticResource PlanRow}" Focusable="False" />
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding HasTweaks, Converter={StaticResource VisIf}}" Margin="0,18,0,0">
+                        <TextBlock Text="Tweaks" Style="{StaticResource H2}" Margin="0,0,0,10" />
+                        <ItemsControl ItemsSource="{Binding Tweaks}" ItemTemplate="{StaticResource PlanRow}" Focusable="False" />
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding HasSkipped, Converter={StaticResource VisIf}}" Margin="0,18,0,0">
+                        <TextBlock Text="Left out for this PC" Style="{StaticResource H2}" Margin="0,0,0,4" />
+                        <TextBlock Text="These are in the level you picked, but don't suit this hardware. Turn them on in Optimize if you want them anyway." Style="{StaticResource Body}" FontSize="12.5" Margin="0,0,0,10" />
+                        <ItemsControl ItemsSource="{Binding Skipped}" ItemTemplate="{StaticResource PlanRow}" Focusable="False" />
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+            <Border Grid.Row="2" Margin="-40,0,-40,0" Background="{StaticResource Surface2}" BorderBrush="{StaticResource Accent}" BorderThickness="0,1,0,0" Padding="40,14">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="{Binding CountText}" Style="{StaticResource Strong}" />
+                        <TextBlock Text="{Binding Note}" Style="{StaticResource Body}" FontSize="12.5" />
+                    </StackPanel>
+                    <Button Grid.Column="1" Style="{StaticResource Primary}" Command="{Binding ApplyCmd}"><TextBlock Text="{Binding ApplyText}" /></Button>
+                </Grid>
+            </Border>
+        </Grid>
+    </DataTemplate>
+
+    <!-- ===================== DASHBOARD: one action up top with a gauge, three numbers, what's next, your games ===================== -->
+    <Style x:Key="Tile" TargetType="Button" BasedOn="{StaticResource BtnBase}">
+        <Setter Property="Foreground" Value="{StaticResource Text}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Border x:Name="b" Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="12" />
+                        <Border x:Name="hov" Background="{StaticResource Surface2}" BorderBrush="{StaticResource Line2}" BorderThickness="1" CornerRadius="12" Opacity="0" />
+                        <ContentPresenter Margin="22,18" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions><BeginStoryboard><Storyboard><DoubleAnimation Storyboard.TargetName="hov" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.2" /></Storyboard></BeginStoryboard></Trigger.EnterActions>
+                            <Trigger.ExitActions><BeginStoryboard><Storyboard><DoubleAnimation Storyboard.TargetName="hov" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.35" /></Storyboard></BeginStoryboard></Trigger.ExitActions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Cover" TargetType="Button" BasedOn="{StaticResource BtnBase}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel x:Name="s" Width="112" Margin="0,0,14,0" RenderTransformOrigin="0.5,0.5">
+                        <StackPanel.RenderTransform><TranslateTransform x:Name="lift" /></StackPanel.RenderTransform>
+                        <Border x:Name="img" Height="168" CornerRadius="10" BorderThickness="1" BorderBrush="{StaticResource Line2}">
+                            <Border.Background><ImageBrush ImageSource="{Binding Art}" Stretch="UniformToFill" /></Border.Background>
+                        </Border>
+                        <TextBlock Text="{Binding Name}" Style="{StaticResource Body}" FontSize="12" Foreground="{StaticResource Text}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Margin="2,8,0,0" />
+                        <TextBlock Text="{Binding SupportLabel}" Style="{StaticResource Body}" FontSize="11.5" Foreground="{StaticResource Faint}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Margin="2,0,0,0" />
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="img" Property="BorderBrush" Value="{StaticResource Accent}" /></Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ===================== STARTUP APPS ===================== -->
+    <DataTemplate DataType="{x:Type vm:StartupVM}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False">
+            <StackPanel Margin="44,8,44,40" MaxWidth="860" HorizontalAlignment="Left">
+                <TextBlock Text="Startup apps" Style="{StaticResource H1}" FontSize="34" />
+                <TextBlock Text="{Binding Summary}" Style="{StaticResource Body}" MaxWidth="640" HorizontalAlignment="Left" Margin="0,4,0,0" />
+                <TextBlock Text="Switching one off is the same switch as Task Manager's Startup tab. The app still works when you open it, and you can undo it in History." Style="{StaticResource Body}" FontSize="12.5" Foreground="{StaticResource Faint}" MaxWidth="640" HorizontalAlignment="Left" Margin="0,6,0,22" />
+                <ItemsControl ItemsSource="{Binding Apps}" Focusable="False" c:Entrance.Delay="60">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="10" Padding="20,14" Margin="0,0,0,8">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                    <Border Width="36" Height="36" CornerRadius="9" Background="#2B2773" Margin="0,0,16,0" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Initial}" FontFamily="{StaticResource UiDisplay}" FontSize="16" Foreground="{StaticResource Text}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Name}" Style="{StaticResource Strong}" FontSize="14.5" />
+                                        <TextBlock Text="{Binding Impact}" Style="{StaticResource Body}" FontSize="12.5" />
+                                    </StackPanel>
+                                    <CheckBox Grid.Column="2" Style="{StaticResource Switch}" IsChecked="{Binding Enabled}" VerticalAlignment="Center" AutomationProperties.Name="{Binding Name, StringFormat={}{0} starts with Windows}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource Line2}" BorderThickness="1" CornerRadius="10" Padding="20,14" Margin="0,18,0,0">
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding LaunchFramecalm}">
+                        <StackPanel>
+                            <TextBlock Text="Framecalm itself" Style="{StaticResource Strong}" FontSize="14.5" />
+                            <TextBlock Text="Open quietly in the tray when Windows starts, so Game Session is ready for your games." Style="{StaticResource Body}" FontSize="12.5" />
+                        </StackPanel>
+                    </CheckBox>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </DataTemplate>
+
+    <!-- big round go button -->
+    <Style x:Key="BigGo" TargetType="Button" BasedOn="{StaticResource BtnBase}">
+        <Setter Property="Foreground" Value="{StaticResource Ink}" />
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+        <Setter Property="RenderTransform"><Setter.Value><ScaleTransform /></Setter.Value></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Ellipse x:Name="halo" Margin="-18" Opacity="0.35">
+                            <Ellipse.Fill>
+                                <RadialGradientBrush>
+                                    <GradientStop Color="#99FFB224" Offset="0.55" />
+                                    <GradientStop Color="#00FFB224" Offset="1" />
+                                </RadialGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <Ellipse>
+                            <Ellipse.Fill>
+                                <RadialGradientBrush GradientOrigin="0.35,0.25" Center="0.45,0.4" RadiusX="0.75" RadiusY="0.75">
+                                    <GradientStop Color="#FFD27A" Offset="0" />
+                                    <GradientStop Color="#FFB224" Offset="0.55" />
+                                    <GradientStop Color="#E8930F" Offset="1" />
+                                </RadialGradientBrush>
+                            </Ellipse.Fill>
+                            <Ellipse.Effect><DropShadowEffect Color="#FFB224" BlurRadius="40" ShadowDepth="0" Opacity="0.55" /></Ellipse.Effect>
+                        </Ellipse>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" TextElement.Foreground="{TemplateBinding Foreground}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions><BeginStoryboard><Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" To="1.04" Duration="0:0:0.25"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction></DoubleAnimation>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" To="1.04" Duration="0:0:0.25"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction></DoubleAnimation>
+                                <DoubleAnimation Storyboard.TargetName="halo" Storyboard.TargetProperty="Opacity" To="0.75" Duration="0:0:0.25" />
+                            </Storyboard></BeginStoryboard></Trigger.EnterActions>
+                            <Trigger.ExitActions><BeginStoryboard><Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" To="1" Duration="0:0:0.35" />
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" To="1" Duration="0:0:0.35" />
+                                <DoubleAnimation Storyboard.TargetName="halo" Storyboard.TargetProperty="Opacity" To="0.35" Duration="0:0:0.35" />
+                            </Storyboard></BeginStoryboard></Trigger.ExitActions>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="RenderTransform"><Setter.Value><ScaleTransform ScaleX="0.97" ScaleY="0.97" /></Setter.Value></Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.6" /></Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <DataTemplate DataType="{x:Type vm:DashboardVM}">
+        <Grid>
+            <c:LightBeams Strength="0.55" />
+            <c:StarField Density="0.7" />
+            <Grid Margin="44,26,44,28">
+                <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+                <StackPanel>
+                    <TextBlock Text="{Binding Greeting}" FontFamily="{StaticResource UiDisplay}" FontSize="22" Foreground="{StaticResource Text}" />
+                    <TextBlock Text="{Binding Machine}" Style="{StaticResource Body}" FontSize="13" Foreground="{StaticResource Faint}" />
+                </StackPanel>
+
+                <!-- the one thing to do -->
+                <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" c:Entrance.Delay="60">
+                    <Grid Width="380" Height="330" HorizontalAlignment="Center">
+                        <c:Tach Value="{Binding Opt.OnCount}" Max="{Binding Opt.Available}" Target="{Binding PlanTarget}">
+                            <c:Tach.Effect><DropShadowEffect Color="#FFB224" BlurRadius="18" ShadowDepth="0" Opacity="0.5" /></c:Tach.Effect>
+                        </c:Tach>
+                        <Button Style="{StaticResource BigGo}" Width="196" Height="196" Command="{Binding OptimizeCmd}" Margin="0,8,0,0" AutomationProperties.Name="Optimize this PC">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding GoIcon}" FontFamily="{StaticResource Icons}" FontSize="26" HorizontalAlignment="Center" Foreground="{StaticResource Ink}" />
+                                <TextBlock Text="{Binding GoText}" FontFamily="{StaticResource UiDisplay}" FontSize="26" HorizontalAlignment="Center" Margin="0,6,0,0" Foreground="{StaticResource Ink}" />
+                                <TextBlock Text="{Binding GoSub}" FontSize="12.5" FontWeight="SemiBold" HorizontalAlignment="Center" Foreground="#5A3A00" Margin="0,2,0,0" />
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                    <TextBlock Text="{Binding StatusText}" Style="{StaticResource Body}" FontSize="15" Foreground="#D4D1F7" TextAlignment="Center" MaxWidth="520" Margin="0,10,0,0" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,14,0,0">
+                        <Button Style="{StaticResource Link}" Content="Review the plan first" Command="{Binding GoCmd}" CommandParameter="auto" FontSize="13.5" />
+                        <TextBlock Text="or" Style="{StaticResource Body}" FontSize="13.5" Foreground="{StaticResource Faint}" Margin="10,0" VerticalAlignment="Center" />
+                        <Button Style="{StaticResource Link}" Content="pick tweaks yourself" Command="{Binding GoCmd}" CommandParameter="optimize" FontSize="13.5" />
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- three quiet numbers -->
+                <Grid Grid.Row="2" HorizontalAlignment="Center" c:Entrance.Delay="220">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                    <Button Style="{StaticResource Plain}" Command="{Binding GoCmd}" CommandParameter="optimize" Margin="0,0,40,0" Cursor="Hand" AutomationProperties.Name="Open Optimize">
+                        <StackPanel Orientation="Horizontal"><TextBlock Text="{Binding Opt.OnCount}" FontFamily="{StaticResource Num}" FontSize="20" Foreground="{StaticResource Text}" /><TextBlock Text="{Binding TweaksSub}" Style="{StaticResource Body}" FontSize="13" Margin="8,0,0,0" VerticalAlignment="Center" /></StackPanel>
+                    </Button>
+                    <Button Grid.Column="1" Style="{StaticResource Plain}" Command="{Binding GoCmd}" CommandParameter="health" Margin="0,0,40,0" Cursor="Hand" AutomationProperties.Name="Open This PC">
+                        <StackPanel Orientation="Horizontal"><TextBlock Text="{Binding Fixes}" FontFamily="{StaticResource Num}" FontSize="20" Foreground="{StaticResource Text}" /><TextBlock Text="{Binding FixesSub}" Style="{StaticResource Body}" FontSize="13" Margin="8,0,0,0" VerticalAlignment="Center" /></StackPanel>
+                    </Button>
+                    <Button Grid.Column="2" Style="{StaticResource Plain}" Command="{Binding GoCmd}" CommandParameter="library" Cursor="Hand" AutomationProperties.Name="Open Games">
+                        <StackPanel Orientation="Horizontal"><TextBlock Text="{Binding Games}" FontFamily="{StaticResource Num}" FontSize="20" Foreground="{StaticResource Text}" /><TextBlock Text="{Binding GamesSub}" Style="{StaticResource Body}" FontSize="13" Margin="8,0,0,0" VerticalAlignment="Center" /></StackPanel>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

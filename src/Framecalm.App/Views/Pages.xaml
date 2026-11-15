@@ -1,0 +1,1186 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:Framecalm.App.ViewModels"
+                    xmlns:c="clr-namespace:Framecalm.App.Controls">
+
+    <!-- ===================== shared bits ===================== -->
+    <Style x:Key="Bar" TargetType="ProgressBar">
+        <Setter Property="Height" Value="3" />
+        <Setter Property="Maximum" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ProgressBar">
+                    <Grid>
+                        <Border x:Name="PART_Track" Background="{StaticResource Line2}" />
+                        <Border x:Name="PART_Indicator" Background="{StaticResource Accent}" HorizontalAlignment="Left" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- small selectable chips (game pickers) -->
+    <Style x:Key="Chips" TargetType="ListBox">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></Setter.Value>
+        </Setter>
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="FocusVisualStyle" Value="{StaticResource Focus}" />
+                    <Setter Property="Cursor" Value="Hand" />
+                    <Setter Property="Margin" Value="0,0,8,8" />
+                    <Setter Property="AutomationProperties.Name" Value="{Binding Name}" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Border x:Name="b" BorderBrush="{StaticResource Line2}" BorderThickness="1" CornerRadius="6" Padding="14,7" Background="Transparent">
+                                    <TextBlock x:Name="t" Text="{Binding Name}" FontSize="13" Foreground="{StaticResource Muted}" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="b" Property="Background" Value="{StaticResource Hover}" /></Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="b" Property="BorderBrush" Value="{StaticResource Accent}" />
+                                        <Setter TargetName="t" Property="Foreground" Value="{StaticResource Text}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- step / state glyph -->
+    <DataTemplate x:Key="StepRow" DataType="{x:Type vm:StepVM}">
+        <Grid Margin="0,0,0,14">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="34" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+            <Border x:Name="dot" Width="22" Height="22" CornerRadius="6" BorderThickness="1.5" BorderBrush="{StaticResource Line2}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <TextBlock x:Name="g" Text="{Binding Glyph}" Style="{StaticResource Icon}" FontSize="11" HorizontalAlignment="Center" Foreground="{StaticResource Ink}" />
+            </Border>
+            <StackPanel Grid.Column="1">
+                <TextBlock x:Name="title" Text="{Binding Title}" Style="{StaticResource Strong}" Foreground="{StaticResource Faint}" />
+                <TextBlock Text="{Binding Detail}" Style="{StaticResource Body}" FontSize="12.5" Visibility="{Binding Detail, Converter={StaticResource VisIf}}" />
+                <ProgressBar Style="{StaticResource Bar}" Value="{Binding Progress}" Margin="0,8,0,0" Width="260" HorizontalAlignment="Left" x:Name="pb" Visibility="Collapsed" />
+            </StackPanel>
+            <TextBlock Grid.Column="2" Text="{Binding StateText}" Style="{StaticResource Label}" x:Name="st" VerticalAlignment="Top" Margin="0,3,0,0" />
+        </Grid>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding State}" Value="run">
+                <Setter TargetName="dot" Property="BorderBrush" Value="{StaticResource Accent}" />
+                <Setter TargetName="g" Property="Foreground" Value="{StaticResource Accent}" />
+                <Setter TargetName="title" Property="Foreground" Value="{StaticResource Text}" />
+                <Setter TargetName="st" Property="Foreground" Value="{StaticResource Accent}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding State}" Value="done">
+                <Setter TargetName="dot" Property="Background" Value="{StaticResource Accent}" />
+                <Setter TargetName="dot" Property="BorderBrush" Value="{StaticResource Accent}" />
+                <Setter TargetName="title" Property="Foreground" Value="{StaticResource Text}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding State}" Value="fail">
+                <Setter TargetName="dot" Property="Background" Value="{StaticResource Bad}" />
+                <Setter TargetName="dot" Property="BorderBrush" Value="{StaticResource Bad}" />
+                <Setter TargetName="title" Property="Foreground" Value="{StaticResource Text}" />
+                <Setter TargetName="st" Property="Foreground" Value="{StaticResource Bad}" />
+            </DataTrigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding State}" Value="run" />
+                    <Condition Binding="{Binding Progress, Converter={StaticResource VisIf}}" Value="Visible" />
+                </MultiDataTrigger.Conditions>
+                <Setter TargetName="pb" Property="Visibility" Value="Visible" />
+            </MultiDataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <!-- prompt shown while waiting for the player -->
+    <DataTemplate x:Key="Prompt">
+        <Border BorderBrush="{StaticResource Accent}" BorderThickness="0" CornerRadius="6" Background="{StaticResource Surface}" Padding="24,20" Margin="0,0,0,24">
+            <StackPanel>
+                <TextBlock Text="Waiting for you" Style="{StaticResource LabelAccent}" />
+                <TextBlock Text="{Binding PromptTitle}" Style="{StaticResource H2}" Margin="0,6,0,6" />
+                <TextBlock Text="{Binding PromptBody}" Style="{StaticResource Body}" MaxWidth="560" HorizontalAlignment="Left" />
+                <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+                    <Button Style="{StaticResource Primary}" Content="{Binding PromptButton}" Command="{Binding ContinueCmd}" />
+                    <Button Style="{StaticResource Ghost}" Content="Stop" Command="{Binding CancelCmd}" Margin="10,0,0,0" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </DataTemplate>
+
+    <!-- ===================== FIRST LAUNCH ===================== -->
+    <DataTemplate DataType="{x:Type vm:FirstRunVM}">
+        <Grid>
+            <Grid.Background>
+                <RadialGradientBrush Center="0.5,0" GradientOrigin="0.5,0" RadiusX="0.8" RadiusY="0.9">
+                    <GradientStop Color="#2A2580" Offset="0" />
+                    <GradientStop Color="#100E33" Offset="1" />
+                </RadialGradientBrush>
+            </Grid.Background>
+            <c:LightBeams Strength="1" />
+            <c:StarField Density="1.1" />
+
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="760" Margin="44,8,44,40">
+                <Viewbox Width="64" Height="64" HorizontalAlignment="Center">
+                    <Viewbox.Effect><DropShadowEffect Color="#FFB224" BlurRadius="40" ShadowDepth="0" Opacity="0.7" /></Viewbox.Effect>
+                    <Canvas Width="24" Height="24">
+                        <Rectangle Width="24" Height="24" RadiusX="5.3" RadiusY="5.3" Fill="{StaticResource Accent}" />
+                        <Path Data="M9.2,19 V9.6 A4,4 0 0 1 13.2,5.6 H14.5 M5.4,12.2 H19" Stroke="{StaticResource Ink}" StrokeThickness="2.7" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="Tune every corner of Windows." FontFamily="{StaticResource UiDisplay}" FontSize="44" Foreground="{StaticResource Text}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,26,0,0" />
+
+                <!-- intro -->
+                <StackPanel Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=intro}">
+                    <TextBlock Style="{StaticResource Body}" FontSize="16" LineHeight="25" TextAlignment="Center" Margin="0,14,0,30" Foreground="#CFCCF5"
+                               Text="First, Framecalm takes a look at this PC and your games. Then it suggests a plan you can review. Nothing changes until you say so." />
+                    <Button Style="{StaticResource Primary}" Command="{Binding StartCmd}" HorizontalAlignment="Center" Padding="28,15" FontSize="16">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Check this PC" VerticalAlignment="Center" />
+                            <Border Background="{StaticResource Ink}" CornerRadius="5" Width="26" Height="26" Margin="14,0,0,0">
+                                <TextBlock Text="&#xE72A;" FontFamily="{StaticResource Icons}" FontSize="12" Foreground="{StaticResource Accent}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </StackPanel>
+                    </Button>
+                    <TextBlock Text="Free. No account. Everything can be undone." Style="{StaticResource Body}" FontSize="13" Foreground="{StaticResource Faint}" TextAlignment="Center" Margin="0,18,0,0" />
+                    <StackPanel HorizontalAlignment="Center" Margin="0,30,0,0" Width="380">
+                        <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding WantUpdates}" Margin="0,0,0,10">
+                            <TextBlock Text="Tell me when there's a new version" Style="{StaticResource Body}" FontSize="13" Foreground="#D4D1F7" />
+                        </CheckBox>
+                        <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding WantTray}">
+                            <TextBlock Text="Keep it in the tray when I close it" Style="{StaticResource Body}" FontSize="13" Foreground="#D4D1F7" />
+                        </CheckBox>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- scanning -->
+                <StackPanel Margin="0,22,0,0" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=scanning}">
+                    <TextBlock Text="Looking at your hardware, settings and games…" Style="{StaticResource Body}" FontSize="16" TextAlignment="Center" Foreground="#CFCCF5" Margin="0,0,0,18" />
+                    <ProgressBar Style="{StaticResource Bar}" IsIndeterminate="True" Width="320" HorizontalAlignment="Center" />
+                </StackPanel>
+
+                <!-- found -->
+                <StackPanel Margin="0,22,0,0" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=found}">
+                    <TextBlock Text="{Binding Found}" FontFamily="{StaticResource UiDisplay}" FontSize="26" Foreground="{StaticResource Accent}" TextAlignment="Center" />
+                    <TextBlock Text="{Binding FoundDetail}" Style="{StaticResource Body}" FontSize="15" TextAlignment="Center" Margin="0,8,0,0" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <!-- ===================== LIBRARY ===================== -->
+    <DataTemplate x:Key="Tile" DataType="{x:Type vm:GameVM}">
+        <Button Style="{StaticResource Plain}" Command="{Binding OpenCmd}" Margin="0,0,16,26" AutomationProperties.Name="{Binding Name}" ToolTip="{Binding Status}" RenderTransformOrigin="0.5,0.5" x:Name="tile">
+            <Button.RenderTransform><ScaleTransform /></Button.RenderTransform>
+            <StackPanel Width="184">
+                <Grid Height="276">
+                    <Border CornerRadius="6" x:Name="art">
+                        <Border.Background><ImageBrush ImageSource="{Binding Art}" Stretch="UniformToFill" AlignmentY="Top" /></Border.Background>
+                    </Border>
+                    <Border CornerRadius="6" x:Name="ring" BorderBrush="{StaticResource Accent}" BorderThickness="0" />
+                </Grid>
+                <TextBlock Text="{Binding Name}" Style="{StaticResource Strong}" Margin="0,11,0,2" TextTrimming="CharacterEllipsis" />
+                <TextBlock Text="{Binding Status}" x:Name="status" Style="{StaticResource Body}" FontSize="12.5" LineHeight="17" Foreground="{StaticResource Faint}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+        </Button>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding StatusKind}" Value="accent"><Setter TargetName="status" Property="Foreground" Value="{StaticResource Accent}" /></DataTrigger>
+            <DataTrigger Binding="{Binding StatusKind}" Value="warn"><Setter TargetName="status" Property="Foreground" Value="{StaticResource Warn}" /></DataTrigger>
+            <DataTrigger Binding="{Binding StatusKind}" Value="good"><Setter TargetName="status" Property="Foreground" Value="{StaticResource Good}" /></DataTrigger>
+            <DataTrigger Binding="{Binding StatusKind}" Value="text"><Setter TargetName="status" Property="Foreground" Value="{StaticResource Text}" /></DataTrigger>
+            <Trigger SourceName="tile" Property="IsMouseOver" Value="True">
+                <Setter TargetName="ring" Property="BorderThickness" Value="2" />
+                <Trigger.EnterActions><BeginStoryboard><Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="tile" Storyboard.TargetProperty="RenderTransform.ScaleX" To="1.03" Duration="0:0:0.16" />
+                    <DoubleAnimation Storyboard.TargetName="tile" Storyboard.TargetProperty="RenderTransform.ScaleY" To="1.03" Duration="0:0:0.16" />
+                </Storyboard></BeginStoryboard></Trigger.EnterActions>
+                <Trigger.ExitActions><BeginStoryboard><Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="tile" Storyboard.TargetProperty="RenderTransform.ScaleX" To="1" Duration="0:0:0.16" />
+                    <DoubleAnimation Storyboard.TargetName="tile" Storyboard.TargetProperty="RenderTransform.ScaleY" To="1" Duration="0:0:0.16" />
+                </Storyboard></BeginStoryboard></Trigger.ExitActions>
+            </Trigger>
+            <Trigger SourceName="tile" Property="IsKeyboardFocused" Value="True">
+                <Setter TargetName="ring" Property="BorderThickness" Value="2" />
+            </Trigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:LibraryVM}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False">
+            <StackPanel Margin="44,8,44,30">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <TextBlock Text="{Binding CountText}" Style="{StaticResource Big}" FontSize="44" Margin="0,2,0,2" />
+                        <TextBlock Style="{StaticResource Body}" Visibility="{Binding Count, Converter={StaticResource VisIf}}"><Run Text="From " /><Run Text="{Binding Sources, Mode=OneWay}" /><Run Text="." /></TextBlock>
+                    </StackPanel>
+                    <!-- spec readout -->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,0,0,4">
+                        <StackPanel Margin="0,0,30,0"><TextBlock Text="Graphics" Style="{StaticResource Label}" /><TextBlock Text="{Binding GpuText}" Style="{StaticResource Mid}" /></StackPanel>
+                        <StackPanel Margin="0,0,30,0"><TextBlock Text="Video memory" Style="{StaticResource Label}" /><TextBlock Text="{Binding VramText}" Style="{StaticResource Mid}" /></StackPanel>
+                        <StackPanel Margin="0,0,30,0"><TextBlock Text="Processor" Style="{StaticResource Label}" /><TextBlock Text="{Binding CpuText}" Style="{StaticResource Mid}" /></StackPanel>
+                        <StackPanel Margin="0,0,30,0"><TextBlock Text="Memory" Style="{StaticResource Label}" /><TextBlock Text="{Binding RamText}" Style="{StaticResource Mid}" /></StackPanel>
+                        <StackPanel><TextBlock Text="Screen" Style="{StaticResource Label}" /><TextBlock Text="{Binding ScreenText}" Style="{StaticResource Mid}" /></StackPanel>
+                    </StackPanel>
+                </Grid>
+
+                <!-- wrong GPU: the single biggest fix on laptops -->
+                <Border Margin="0,26,0,0" Background="{StaticResource WarnSoft}" BorderBrush="{StaticResource Warn}" BorderThickness="0" CornerRadius="6" Padding="20,14"
+                        Visibility="{Binding WrongGpu, Converter={StaticResource VisIf}}">
+                    <Grid>
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Wrong GPU risk" Style="{StaticResource Label}" Foreground="{StaticResource Warn}" />
+                            <TextBlock Text="{Binding WrongGpuText}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" Margin="0,3,24,0" />
+                        </StackPanel>
+                        <Button Grid.Column="1" Style="{StaticResource Primary}" Command="{Binding FixAllGpuCmd}" VerticalAlignment="Center">
+                            <TextBlock><Run Text="Pin to " /><Run Text="{Binding GpuText, Mode=OneWay}" /></TextBlock>
+                        </Button>
+                    </Grid>
+                </Border>
+
+                <StackPanel Orientation="Horizontal" Margin="0,28,0,18" Height="30" Visibility="{Binding Count, Converter={StaticResource VisIf}}">
+                    <RadioButton Style="{StaticResource Nav}" Content="All" IsChecked="{Binding All}" />
+                    <RadioButton Style="{StaticResource Nav}" Content="Automatic" IsChecked="{Binding Auto}" />
+                    <RadioButton Style="{StaticResource Nav}" Content="In-game steps" IsChecked="{Binding Guided}" />
+                </StackPanel>
+
+                <ItemsControl ItemsSource="{Binding Shown}" ItemTemplate="{StaticResource Tile}" Focusable="False">
+                    <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                </ItemsControl>
+
+                <StackPanel Margin="0,48,0,0" Visibility="{Binding Count, Converter={StaticResource VisIfNot}}" MaxWidth="560" HorizontalAlignment="Left">
+                    <TextBlock Text="No games found yet" Style="{StaticResource H2}" />
+                    <TextBlock Style="{StaticResource Body}" Margin="0,8,0,0" Text="Framecalm reads Steam, Epic, Riot, Battle.net, the Xbox app and the Minecraft Launcher. Launch a game once so its launcher records it, then reopen Framecalm. Health checks and Game Session work without any games." />
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </DataTemplate>
+
+    <!-- ===================== GAME DETAIL ===================== -->
+    <DataTemplate DataType="{x:Type vm:GameVM}">
+        <Grid>
+            <Grid.RowDefinitions><RowDefinition Height="352" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+
+            <!-- hero: blurred art backdrop, poster, numbers, frame-time trace -->
+            <Grid ClipToBounds="True">
+                <Border Margin="-90" Opacity="0.8">
+                    <Border.Background><ImageBrush ImageSource="{Binding Art}" Stretch="UniformToFill" /></Border.Background>
+                    <Border.Effect><BlurEffect Radius="90" RenderingBias="Performance" /></Border.Effect>
+                </Border>
+                <Rectangle>
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#5909090B" Offset="0" />
+                            <GradientStop Color="#B309090B" Offset="0.55" />
+                            <GradientStop Color="{StaticResource BgColor}" Offset="1" />
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <Grid Margin="44,8,44,0">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+                    <StackPanel Grid.ColumnSpan="2">
+                    <Button Style="{StaticResource Link}" Command="{Binding DataContext.BackCmd, RelativeSource={RelativeSource AncestorType=Window}}" HorizontalAlignment="Left" AutomationProperties.Name="Back">
+                        <TextBlock Text="←  LIBRARY" Style="{StaticResource Label}" Foreground="{StaticResource Muted}" />
+                    </Button>
+                    </StackPanel>
+                    <Border Grid.Row="1" Width="138" Height="207" CornerRadius="6" Margin="0,14,28,0" VerticalAlignment="Top" BorderBrush="#33FFFFFF" BorderThickness="1">
+                        <Border.Background><ImageBrush ImageSource="{Binding Art}" Stretch="UniformToFill" AlignmentY="Top" /></Border.Background>
+                    </Border>
+                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,12,0,0">
+                    <TextBlock Text="{Binding Name}" Style="{StaticResource H1}" Margin="0,0,0,4" />
+                    <TextBlock Style="{StaticResource Label}">
+                        <Run Text="{Binding SupportLabel, Mode=OneWay}" Foreground="{StaticResource Accent}" /><Run Text="   ·   " /><Run Text="{Binding LauncherName, Mode=OneWay}" /><Run Text="   ·   " /><Run Text="{Binding GpuText, Mode=OneWay}" />
+                    </TextBlock>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,14,0,0" Visibility="{Binding HasRuns, Converter={StaticResource VisIf}}">
+                        <c:CountUp Value="{Binding HeroFps}" Style="{StaticResource Mega}" Margin="-4,0,0,0" />
+                        <StackPanel VerticalAlignment="Bottom" Margin="14,0,0,16">
+                            <TextBlock Text="{Binding HeroCaption}" Style="{StaticResource Label}" Foreground="{StaticResource Muted}" />
+                            <TextBlock Style="{StaticResource Big}" Foreground="{StaticResource Accent}" Visibility="{Binding HasGain, Converter={StaticResource VisIf}}">
+                                <Run Text="+" /><Run Text="{Binding GainFps, Mode=OneWay, StringFormat=0}" />
+                            </TextBlock>
+                        </StackPanel>
+                        <Rectangle Width="1" Fill="{StaticResource Line2}" Margin="34,26,34,22" />
+                        <StackPanel VerticalAlignment="Bottom" Margin="0,0,0,16">
+                            <TextBlock Text="1% low" Style="{StaticResource Label}" Foreground="{StaticResource Muted}" />
+                            <c:CountUp Value="{Binding OneLow}" Style="{StaticResource Big}" />
+                        </StackPanel>
+                        <StackPanel VerticalAlignment="Bottom" Margin="34,0,0,16">
+                            <TextBlock Text="P99 frame" Style="{StaticResource Label}" Foreground="{StaticResource Muted}" />
+                            <TextBlock Style="{StaticResource Big}"><Run Text="{Binding P99, Mode=OneWay, StringFormat=0.0}" /><Run Text=" ms" FontSize="20" Foreground="{StaticResource Muted}" /></TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,22,0,0" Visibility="{Binding HasRuns, Converter={StaticResource VisIfNot}}">
+                        <TextBlock Text="No numbers yet" Style="{StaticResource Big}" FontSize="56" Foreground="{StaticResource Muted}" />
+                        <TextBlock Text="NO MEASUREMENTS YET. ONE 30-SECOND CAPTURE SHOWS WHERE YOU STAND." Style="{StaticResource Label}" Foreground="{StaticResource Muted}" />
+                    </StackPanel>
+                    </StackPanel>
+                </Grid>
+
+                <Border HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,18,32,0" Background="#CC09090B" Padding="8,4" CornerRadius="6"
+                        Visibility="{Binding DemoData, Converter={StaticResource VisIf}}">
+                    <TextBlock Text="Demo data, simulated numbers" Style="{StaticResource Label}" Foreground="{StaticResource Warn}" />
+                </Border>
+
+                <c:FrameChart Before="{Binding BeforeTrace}" After="{Binding AfterTrace}" TargetMs="{Binding TargetMs}" TargetLabel="{Binding TargetLabel}"
+                              Height="82" VerticalAlignment="Bottom" Margin="44,8,44,6" AutomationProperties.Name="Frame time chart" />
+            </Grid>
+
+            <!-- body -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="380" /></Grid.ColumnDefinitions>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False">
+                    <StackPanel Margin="44,8,44,28">
+                        <!-- automatic -->
+                        <StackPanel Visibility="{Binding CanTune, Converter={StaticResource VisIf}}">
+                            <TextBlock Text="Tune" Style="{StaticResource Label}" />
+                            <TextBlock Text="Tune the game's own settings" Style="{StaticResource H2}" Margin="0,4,0,6" />
+                            <TextBlock Style="{StaticResource Body}" MaxWidth="560" HorizontalAlignment="Left" Text="Pick how far to push it, or name an FPS and let auto-tune find the cheapest way there. Nothing gets heavier, and your resolution, sensitivity, keybinds and audio are left alone." />
+                            <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+                                <Button Style="{StaticResource Primary}" Command="{Binding AutoTuneCmd}">
+                                    <TextBlock><Run Text="Auto-tune to " /><Run Text="{Binding M.Hw.RefreshHz, Mode=OneWay}" /><Run Text=" FPS" /></TextBlock>
+                                </Button>
+                                <Button Style="{StaticResource Ghost}" Content="Choose a profile" Command="{Binding TuneCmd}" Margin="10,0,0,0" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding CheckText}" Style="{StaticResource Label}" Margin="0,12,0,0" />
+                        </StackPanel>
+
+                        <!-- automatic game whose file we can't safely read: fail closed -->
+                        <StackPanel Visibility="{Binding IsAuto, Converter={StaticResource VisIf}}">
+                            <Border Background="{StaticResource WarnSoft}" BorderBrush="{StaticResource Warn}" BorderThickness="0" CornerRadius="6" Padding="18,12" Margin="0,0,0,8"
+                                    Visibility="{Binding CanTune, Converter={StaticResource VisIfNot}}">
+                                <StackPanel>
+                                    <TextBlock Text="In-game steps" Style="{StaticResource Label}" Foreground="{StaticResource Warn}" />
+                                    <TextBlock Style="{StaticResource Body}" Foreground="{StaticResource Text}"><Run Text="{Binding CheckText, Mode=OneWay}" /><Run Text=" Framecalm only edits settings files it has been tested against, so it won't touch this one. The biggest levers are below; change them in the game." /></TextBlock>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- guided -->
+                        <StackPanel Visibility="{Binding ShowSteps, Converter={StaticResource VisIf}}">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel"><Style.Triggers><DataTrigger Binding="{Binding CanTune}" Value="True"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style>
+                            </StackPanel.Style>
+                            <TextBlock Text="Exact steps in the game" Style="{StaticResource Label}" />
+                            <TextBlock Style="{StaticResource Body}" Margin="0,4,0,12" MaxWidth="600" HorizontalAlignment="Left" Text="{Binding Notes}" Visibility="{Binding Notes, Converter={StaticResource VisIf}}" />
+                            <ItemsControl ItemsSource="{Binding Steps}" Focusable="False">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,0,0,0">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="40" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                            <Border Grid.ColumnSpan="3" Style="{StaticResource Rule}" VerticalAlignment="Top" />
+                                            <TextBlock Text="{Binding Index}" Style="{StaticResource Label}" Margin="0,14,0,0" />
+                                            <StackPanel Grid.Column="1" Margin="0,12,16,12">
+                                                <TextBlock Text="{Binding Where}" Style="{StaticResource Strong}" TextWrapping="Wrap" />
+                                                <TextBlock Style="{StaticResource Value}" Margin="0,3,0,3" Foreground="{StaticResource Accent}" TextWrapping="Wrap"><Run Text="→ " /><Run Text="{Binding Set, Mode=OneWay}" /></TextBlock>
+                                                <TextBlock Text="{Binding Why}" Style="{StaticResource Body}" FontSize="12.5" />
+                                            </StackPanel>
+                                            <TextBlock Grid.Column="2" Text="{Binding LoadText}" Style="{StaticResource Label}" Margin="0,14,0,0" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                        <!-- basic -->
+                        <StackPanel Visibility="{Binding IsBasic, Converter={StaticResource VisIf}}">
+                            <TextBlock Text="GPU + SESSION" Style="{StaticResource Label}" />
+                            <TextBlock Text="Settings tuning isn't available for this game yet" Style="{StaticResource H2}" Margin="0,4,0,6" />
+                            <TextBlock Style="{StaticResource Body}" MaxWidth="560" HorizontalAlignment="Left" Text="Framecalm can still pin it to your fastest graphics chip, run Game Session while you play, and measure it. Adapters for more games are added as they're tested." />
+                        </StackPanel>
+
+                        <!-- GPU -->
+                        <Grid Margin="0,24,0,0" Visibility="{Binding Hybrid, Converter={StaticResource VisIf}}">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                            <Border Grid.ColumnSpan="2" Style="{StaticResource Rule}" VerticalAlignment="Top" />
+                            <StackPanel Margin="0,16,0,0">
+                                <TextBlock Text="Graphics chip" Style="{StaticResource Label}" />
+                                <TextBlock Text="{Binding GpuText}" Style="{StaticResource Strong}" Margin="0,4,0,2" x:Name="gpuText" />
+                                <TextBlock Style="{StaticResource Body}" FontSize="12.5" Text="Uses the same per-game setting as Settings > Display > Graphics. Undo any time." />
+                            </StackPanel>
+                            <Button Grid.Column="1" Style="{StaticResource Primary}" Content="Pin to fast GPU" Command="{Binding FixGpuCmd}" VerticalAlignment="Center" Margin="0,16,0,0"
+                                    Visibility="{Binding GpuWrong, Converter={StaticResource VisIf}}" />
+                        </Grid>
+
+                        <!-- applied -->
+                        <Grid Margin="0,22,0,0" Visibility="{Binding AppliedCount, Converter={StaticResource VisIf}}">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                            <Border Grid.ColumnSpan="2" Style="{StaticResource Rule}" VerticalAlignment="Top" />
+                            <TextBlock Style="{StaticResource Body}" Margin="0,16,0,0" Foreground="{StaticResource Text}"><Run Text="{Binding AppliedCount, Mode=OneWay}" /><Run Text=" Framecalm changes are active for this game." /></TextBlock>
+                            <Button Grid.Column="1" Style="{StaticResource Link}" Content="Undo all for this game" Command="{Binding UndoGameCmd}" Margin="0,16,0,0" />
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- side panel -->
+                <Border Grid.Column="1" BorderBrush="{StaticResource Line}" BorderThickness="1,0,0,0">
+                    <StackPanel Margin="28,22,32,20">
+                        <TextBlock Text="What limits this game" Style="{StaticResource Label}" />
+                        <StackPanel Visibility="{Binding Bottleneck, Converter={StaticResource VisIf}}" Margin="0,8,0,0">
+                            <TextBlock Text="{Binding Bottleneck.Headline}" Style="{StaticResource Strong}" FontSize="16" />
+                            <c:SplitBar FrameMs="{Binding Bottleneck.FrameMs}" GpuMs="{Binding Bottleneck.GpuMs}" Height="10" Margin="0,12,0,6" AutomationProperties.Name="GPU busy share of each frame" />
+                            <Grid>
+                                <TextBlock Style="{StaticResource Label}"><Run Text="GPU BUSY " /><Run Text="{Binding Bottleneck.GpuBusyShare, Mode=OneWay, StringFormat=P0}" Foreground="{StaticResource Accent}" /></TextBlock>
+                                <TextBlock Style="{StaticResource Label}" HorizontalAlignment="Right" Text="HATCHED = WAITING ON CPU" />
+                            </Grid>
+                            <TextBlock Text="{Binding Bottleneck.Detail}" Style="{StaticResource Body}" Margin="0,10,0,0" />
+                        </StackPanel>
+                        <StackPanel Visibility="{Binding Bottleneck, Converter={StaticResource VisIfNot}}" Margin="0,8,0,0">
+                            <TextBlock Style="{StaticResource Body}" Text="Measure once and Framecalm tells you whether your processor or graphics card is the limit here, and which settings actually matter for you." />
+                            <Button Style="{StaticResource Ghost}" Content="Measure 30 seconds" Command="{Binding MeasureCmd}" HorizontalAlignment="Left" Margin="0,12,0,0" />
+                        </StackPanel>
+
+                        <Border Style="{StaticResource Rule}" Margin="0,22,0,16" />
+                        <TextBlock Text="Game session" Style="{StaticResource Label}" />
+                        <TextBlock Style="{StaticResource Body}" Margin="0,4,0,0" Text="Fastest power plan and fewer background apps while you play. Everything goes back when the game closes." />
+
+                        <StackPanel Visibility="{Binding AntiCheat, Converter={StaticResource VisIf}}">
+                            <Border Style="{StaticResource Rule}" Margin="0,18,0,16" />
+                            <TextBlock Text="Anti-cheat" Style="{StaticResource Label}" />
+                            <TextBlock Style="{StaticResource Body}" Margin="0,4,0,0"><Run Text="{Binding AntiCheat, Mode=OneWay}" /><Run Text=". Framecalm never touches the game's files, memory, launch options or anti-cheat. At most it edits the settings file the game itself writes." /></TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <!-- ===================== TUNE: profile / target / review ===================== -->
+    <DataTemplate DataType="{x:Type vm:TuneVM}">
+        <Grid Margin="44,8,44,0">
+            <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+            <StackPanel>
+                <Button Style="{StaticResource Link}" Command="{Binding DataContext.BackCmd, RelativeSource={RelativeSource AncestorType=Window}}" HorizontalAlignment="Left">
+                    <TextBlock Style="{StaticResource Label}" Foreground="{StaticResource Muted}"><Run Text="←  " /><Run Text="{Binding Game.Name, Mode=OneWay}" /></TextBlock>
+                </Button>
+                <Grid Margin="0,10,0,0">
+                    <StackPanel Orientation="Horizontal"><Border Width="40" Height="60" CornerRadius="6" Margin="0,0,16,0" VerticalAlignment="Center"><Border.Background><ImageBrush ImageSource="{Binding Game.Art}" Stretch="UniformToFill" /></Border.Background></Border><TextBlock Style="{StaticResource H1}" VerticalAlignment="Center"><Run Text="Tune " /><Run Text="{Binding Game.Name, Mode=OneWay}" /></TextBlock></StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Height="34" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=pick}">
+                        <RadioButton Style="{StaticResource Nav}" Content="To a target FPS" IsChecked="{Binding ModeTarget}" />
+                        <RadioButton Style="{StaticResource Nav}" Content="By profile" IsChecked="{Binding ModeProfile}" Margin="0" />
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+
+            <!-- pick: profiles -->
+            <ScrollViewer Grid.Row="1" Margin="0,22,0,0" VerticalScrollBarVisibility="Auto" Focusable="False">
+                <ScrollViewer.Style>
+                    <Style TargetType="ScrollViewer"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers>
+                        <MultiDataTrigger><MultiDataTrigger.Conditions><Condition Binding="{Binding Stage}" Value="pick" /><Condition Binding="{Binding ModeProfile}" Value="True" /></MultiDataTrigger.Conditions><Setter Property="Visibility" Value="Visible" /></MultiDataTrigger>
+                    </Style.Triggers></Style>
+                </ScrollViewer.Style>
+                <StackPanel Margin="0,0,0,12">
+                <TextBlock Text="How far to push it" Style="{StaticResource Label}" Margin="0,0,0,12" />
+                <ItemsControl ItemsSource="{Binding Profiles}" Focusable="False">
+                    <ItemsControl.ItemsPanel><ItemsPanelTemplate><UniformGrid Rows="1" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <RadioButton Style="{StaticResource Option}" IsChecked="{Binding IsSelected}" GroupName="profile" Margin="0,0,12,0" AutomationProperties.Name="{Binding Name}">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                        <Rectangle Width="16" Height="5" Margin="0,0,3,0"><Rectangle.Style><Style TargetType="Rectangle"><Setter Property="Fill" Value="{StaticResource Line2}" /><Style.Triggers><DataTrigger Binding="{Binding L1}" Value="True"><Setter Property="Fill" Value="{StaticResource Accent}" /></DataTrigger></Style.Triggers></Style></Rectangle.Style></Rectangle>
+                                        <Rectangle Width="16" Height="5" Margin="0,0,3,0"><Rectangle.Style><Style TargetType="Rectangle"><Setter Property="Fill" Value="{StaticResource Line2}" /><Style.Triggers><DataTrigger Binding="{Binding L2}" Value="True"><Setter Property="Fill" Value="{StaticResource Accent}" /></DataTrigger></Style.Triggers></Style></Rectangle.Style></Rectangle>
+                                        <Rectangle Width="16" Height="5" Margin="0,0,3,0"><Rectangle.Style><Style TargetType="Rectangle"><Setter Property="Fill" Value="{StaticResource Line2}" /><Style.Triggers><DataTrigger Binding="{Binding L3}" Value="True"><Setter Property="Fill" Value="{StaticResource Accent}" /></DataTrigger></Style.Triggers></Style></Rectangle.Style></Rectangle>
+                                        <Rectangle Width="16" Height="5"><Rectangle.Style><Style TargetType="Rectangle"><Setter Property="Fill" Value="{StaticResource Line2}" /><Style.Triggers><DataTrigger Binding="{Binding L4}" Value="True"><Setter Property="Fill" Value="{StaticResource Accent}" /></DataTrigger></Style.Triggers></Style></Rectangle.Style></Rectangle>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource Mid}" FontSize="26" />
+                                    <TextBlock Text="{Binding Blurb}" Style="{StaticResource Body}" FontSize="13" Margin="0,6,0,0" Height="58" />
+                                    <Border Style="{StaticResource Rule}" Margin="0,8,0,10" />
+                                    <TextBlock Text="{Binding CountText}" Style="{StaticResource Strong}" FontSize="13" TextWrapping="Wrap" Margin="0,0,0,8" />
+                                    <ItemsControl ItemsSource="{Binding Preview}" Focusable="False">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Margin="0,0,0,7">
+                                                    <TextBlock Text="{Binding Label}" Style="{StaticResource Body}" FontSize="12.5" Foreground="{StaticResource Text}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
+                                                    <TextBlock FontFamily="{StaticResource Tech}" FontSize="12.5" TextTrimming="CharacterEllipsis"><Run Text="{Binding Old, Mode=OneWay}" Foreground="{StaticResource Faint}" /><Run Text="  →  " Foreground="{StaticResource Faint}" /><Run Text="{Binding New, Mode=OneWay}" Foreground="{StaticResource Accent}" /></TextBlock>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <TextBlock Text="{Binding MoreText}" Style="{StaticResource Body}" FontSize="12" Foreground="{StaticResource Faint}" Visibility="{Binding HasMore, Converter={StaticResource VisIf}}" />
+                                </StackPanel>
+                            </RadioButton>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <TextBlock Style="{StaticResource Body}" FontSize="12.5" Margin="0,12,0,0" Text="Nothing is written yet. Next you'll see every change with why it helps and what you give up, and you can untick any of them." />
+                <Grid Margin="0,18,12,0" MaxWidth="760" HorizontalAlignment="Left">
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding Measure}" IsEnabled="{Binding CanMeasure}">
+                        <StackPanel>
+                            <TextBlock Text="Prove it: measure before and after" Style="{StaticResource Strong}" />
+                            <TextBlock Text="{Binding MeasureNote}" Style="{StaticResource Body}" FontSize="12.5" />
+                        </StackPanel>
+                    </CheckBox>
+                </Grid>
+            </StackPanel>
+            </ScrollViewer>
+
+            <!-- pick: target -->
+            <StackPanel Grid.Row="1" Margin="0,26,0,0">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers>
+                        <MultiDataTrigger><MultiDataTrigger.Conditions><Condition Binding="{Binding Stage}" Value="pick" /><Condition Binding="{Binding ModeTarget}" Value="True" /></MultiDataTrigger.Conditions><Setter Property="Visibility" Value="Visible" /></MultiDataTrigger>
+                    </Style.Triggers></Style>
+                </StackPanel.Style>
+                <TextBlock Text="What should it hit" Style="{StaticResource Label}" Margin="0,0,0,12" />
+                <ItemsControl ItemsSource="{Binding Targets}" Focusable="False">
+                    <ItemsControl.ItemsPanel><ItemsPanelTemplate><UniformGrid Rows="1" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <RadioButton Style="{StaticResource Option}" IsChecked="{Binding IsSelected}" GroupName="target" Margin="0,0,12,0" AutomationProperties.Name="{Binding Name}">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource Big}" FontSize="54"><Run Text="{Binding FpsText, Mode=OneWay}" /><Run Text=" FPS" FontSize="18" Foreground="{StaticResource Muted}" /></TextBlock>
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource Strong}" />
+                                    <TextBlock Text="{Binding Sub}" Style="{StaticResource Body}" FontSize="12.5" />
+                                </StackPanel>
+                            </RadioButton>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Grid Margin="0,28,12,0">
+                    <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition /><ColumnDefinition /></Grid.ColumnDefinitions>
+                    <StackPanel Margin="0,0,24,0"><TextBlock Text="1  Measure" Style="{StaticResource LabelAccent}" /><TextBlock Style="{StaticResource Body}" Margin="0,4,0,0" Text="30 seconds where you are now, to see your FPS and whether the CPU or GPU is the limit." /></StackPanel>
+                    <StackPanel Grid.Column="1" Margin="0,0,24,0"><TextBlock Text="2  Lower what pays" Style="{StaticResource LabelAccent}" /><TextBlock Style="{StaticResource Body}" Margin="0,4,0,0" Text="Settings go down in order of FPS bought per bit of looks lost, for your bottleneck." /></StackPanel>
+                    <StackPanel Grid.Column="2"><TextBlock Text="3  Measure again" Style="{StaticResource LabelAccent}" /><TextBlock Style="{StaticResource Body}" Margin="0,4,0,0" Text="Each round is measured. It stops at the target, or when nothing sensible is left." /></StackPanel>
+                </Grid>
+            </StackPanel>
+
+            <!-- review -->
+            <Grid Grid.Row="1" Margin="0,22,0,0" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=review}">
+                <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+                <Grid Visibility="{Binding HasRows, Converter={StaticResource VisIf}}">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="34" /><ColumnDefinition Width="40" /><ColumnDefinition Width="210" /><ColumnDefinition Width="*" /><ColumnDefinition Width="90" /><ColumnDefinition Width="130" /></Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="2" Text="Setting" Style="{StaticResource Label}" />
+                    <TextBlock Grid.Column="3" Text="NOW  →  NEW" Style="{StaticResource Label}" />
+                    <TextBlock Grid.Column="4" Text="Costs" Style="{StaticResource Label}" />
+                    <TextBlock Grid.Column="5" Text="Typical gain" Style="{StaticResource Label}" HorizontalAlignment="Right" />
+                </Grid>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,8,0,0" Focusable="False">
+                    <StackPanel>
+                        <ItemsControl ItemsSource="{Binding Rows}" Focusable="False">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <Border Style="{StaticResource Rule}" />
+                                        <Grid Margin="0,12">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="34" /><ColumnDefinition Width="40" /><ColumnDefinition Width="210" /><ColumnDefinition Width="*" /><ColumnDefinition Width="90" /><ColumnDefinition Width="130" /></Grid.ColumnDefinitions>
+                                            <CheckBox Style="{StaticResource Tick}" IsChecked="{Binding Include}" VerticalAlignment="Center" AutomationProperties.Name="{Binding Label, StringFormat=Include {0}}" />
+                                            <TextBlock Grid.Column="1" Text="{Binding Index}" Style="{StaticResource Label}" VerticalAlignment="Center" />
+                                            <Button Grid.Column="2" Style="{StaticResource Plain}" Command="{Binding ToggleCmd}" HorizontalAlignment="Left" AutomationProperties.Name="{Binding Label, StringFormat=Explain {0}}">
+                                                <TextBlock Style="{StaticResource Strong}"><Run Text="{Binding Label, Mode=OneWay}" /><Run Text="  &#xE70D;" FontFamily="{StaticResource Icons}" FontSize="10" Foreground="{StaticResource Faint}" /></TextBlock>
+                                            </Button>
+                                            <TextBlock Grid.Column="3" Style="{StaticResource Value}" VerticalAlignment="Center" FontSize="15">
+                                                <Run Text="{Binding Old, Mode=OneWay}" Foreground="{StaticResource Faint}" /><Run Text="   →   " Foreground="{StaticResource Faint}" /><Run Text="{Binding New, Mode=OneWay}" />
+                                            </TextBlock>
+                                            <TextBlock Grid.Column="4" Text="{Binding LoadText}" Style="{StaticResource Label}" VerticalAlignment="Center" />
+                                            <StackPanel Grid.Column="5" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                                <Rectangle Height="6" Width="{Binding BarWidth}" Fill="{StaticResource Accent}" Margin="0,0,10,0" />
+                                                <TextBlock Text="{Binding Gain}" Style="{StaticResource Label}" Foreground="{StaticResource Text}" Width="44" TextAlignment="Right" />
+                                            </StackPanel>
+                                        </Grid>
+                                        <!-- explanation drawer -->
+                                        <Grid Margin="74,0,0,14" Visibility="{Binding Open, Converter={StaticResource VisIf}}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition /></Grid.ColumnDefinitions>
+                                            <StackPanel Margin="0,0,24,0"><TextBlock Text="Why it helps" Style="{StaticResource LabelAccent}" /><TextBlock Text="{Binding Why}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" /></StackPanel>
+                                            <StackPanel Grid.Column="1"><TextBlock Text="What you give up" Style="{StaticResource Label}" /><TextBlock Text="{Binding Tradeoff}" Style="{StaticResource Body}" /></StackPanel>
+                                        </Grid>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <StackPanel Visibility="{Binding HasRows, Converter={StaticResource VisIfNot}}" MaxWidth="620" HorizontalAlignment="Left" Margin="0,20,0,0">
+                            <TextBlock Text="Nothing needed to change" Style="{StaticResource H2}" />
+                            <TextBlock Text="{Binding Empty}" Style="{StaticResource Body}" Margin="0,8,0,0" />
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+
+            <!-- footer -->
+            <Border Grid.Row="2" BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0" Margin="-40,10,-40,0" Padding="40,14">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Summary}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=review}" />
+                        <TextBlock Text="{Binding RestartNote}" Style="{StaticResource Body}" FontSize="12.5" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button Style="{StaticResource Ghost}" Content="Back" Command="{Binding BackCmd}" Margin="0,0,10,0" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=review}" />
+                        <Button Content="Review changes" Command="{Binding ReviewCmd}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource Primary}"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers>
+                                    <MultiDataTrigger><MultiDataTrigger.Conditions><Condition Binding="{Binding Stage}" Value="pick" /><Condition Binding="{Binding ModeProfile}" Value="True" /></MultiDataTrigger.Conditions><Setter Property="Visibility" Value="Visible" /></MultiDataTrigger>
+                                </Style.Triggers></Style>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="Start auto-tune" Command="{Binding AutoTuneCmd}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource Primary}"><Setter Property="Visibility" Value="Collapsed" /><Style.Triggers>
+                                    <MultiDataTrigger><MultiDataTrigger.Conditions><Condition Binding="{Binding Stage}" Value="pick" /><Condition Binding="{Binding ModeTarget}" Value="True" /></MultiDataTrigger.Conditions><Setter Property="Visibility" Value="Visible" /></MultiDataTrigger>
+                                </Style.Triggers></Style>
+                            </Button.Style>
+                        </Button>
+                        <Button Style="{StaticResource Primary}" Command="{Binding ApplyCmd}" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=review}">
+                            <TextBlock><Run Text="Apply " /><Run Text="{Binding Rows.Count, Mode=OneWay}" /><Run Text=" changes" /></TextBlock>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </DataTemplate>
+
+    <!-- ===================== APPLY + PROOF ===================== -->
+    <DataTemplate DataType="{x:Type vm:RunVM}">
+        <Grid>
+            <!-- running -->
+            <Grid Margin="44,8,44,20">
+                <Grid.Style><Style TargetType="Grid"><Style.Triggers><DataTrigger Binding="{Binding Stage}" Value="results"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style></Grid.Style>
+                <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="420" /></Grid.ColumnDefinitions>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,24"><Border Width="40" Height="60" CornerRadius="6" Margin="0,0,16,0" VerticalAlignment="Center"><Border.Background><ImageBrush ImageSource="{Binding Game.Art}" Stretch="UniformToFill" /></Border.Background></Border><TextBlock Text="{Binding Title}" Style="{StaticResource H1}" VerticalAlignment="Center" /></StackPanel>
+                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource Prompt}" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=prompt}" Focusable="False" />
+                    <StackPanel Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=failed|partial}" Margin="0,0,0,24" MaxWidth="600" HorizontalAlignment="Left">
+                        <Border BorderBrush="{StaticResource Bad}" BorderThickness="0" CornerRadius="6" Background="{StaticResource BadSoft}" Padding="20,14">
+                            <StackPanel>
+                                <TextBlock Text="Stopped safely" Style="{StaticResource Label}" Foreground="{StaticResource Bad}" />
+                                <TextBlock Text="{Binding Message}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" Margin="0,4,0,0" />
+                            </StackPanel>
+                        </Border>
+                        <Button Style="{StaticResource Ghost}" Content="Back to the game" Command="{Binding DoneCmd}" HorizontalAlignment="Left" Margin="0,14,0,0" />
+                    </StackPanel>
+                    <ItemsControl ItemsSource="{Binding Steps}" ItemTemplate="{StaticResource StepRow}" Focusable="False" MaxWidth="600" HorizontalAlignment="Left" />
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="WHAT'S CHANGING" Style="{StaticResource Label}" Margin="0,0,0,10" />
+                    <ItemsControl ItemsSource="{Binding Applied}" Focusable="False">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,0,0,9">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="170" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding Label}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" />
+                                    <TextBlock Grid.Column="1" Style="{StaticResource Value}" FontSize="13"><Run Text="{Binding Old, Mode=OneWay}" Foreground="{StaticResource Faint}" /><Run Text="  →  " Foreground="{StaticResource Faint}" /><Run Text="{Binding New, Mode=OneWay}" /></TextBlock>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Grid>
+
+            <!-- results -->
+            <Grid Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=results}">
+                <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+                <Grid Margin="44,8,44,0">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource LabelAccent}"><Run Text="{Binding Game.Name, Mode=OneWay}" /><Run Text=", result" /></TextBlock>
+                        <TextBlock Text="{Binding HeadlineDone}" Style="{StaticResource H1}" Margin="0,6,0,0" />
+                    </StackPanel>
+                    <Border HorizontalAlignment="Right" VerticalAlignment="Top" Padding="8,4" CornerRadius="6" BorderBrush="{StaticResource Warn}" BorderThickness="1" Visibility="{Binding IsDemoData, Converter={StaticResource VisIf}}">
+                        <TextBlock Text="Demo data, simulated numbers" Style="{StaticResource Label}" Foreground="{StaticResource Warn}" />
+                    </Border>
+                </Grid>
+
+                <Grid Grid.Row="1" Margin="44,8,44,0">
+                    <!-- measured -->
+                    <Grid Visibility="{Binding Measured, Converter={StaticResource VisIf}}">
+                        <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="360" /></Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel VerticalAlignment="Bottom" Margin="0,0,0,18">
+                                <TextBlock Text="Before" Style="{StaticResource Label}" />
+                                <c:CountUp Value="{Binding BeforeFps}" Style="{StaticResource Big}" FontSize="72" Foreground="{StaticResource Faint}" />
+                            </StackPanel>
+                            <TextBlock Text="→" FontSize="40" Foreground="{StaticResource Faint}" VerticalAlignment="Bottom" Margin="18,0,18,34" />
+                            <StackPanel>
+                                <TextBlock Text="After, average FPS over 3 runs" Style="{StaticResource Label}" Margin="0,0,0,16" />
+                                <c:CountUp Value="{Binding AfterFps}" Style="{StaticResource Mega}" Foreground="{StaticResource Text}" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding DeltaText}" Style="{StaticResource Mid}" Foreground="{StaticResource Accent}" VerticalAlignment="Bottom" Margin="20,0,0,26" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,0,18">
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="80" /><ColumnDefinition Width="80" /></Grid.ColumnDefinitions>
+                                <TextBlock Text="" /><TextBlock Grid.Column="1" Text="Before" Style="{StaticResource Label}" TextAlignment="Right" /><TextBlock Grid.Column="2" Text="After" Style="{StaticResource Label}" TextAlignment="Right" />
+                            </Grid>
+                            <Grid Margin="0,0,0,6">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="80" /><ColumnDefinition Width="80" /></Grid.ColumnDefinitions>
+                                <TextBlock Text="1% low FPS" Style="{StaticResource Body}" /><TextBlock Grid.Column="1" Text="{Binding BeforeLow, StringFormat=0}" Style="{StaticResource Mid}" Foreground="{StaticResource Muted}" TextAlignment="Right" /><TextBlock Grid.Column="2" Text="{Binding AfterLow, StringFormat=0}" Style="{StaticResource Mid}" TextAlignment="Right" />
+                            </Grid>
+                            <Grid Margin="0,0,0,6">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="80" /><ColumnDefinition Width="80" /></Grid.ColumnDefinitions>
+                                <TextBlock Text="Median frame, ms" Style="{StaticResource Body}" /><TextBlock Grid.Column="1" Text="{Binding BeforeMedian, StringFormat=0.0}" Style="{StaticResource Mid}" Foreground="{StaticResource Muted}" TextAlignment="Right" /><TextBlock Grid.Column="2" Text="{Binding AfterMedian, StringFormat=0.0}" Style="{StaticResource Mid}" TextAlignment="Right" />
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="80" /><ColumnDefinition Width="80" /></Grid.ColumnDefinitions>
+                                <TextBlock Text="P99 frame, ms" Style="{StaticResource Body}" /><TextBlock Grid.Column="1" Text="{Binding BeforeP99, StringFormat=0.0}" Style="{StaticResource Mid}" Foreground="{StaticResource Muted}" TextAlignment="Right" /><TextBlock Grid.Column="2" Text="{Binding AfterP99, StringFormat=0.0}" Style="{StaticResource Mid}" TextAlignment="Right" />
+                            </Grid>
+                        </StackPanel>
+                        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                            <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+                            <Grid>
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Width="16" Height="2" Fill="{StaticResource Faint}" VerticalAlignment="Center" Margin="0,0,6,0" /><TextBlock Text="Before" Style="{StaticResource Label}" Margin="0,0,18,0" />
+                                    <Rectangle Width="16" Height="2" Fill="{StaticResource Accent}" VerticalAlignment="Center" Margin="0,0,6,0" /><TextBlock Text="After" Style="{StaticResource Label}" Margin="0,0,18,0" />
+                                    <TextBlock Text="FRAME TIME, LAST RUN OF EACH. LOWER AND FLATTER IS BETTER." Style="{StaticResource Label}" />
+                                </StackPanel>
+                                <TextBlock Text="{Binding NoiseText}" Style="{StaticResource Label}" HorizontalAlignment="Right" />
+                            </Grid>
+                            <c:FrameChart Grid.Row="1" Before="{Binding BeforeTrace}" After="{Binding AfterTrace}" TargetMs="{Binding TargetMs}" TargetLabel="{Binding TargetLabel}" Margin="0,8,0,8" MinHeight="120" AutomationProperties.Name="Before and after frame time" />
+                            <TextBlock Grid.Row="2" Text="{Binding Verdict}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" FontSize="14.5" Margin="0,0,0,10" />
+                        </Grid>
+                    </Grid>
+
+                    <!-- applied without proof -->
+                    <StackPanel Visibility="{Binding Measured, Converter={StaticResource VisIfNot}}" MaxWidth="720" HorizontalAlignment="Left" Margin="0,12,0,0">
+                        <TextBlock Text="{Binding Message}" Style="{StaticResource Body}" FontSize="15" Foreground="{StaticResource Text}" />
+                        <ItemsControl ItemsSource="{Binding Applied}" Margin="0,20,0,0" Focusable="False">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,0,0,8">
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="40" /><ColumnDefinition Width="220" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                        <TextBlock Text="&#xE73E;" Style="{StaticResource Icon}" Foreground="{StaticResource Accent}" />
+                                        <TextBlock Grid.Column="1" Text="{Binding Label}" Style="{StaticResource Strong}" />
+                                        <TextBlock Grid.Column="2" Style="{StaticResource Value}"><Run Text="{Binding Old, Mode=OneWay}" Foreground="{StaticResource Faint}" /><Run Text="  →  " Foreground="{StaticResource Faint}" /><Run Text="{Binding New, Mode=OneWay}" /></TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Grid>
+
+                <Border Grid.Row="2" BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0" Padding="40,14">
+                    <Grid>
+                        <TextBlock Text="Originals are backed up. Undo puts them back and checks they read back correctly." Style="{StaticResource Body}" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Style="{StaticResource Ghost}" Content="Undo these changes" Command="{Binding UndoCmd}" Margin="0,0,10,0" />
+                            <Button Style="{StaticResource Primary}" Content="Done" Command="{Binding DoneCmd}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <!-- ===================== AUTO-TUNE ===================== -->
+    <DataTemplate DataType="{x:Type vm:AutoTuneVM}">
+        <Grid Margin="44,8,44,24">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="460" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Style="{StaticResource LabelAccent}"><Run Text="AUTO-TUNE  ·  " /><Run Text="{Binding Game.Name, Mode=OneWay}" /></TextBlock>
+                <StackPanel Orientation="Horizontal" Margin="0,8,0,0"><Border Width="32" Height="48" CornerRadius="6" Margin="0,0,12,0" VerticalAlignment="Center"><Border.Background><ImageBrush ImageSource="{Binding Game.Art}" Stretch="UniformToFill" /></Border.Background></Border><TextBlock Text="{Binding Status}" Style="{StaticResource H2}" VerticalAlignment="Center" /></StackPanel>
+                <Grid Width="420" Height="330" HorizontalAlignment="Left" Margin="0,10,0,0">
+                    <c:Tach Value="{Binding Now}" Target="{Binding Target}" Max="{Binding GaugeMax}" AutomationProperties.Name="Current FPS against target" />
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,30,0,0">
+                        <TextBlock Text="{Binding NowText}" Style="{StaticResource Mega}" FontSize="112" HorizontalAlignment="Center" />
+                        <TextBlock Style="{StaticResource Label}" HorizontalAlignment="Center" Foreground="{StaticResource Muted}"><Run Text="FPS  ·  TARGET " /><Run Text="{Binding Target, Mode=OneWay}" /></TextBlock>
+                    </StackPanel>
+                </Grid>
+                <TextBlock Text="{Binding Detail}" Style="{StaticResource Body}" MaxWidth="420" HorizontalAlignment="Left" />
+                <Border Visibility="{Binding IsDemoData, Converter={StaticResource VisIf}}" HorizontalAlignment="Left" Margin="0,14,0,0" Padding="8,4" CornerRadius="6" BorderBrush="{StaticResource Warn}" BorderThickness="1">
+                    <TextBlock Text="Demo data, simulated numbers" Style="{StaticResource Label}" Foreground="{StaticResource Warn}" />
+                </Border>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Margin="30,0,0,0">
+                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource Prompt}" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=prompt}" Focusable="False" />
+                <TextBlock Text="Rounds" Style="{StaticResource Label}" Margin="0,0,0,10" />
+                <ItemsControl ItemsSource="{Binding Rounds}" Focusable="False">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <Border Style="{StaticResource Rule}" />
+                                <Grid Margin="0,14">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="110" /><ColumnDefinition Width="*" /><ColumnDefinition Width="150" /></Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding Title}" Style="{StaticResource Label}" x:Name="t" Margin="0,3,0,0" />
+                                    <TextBlock Grid.Column="1" Text="{Binding Changes}" Style="{StaticResource Body}" Margin="0,0,16,0" />
+                                    <TextBlock Grid.Column="2" Text="{Binding Result}" Style="{StaticResource Mid}" HorizontalAlignment="Right" />
+                                </Grid>
+                            </StackPanel>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding State}" Value="run"><Setter TargetName="t" Property="Foreground" Value="{StaticResource Accent}" /></DataTrigger>
+                                <DataTrigger Binding="{Binding State}" Value="done"><Setter TargetName="t" Property="Foreground" Value="{StaticResource Text}" /></DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <StackPanel Visibility="{Binding FirstTrace, Converter={StaticResource VisIf}}" Margin="0,18,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Rectangle Width="16" Height="2" Fill="{StaticResource Faint}" VerticalAlignment="Center" Margin="0,0,6,0" /><TextBlock Text="Baseline" Style="{StaticResource Label}" Margin="0,0,18,0" />
+                        <Rectangle Width="16" Height="2" Fill="{StaticResource Accent}" VerticalAlignment="Center" Margin="0,0,6,0" /><TextBlock Text="Latest round" Style="{StaticResource Label}" Margin="0,0,18,0" />
+                        <TextBlock Text="Frame time" Style="{StaticResource Label}" />
+                    </StackPanel>
+                    <c:FrameChart Before="{Binding FirstTrace}" After="{Binding LastTrace}" TargetMs="{Binding TargetMs}" TargetLabel="{Binding TargetLabel}" Height="150" Margin="0,8,0,0" AutomationProperties.Name="Frame time, baseline and latest round" />
+                </StackPanel>
+                <StackPanel Visibility="{Binding Summary, Converter={StaticResource VisIf}}" Margin="0,16,0,0">
+                    <Border Style="{StaticResource Rule}" Margin="0,0,0,16" />
+                    <TextBlock Text="{Binding Summary}" Style="{StaticResource Body}" FontSize="15" Foreground="{StaticResource Text}" />
+                    <TextBlock Text="Round numbers are measured. The order comes from typical gains for your bottleneck." Style="{StaticResource Body}" FontSize="12.5" Margin="0,6,0,0" />
+                    <Button Style="{StaticResource Primary}" Content="Done" Command="{Binding DoneCmd}" HorizontalAlignment="Left" Margin="0,16,0,0" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <!-- ===================== GAME SESSION ===================== -->
+    <DataTemplate DataType="{x:Type vm:SessionVM}">
+        <Grid Margin="44,8,44,24">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="460" /></Grid.ColumnDefinitions>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False">
+                <StackPanel Margin="0,0,40,0">
+                    <TextBlock Text="Game session" Style="{StaticResource Label}" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding StateText}" Style="{StaticResource Mega}" FontSize="104" x:Name="state" Foreground="{StaticResource Faint}" />
+                        <StackPanel VerticalAlignment="Center" Margin="22,10,0,0" MaxWidth="380">
+                            <TextBlock Text="{Binding Headline}" Style="{StaticResource H2}" />
+                            <TextBlock Text="{Binding Sub}" Style="{StaticResource Body}" Margin="0,4,0,0" />
+                        </StackPanel>
+                    </StackPanel>
+                    <TextBlock Text="For" Style="{StaticResource Label}" Margin="0,18,0,8" />
+                    <ListBox Style="{StaticResource Chips}" ItemsSource="{Binding Games}" SelectedItem="{Binding Game}" />
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <Button Style="{StaticResource Primary}" Content="Start session" Command="{Binding StartCmd}" />
+                        <Button Style="{StaticResource Ghost}" Content="End session" Command="{Binding StopCmd}" Margin="10,0,0,0" />
+                    </StackPanel>
+                    <ItemsControl ItemsSource="{Binding Log}" Margin="0,14,0,0" Focusable="False">
+                        <ItemsControl.ItemTemplate><DataTemplate><TextBlock Style="{StaticResource Label}" Foreground="{StaticResource Muted}" Margin="0,0,0,4"><Run Text="›  " Foreground="{StaticResource Accent}" /><Run Text="{Binding Mode=OneWay}" /></TextBlock></DataTemplate></ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <TextBlock Text="What it does" Style="{StaticResource Label}" Margin="0,26,0,0" />
+                    <Border Style="{StaticResource Rule}" Margin="0,8,0,0" />
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding PowerPlan}" Margin="0,14">
+                        <StackPanel><TextBlock Text="Fastest power plan" Style="{StaticResource Strong}" /><TextBlock Text="{Binding PlanText}" Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
+                    </CheckBox>
+                    <Border Style="{StaticResource Rule}" />
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding HighPriority}" Margin="0,14">
+                        <StackPanel><TextBlock Text="High priority for the game" Style="{StaticResource Strong}" /><TextBlock Text="Off by default: small gain, and it can make voice chat crackle. Never Realtime. Skipped for games with kernel anti-cheat." Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
+                    </CheckBox>
+                    <Border Style="{StaticResource Rule}" />
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding AutoSession}" Margin="0,14">
+                        <StackPanel><TextBlock Text="Start by itself" Style="{StaticResource Strong}" /><TextBlock Text="When a game you've tuned starts. Ends when it closes." Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
+                    </CheckBox>
+                    <Border Style="{StaticResource Rule}" />
+                    <Grid Margin="0,14">
+                        <StackPanel Margin="0,0,120,0"><TextBlock Text="Do not disturb" Style="{StaticResource Strong}" /><TextBlock Text="Windows doesn't let apps switch this on. Its own rule does it better: turn on Do not disturb automatically when playing a game." Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
+                        <Button Style="{StaticResource Link}" Content="Open settings" Command="{Binding FocusCmd}" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                    </Grid>
+                </StackPanel>
+            </ScrollViewer>
+
+            <Border Grid.Column="1" BorderBrush="{StaticResource Line}" BorderThickness="1,0,0,0" Padding="28,0,0,0">
+                <StackPanel>
+                    <Grid>
+                        <TextBlock Text="Using your PC right now" Style="{StaticResource Label}" />
+                        <Button Style="{StaticResource Link}" Content="Refresh" Command="{Binding RefreshCmd}" HorizontalAlignment="Right" FontSize="12.5" />
+                    </Grid>
+                    <Grid Margin="0,14,0,6">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="100" /><ColumnDefinition Width="64" /><ColumnDefinition Width="54" /></Grid.ColumnDefinitions>
+                        <TextBlock Text="App" Style="{StaticResource Label}" /><TextBlock Grid.Column="1" Text="CPU" Style="{StaticResource Label}" /><TextBlock Grid.Column="2" Text="Memory" Style="{StaticResource Label}" /><TextBlock Grid.Column="3" Text="Close" Style="{StaticResource Label}" HorizontalAlignment="Right" ToolTip="Close this app automatically when a session starts" />
+                    </Grid>
+                    <ItemsControl ItemsSource="{Binding Procs}" Focusable="False">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Border Style="{StaticResource Rule}" />
+                                    <Grid Margin="0,10">
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="100" /><ColumnDefinition Width="64" /><ColumnDefinition Width="54" /></Grid.ColumnDefinitions>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Name}" Style="{StaticResource Strong}" FontSize="13.5" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Title}" Style="{StaticResource Body}" FontSize="12" MaxWidth="150" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
+                                                <Button Style="{StaticResource Link}" Content="Close now" FontSize="12" Command="{Binding CloseCmd}" Margin="10,0,0,0" Visibility="{Binding CanClose, Converter={StaticResource VisIf}}" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                            <Rectangle Height="5" Width="{Binding CpuBar}" Fill="{StaticResource Accent}" Margin="0,0,8,0" />
+                                            <TextBlock Text="{Binding Cpu}" Style="{StaticResource Label}" Foreground="{StaticResource Text}" />
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="2" Text="{Binding Mem}" Style="{StaticResource Label}" Foreground="{StaticResource Text}" VerticalAlignment="Center" />
+                                        <CheckBox Grid.Column="3" Style="{StaticResource Tick}" IsChecked="{Binding Approved}" HorizontalAlignment="Right" VerticalAlignment="Center" IsEnabled="{Binding CanClose}" AutomationProperties.Name="{Binding Name, StringFormat=Close {0} when a session starts}" />
+                                    </Grid>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock Style="{StaticResource Body}" FontSize="12.5" Margin="0,12,0,0" Text="Framecalm only asks apps to close, like clicking their X. If something has unsaved work, it asks you. Nothing is force-killed." />
+                </StackPanel>
+            </Border>
+        </Grid>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Active}" Value="True"><Setter TargetName="state" Property="Foreground" Value="{StaticResource Accent}" /></DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <!-- ===================== HEALTH ===================== -->
+    <DataTemplate DataType="{x:Type vm:HealthVM}">
+        <Grid Margin="44,8,44,0">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="*" MaxWidth="980" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False">
+                <StackPanel Margin="0,0,36,24">
+                    <TextBlock Text="{Binding FixHeadline}" Style="{StaticResource H1}" FontSize="34" Margin="0,0,0,6" />
+                    <TextBlock Text="{Binding FixSub}" Style="{StaticResource Body}" MaxWidth="640" HorizontalAlignment="Left" />
+                    <ItemsControl ItemsSource="{Binding Fixes}" Focusable="False" Margin="0,18,0,0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="6" Padding="18,14" Margin="0,0,0,10">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="36" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                        <CheckBox Style="{StaticResource Tick}" IsChecked="{Binding Include}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,2,0,0" AutomationProperties.Name="{Binding Title, StringFormat=Include {0}}" />
+                                        <StackPanel Grid.Column="1" Margin="0,0,18,0">
+                                            <TextBlock Text="{Binding Title}" Style="{StaticResource Strong}" />
+                                            <TextBlock Text="{Binding Why}" Style="{StaticResource Body}" FontSize="12.5" Margin="0,3,0,0" />
+                                            <TextBlock Style="{StaticResource Body}" FontSize="12.5" Foreground="{StaticResource Faint}" Margin="0,3,0,0"><Run Text="Trade-off: " /><Run Text="{Binding Tradeoff, Mode=OneWay}" /></TextBlock>
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="2" Style="{StaticResource Value}" FontSize="15" VerticalAlignment="Top" Margin="0,1,0,0">
+                                            <Run Text="{Binding Now, Mode=OneWay}" Foreground="{StaticResource Faint}" /><Run Text="  →  " Foreground="{StaticResource Faint}" /><Run Text="{Binding After, Mode=OneWay}" Foreground="{StaticResource Accent}" FontWeight="SemiBold" />
+                                        </TextBlock>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Button Style="{StaticResource Primary}" Command="{Binding ApplyFixesCmd}" HorizontalAlignment="Left" Margin="0,6,0,0" Visibility="{Binding HasFixes, Converter={StaticResource VisIf}}">
+                        <TextBlock Text="{Binding ApplyText}" />
+                    </Button>
+                    <TextBlock Text="Checks" Style="{StaticResource Label}" Margin="0,30,0,4" />
+                    <TextBlock Text="{Binding Summary}" Style="{StaticResource Body}" Margin="0,0,0,12" />
+                    <ItemsControl ItemsSource="{Binding Checks}" Focusable="False">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Border Style="{StaticResource Rule}" />
+                                    <Grid Margin="0,14">
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="74" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding StateText}" Style="{StaticResource Label}" x:Name="st" Margin="0,3,0,0" />
+                                        <StackPanel Grid.Column="1" Margin="0,0,16,0">
+                                            <TextBlock Text="{Binding Title}" Style="{StaticResource Strong}" />
+                                            <TextBlock Text="{Binding Finding}" Style="{StaticResource Body}" Margin="0,2,0,0" />
+                                        </StackPanel>
+                                        <Button Grid.Column="2" Style="{StaticResource Ghost}" Padding="14,7" FontSize="13" Content="{Binding Action}" Command="{Binding ActionCmd}" VerticalAlignment="Top" Visibility="{Binding Action, Converter={StaticResource VisIf}}" />
+                                    </Grid>
+                                </StackPanel>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding State}" Value="Attention"><Setter TargetName="st" Property="Foreground" Value="{StaticResource Warn}" /></DataTrigger>
+                                    <DataTrigger Binding="{Binding State}" Value="Good"><Setter TargetName="st" Property="Foreground" Value="{StaticResource Good}" /></DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+            <Border Grid.Column="1" Visibility="Collapsed" BorderBrush="{StaticResource Line}" BorderThickness="1,0,0,0" Padding="28,0,0,0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False">
+                    <StackPanel Margin="0,0,0,24">
+                        <TextBlock Text="Startup apps" Style="{StaticResource Label}" />
+                        <TextBlock Style="{StaticResource Body}" Margin="0,4,0,12" Text="Apps that start with Windows and keep running while you play. Switching one off is the same switch as Task Manager's Startup tab, and you can undo it in History." />
+                        <ItemsControl ItemsSource="{Binding Startup}" Focusable="False">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <Border Style="{StaticResource Rule}" />
+                                        <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding Enabled}" Margin="0,11" AutomationProperties.Name="{Binding Name, StringFormat={}{0} starts with Windows}">
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Name}" Style="{StaticResource Strong}" FontSize="13.5" />
+                                                <TextBlock Text="{Binding Impact}" Style="{StaticResource Body}" FontSize="12" />
+                                            </StackPanel>
+                                        </CheckBox>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock Style="{StaticResource Body}" FontSize="12.5" Margin="0,10,0,0" Visibility="{Binding Startup, Converter={StaticResource VisIfNot}}" Text="No startup apps for your account. Apps installed for all users can be managed in Task Manager." />
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </DataTemplate>
+
+    <!-- ===================== BENCHMARKS ===================== -->
+    <DataTemplate DataType="{x:Type vm:ProofVM}">
+        <Grid Margin="44,8,44,0">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="520" /></Grid.ColumnDefinitions>
+            <StackPanel Margin="0,0,36,0">
+                <TextBlock Text="Measure a game" Style="{StaticResource H1}" FontSize="34" Margin="0,0,0,4" />
+                <TextBlock Text="{Binding ToolText}" Style="{StaticResource Body}" Margin="0,0,0,18" />
+                <ListBox Style="{StaticResource Chips}" ItemsSource="{Binding Games}" SelectedItem="{Binding Game}" />
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Button Style="{StaticResource Primary}" Content="Capture 30 seconds" Command="{Binding CaptureCmd}" />
+                    <TextBlock Text="Start the game first and play normally while it records." Style="{StaticResource Body}" VerticalAlignment="Center" Margin="16,0,0,0" />
+                </StackPanel>
+                <ProgressBar Style="{StaticResource Bar}" Value="{Binding Progress}" Margin="0,18,0,0" Visibility="{Binding Busy, Converter={StaticResource VisIf}}" />
+                <StackPanel Visibility="{Binding Result, Converter={StaticResource VisIf}}" Margin="0,24,0,0">
+                    <TextBlock Style="{StaticResource Big}" FontSize="80"><Run Text="{Binding Result.AvgFps, Mode=OneWay, StringFormat=0}" /><Run Text=" FPS" FontSize="24" Foreground="{StaticResource Muted}" /></TextBlock>
+                    <TextBlock Text="{Binding ResultText}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" />
+                    <c:FrameChart After="{Binding Result.Trace}" Height="110" Margin="0,14,0,10" TargetMs="{Binding Game.TargetMs}" TargetLabel="{Binding Game.TargetLabel}" />
+                    <TextBlock Text="{Binding Bottleneck.Headline}" Style="{StaticResource Strong}" />
+                    <TextBlock Text="{Binding Bottleneck.Detail}" Style="{StaticResource Body}" />
+                    <TextBlock Text="{Binding Throttle}" Style="{StaticResource Body}" Foreground="{StaticResource Warn}" Margin="0,8,0,0" Visibility="{Binding Throttle, Converter={StaticResource VisIf}}" />
+                </StackPanel>
+            </StackPanel>
+            <Border Grid.Column="1" BorderBrush="{StaticResource Line}" BorderThickness="1,0,0,0" Padding="28,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="Past runs" Style="{StaticResource Label}" />
+                    <Grid Margin="0,14,0,6">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="110" /><ColumnDefinition Width="*" /><ColumnDefinition Width="54" /><ColumnDefinition Width="54" /><ColumnDefinition Width="80" /></Grid.ColumnDefinitions>
+                        <TextBlock Text="When" Style="{StaticResource Label}" /><TextBlock Grid.Column="1" Text="Game" Style="{StaticResource Label}" /><TextBlock Grid.Column="2" Text="Average" Style="{StaticResource Label}" TextAlignment="Right" /><TextBlock Grid.Column="3" Text="1% low" Style="{StaticResource Label}" TextAlignment="Right" /><TextBlock Grid.Column="4" Text="Source" Style="{StaticResource Label}" TextAlignment="Right" />
+                    </Grid>
+                    <ItemsControl ItemsSource="{Binding Runs}" Focusable="False">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Border Style="{StaticResource Rule}" />
+                                    <Grid Margin="0,9">
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="110" /><ColumnDefinition Width="*" /><ColumnDefinition Width="54" /><ColumnDefinition Width="54" /><ColumnDefinition Width="80" /></Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding When}" Style="{StaticResource Label}" Foreground="{StaticResource Muted}" />
+                                        <TextBlock Grid.Column="1" Style="{StaticResource Body}" Foreground="{StaticResource Text}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"><Run Text="{Binding Game, Mode=OneWay}" /><Run Text="  " /><Run Text="{Binding Label, Mode=OneWay}" Foreground="{StaticResource Faint}" FontSize="11" /></TextBlock>
+                                        <TextBlock Grid.Column="2" Text="{Binding Fps}" Style="{StaticResource Mid}" FontSize="18" TextAlignment="Right" />
+                                        <TextBlock Grid.Column="3" Text="{Binding Low}" Style="{StaticResource Mid}" FontSize="18" Foreground="{StaticResource Muted}" TextAlignment="Right" />
+                                        <TextBlock Grid.Column="4" Text="{Binding Source}" Style="{StaticResource Label}" TextAlignment="Right" VerticalAlignment="Center" />
+                                    </Grid>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock Style="{StaticResource Body}" Margin="0,8,0,0" Visibility="{Binding Runs, Converter={StaticResource VisIfNot}}" Text="No runs yet. Your first capture shows up here, and every before/after you run is kept so you can compare later." />
+                </StackPanel>
+            </Border>
+        </Grid>
+    </DataTemplate>
+
+    <!-- ===================== HISTORY ===================== -->
+    <DataTemplate DataType="{x:Type vm:HistoryVM}">
+        <Grid Margin="44,8,44,0">
+            <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="{Binding Summary}" Style="{StaticResource H1}" FontSize="34" Margin="0,0,0,18" />
+                </StackPanel>
+                <Button Style="{StaticResource Ghost}" Content="Undo everything" Command="{Binding UndoAllCmd}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,0,0" />
+            </Grid>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Focusable="False">
+                <StackPanel Margin="0,0,0,24">
+                    <ItemsControl ItemsSource="{Binding Batches}" Focusable="False">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,26">
+                                    <Grid>
+                                        <TextBlock Style="{StaticResource Label}"><Run Text="{Binding When, Mode=OneWay}" Foreground="{StaticResource Muted}" /><Run Text="   ·   " /><Run Text="{Binding Scope, Mode=OneWay}" Foreground="{StaticResource Text}" /><Run Text="   ·   " /><Run Text="{Binding Where, Mode=OneWay}" /></TextBlock>
+                                        <Button Style="{StaticResource Link}" Content="Undo this set" Command="{Binding UndoCmd}" HorizontalAlignment="Right" FontSize="12.5" Visibility="{Binding AnyActive, Converter={StaticResource VisIf}}" />
+                                    </Grid>
+                                    <ItemsControl ItemsSource="{Binding Rows}" Margin="0,8,0,0" Focusable="False">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel>
+                                                    <Border Style="{StaticResource Rule}" />
+                                                    <Grid Margin="0,10">
+                                                        <Grid.ColumnDefinitions><ColumnDefinition Width="240" /><ColumnDefinition Width="*" /><ColumnDefinition Width="110" /><ColumnDefinition Width="60" /></Grid.ColumnDefinitions>
+                                                        <TextBlock Text="{Binding Label}" Style="{StaticResource Strong}" FontSize="13.5" TextTrimming="CharacterEllipsis" />
+                                                        <TextBlock Grid.Column="1" Style="{StaticResource Value}" FontSize="13.5" TextTrimming="CharacterEllipsis"><Run Text="{Binding Old, Mode=OneWay}" Foreground="{StaticResource Faint}" /><Run Text="  →  " Foreground="{StaticResource Faint}" /><Run Text="{Binding New, Mode=OneWay}" /></TextBlock>
+                                                        <TextBlock Grid.Column="2" Text="{Binding StatusText}" Style="{StaticResource Label}" x:Name="s" VerticalAlignment="Center" />
+                                                        <Button Grid.Column="3" Style="{StaticResource Link}" Content="Undo" FontSize="12.5" Command="{Binding UndoCmd}" HorizontalAlignment="Right" Visibility="{Binding IsActive, Converter={StaticResource VisIf}}" />
+                                                    </Grid>
+                                                </StackPanel>
+                                                <DataTemplate.Triggers>
+                                                    <DataTrigger Binding="{Binding IsActive}" Value="True"><Setter TargetName="s" Property="Foreground" Value="{StaticResource Accent}" /></DataTrigger>
+                                                </DataTemplate.Triggers>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <StackPanel Visibility="{Binding Batches, Converter={StaticResource VisIfNot}}" MaxWidth="560" HorizontalAlignment="Left">
+                        <TextBlock Text="Nothing changed yet" Style="{StaticResource H2}" />
+                        <TextBlock Style="{StaticResource Body}" Margin="0,8,0,0" Text="When Framecalm changes something, it shows up here with the value it replaced. One click puts it back, and Framecalm checks that it really did." />
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </DataTemplate>
+
+    <!-- ===================== SETTINGS ===================== -->
+    <DataTemplate DataType="{x:Type vm:SettingsVM}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False">
+            <StackPanel Margin="44,8,44,24" MaxWidth="720" HorizontalAlignment="Left">
+                <TextBlock Text="Settings" Style="{StaticResource H1}" FontSize="34" Margin="0,0,0,18" />
+                <Border Style="{StaticResource Rule}" />
+                <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding ReduceMotion}" Margin="0,14">
+                    <StackPanel><TextBlock Text="Reduce motion" Style="{StaticResource Strong}" /><TextBlock Text="No counting numbers or drawing charts. Also follows Windows' Animation effects setting." Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
+                </CheckBox>
+                <Border Style="{StaticResource Rule}" />
+                <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding AutoSession}" Margin="0,14">
+                    <StackPanel><TextBlock Text="Game Session starts by itself" Style="{StaticResource Strong}" /><TextBlock Text="When a game you've tuned launches. It ends and undoes itself when the game closes." Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
+                </CheckBox>
+                <Border Style="{StaticResource Rule}" />
+                <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding DownloadCovers}" Margin="0,14">
+                    <StackPanel><TextBlock Text="Download cover art" Style="{StaticResource Strong}" /><TextBlock Text="Fetches each game's official cover once from Steam or the Microsoft Store and keeps it on this PC. Off means generated covers and no downloads." Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
+                </CheckBox>
+                <Border Style="{StaticResource Rule}" />
+                <Grid Margin="0,14">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding CheckUpdates}">
+                        <StackPanel><TextBlock Text="Check for updates" Style="{StaticResource Strong}" /><TextBlock Text="When Framecalm opens, it asks GitHub whether there's a newer version and shows a note in the sidebar. Nothing about you or your PC is sent." Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
+                    </CheckBox>
+                    <Button Grid.Column="1" Style="{StaticResource Ghost}" Content="Check now" Command="{Binding CheckNowCmd}" Padding="14,7" FontSize="13" Margin="20,0,0,0" VerticalAlignment="Center" />
+                </Grid>
+                <Border Style="{StaticResource Rule}" />
+                <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding CloseToTray}" Margin="0,14">
+                    <StackPanel><TextBlock Text="Keep running in the tray when closed" Style="{StaticResource Strong}" /><TextBlock Text="Closing the window hides Framecalm next to the clock, so Game Session can start and stop with your games. Right-click the icon to quit." Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
+                </CheckBox>
+                <Border Style="{StaticResource Rule}" />
+                <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding LaunchFramecalm}" Margin="0,14">
+                    <StackPanel><TextBlock Text="Open Framecalm when Windows starts" Style="{StaticResource Strong}" /><TextBlock Text="Starts quietly in the tray, not as a window." Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
+                </CheckBox>
+                <Border Style="{StaticResource Rule}" />
+                <Grid Margin="0,14">
+                    <StackPanel Margin="0,0,140,0"><TextBlock Text="Backups and history" Style="{StaticResource Strong}" /><TextBlock Text="{Binding DataPath}" Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
+                    <Button Style="{StaticResource Link}" Content="Open folder" Command="{Binding OpenDataCmd}" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                </Grid>
+                <Border Style="{StaticResource Rule}" />
+                <Grid Margin="0,14">
+                    <StackPanel Margin="0,0,180,0"><TextBlock Text="Undo everything" Style="{StaticResource Strong}" /><TextBlock Text="Puts back every value Framecalm changed, in every game and in Windows. Values you changed yourself since are kept unless you say otherwise." Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
+                    <Button Style="{StaticResource Ghost}" Content="Undo everything" Command="{Binding UndoEverythingCmd}" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                </Grid>
+                <Border Style="{StaticResource Rule}" />
+                <TextBlock Text="About" Style="{StaticResource Label}" Margin="0,22,0,6" />
+                <TextBlock Style="{StaticResource Body}"><Run Text="Framecalm " /><Run Text="{Binding Version, Mode=OneWay}" /><Run Text=", free for Windows 10 and 11" /></TextBlock>
+                <TextBlock Style="{StaticResource Body}" Text="No account, no ads, no telemetry. Works offline. Frame capture uses PresentMon (MIT), made by Intel." />
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Button Style="{StaticResource Link}" Content="Report a problem" Command="{Binding SourceCmd}" Margin="0,0,20,0" />
+                    <Button Style="{StaticResource Link}" Content="framecalm.krezio.xyz" Command="{Binding SiteCmd}" />
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </DataTemplate>
+
+    <!-- ===================== CONFLICT DIALOG ===================== -->
+    <DataTemplate DataType="{x:Type vm:ConflictVM}">
+        <Border Width="560" Background="{StaticResource Surface2}" BorderBrush="{StaticResource Line2}" BorderThickness="1" CornerRadius="6" Padding="28,24">
+            <StackPanel>
+                <TextBlock Text="Conflict" Style="{StaticResource Label}" Foreground="{StaticResource Warn}" />
+                <TextBlock Text="{Binding Title}" Style="{StaticResource H2}" Margin="0,6,0,8" />
+                <TextBlock Style="{StaticResource Body}" Text="Framecalm set these, then something changed them again (you, or the game). Undoing now would overwrite that, so it's your call." />
+                <ItemsControl ItemsSource="{Binding Rows}" Margin="0,14,0,0" Focusable="False">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,0,0,10">
+                                <TextBlock Text="{Binding Label}" Style="{StaticResource Strong}" />
+                                <TextBlock Style="{StaticResource Value}" FontSize="13"><Run Text="original " Foreground="{StaticResource Faint}" /><Run Text="{Binding Original, Mode=OneWay}" /><Run Text="   ·   framecalm set " Foreground="{StaticResource Faint}" /><Run Text="{Binding Ours, Mode=OneWay}" /><Run Text="   ·   now " Foreground="{StaticResource Faint}" /><Run Text="{Binding Now, Mode=OneWay}" Foreground="{StaticResource Accent}" /></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                    <Button Style="{StaticResource Ghost}" Content="Keep what's there now" Command="{Binding KeepCmd}" Margin="0,0,10,0" />
+                    <Button Style="{StaticResource Primary}" Content="Put back the originals" Command="{Binding RestoreCmd}" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </DataTemplate>
+</ResourceDictionary>
