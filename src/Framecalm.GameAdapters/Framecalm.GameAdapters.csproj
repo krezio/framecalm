@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Framecalm.GameAdapters</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Framecalm.Core\Framecalm.Core.csproj" />
+    <EmbeddedResource Include="Data\*.json" LogicalName="Framecalm.Data.%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>

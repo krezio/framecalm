@@ -1,0 +1,85 @@
+[
+  {
+    "id": "valorant", "cover": "store:9NKCCHCFTHV2", "name": "VALORANT", "support": "guided", "strictAntiCheat": true, "antiCheat": "Riot Vanguard",
+    "processNames": ["VALORANT-Win64-Shipping"], "riotIds": ["valorant"], "nameMatches": ["VALORANT"],
+    "notes": "Vanguard protects VALORANT at the kernel level, so Framecalm never touches its files or its process. These are the exact in-game steps.",
+    "guided": [
+      { "where": "Settings > Video > General > Limit FPS Always", "set": "Off, or your monitor's refresh rate", "why": "A low cap is the most common reason VALORANT feels slower than it should.", "load": "cpu" },
+      { "where": "Settings > Video > Graphics Quality > Multithreaded Rendering", "set": "On", "why": "Spreads work across CPU cores. VALORANT is usually CPU-limited.", "load": "cpu" },
+      { "where": "Settings > Video > Graphics Quality > Material / Texture / Detail Quality", "set": "Low", "why": "Big gains on integrated and laptop GPUs, barely visible in fights.", "load": "gpu" },
+      { "where": "Settings > Video > Graphics Quality > Vignette, Bloom, Distortion, Cast Shadows", "set": "Off", "why": "Pure effects. Off is also easier to read.", "load": "gpu" },
+      { "where": "Settings > Video > Graphics Quality > NVIDIA Reflex Low Latency", "set": "On + Boost (NVIDIA only)", "why": "Lowers input delay when the GPU is the limit.", "load": "gpu" }
+    ]
+  },
+  {
+    "id": "cs2", "cover": "steam:730", "name": "Counter-Strike 2", "support": "guided", "antiCheat": "VAC",
+    "processNames": ["cs2"], "steamIds": ["730"], "nameMatches": ["Counter-Strike"],
+    "notes": "CS2 settings live in Steam Cloud and the game rewrites them, so guided steps are more reliable here.",
+    "guided": [
+      { "where": "Settings > Video > Advanced Video > Boost Player Contrast", "set": "Enabled", "why": "Keeps players readable when you lower other settings.", "load": "gpu" },
+      { "where": "Settings > Video > Advanced Video > Shader Detail / Particle Detail", "set": "Low", "why": "Smokes and molotovs are the biggest frame-time spikes in CS2.", "load": "gpu" },
+      { "where": "Settings > Video > Advanced Video > Ambient Occlusion, Depth of field", "set": "Disabled", "why": "Effects with a clear cost and no gameplay value.", "load": "gpu" },
+      { "where": "Settings > Video > Advanced Video > Max Frames Per Second", "set": "0 (unlimited) or a bit above your refresh rate", "why": "Low caps throw frames away.", "load": "cpu" },
+      { "where": "Settings > Video > Advanced Video > NVIDIA Reflex", "set": "Enabled", "why": "Lower input delay when GPU-limited.", "load": "gpu" }
+    ]
+  },
+  {
+    "id": "apex-legends", "cover": "steam:1172470", "name": "Apex Legends", "support": "guided", "antiCheat": "Easy Anti-Cheat",
+    "processNames": ["r5apex", "r5apex_dx12"], "steamIds": ["1172470"], "nameMatches": ["Apex Legends"],
+    "guided": [
+      { "where": "Settings > Video > Texture Streaming Budget", "set": "One step below your VRAM (e.g. Medium for 4 GB)", "why": "Running out of VRAM causes the worst stutters in Apex.", "load": "gpu" },
+      { "where": "Settings > Video > Sun Shadow Coverage / Detail, Spot Shadow Detail", "set": "Low", "why": "Shadows are the heaviest setting group.", "load": "gpu" },
+      { "where": "Settings > Video > Volumetric Lighting, Dynamic Spot Shadows", "set": "Disabled", "why": "Large GPU cost, little gameplay value.", "load": "gpu" },
+      { "where": "Settings > Video > Adaptive Resolution FPS Target", "set": "0 (off)", "why": "Keeps the image sharp; tune with real settings instead.", "load": "gpu" }
+    ]
+  },
+  {
+    "id": "overwatch-2", "cover": "steam:2357570", "name": "Overwatch 2", "support": "guided", "antiCheat": "Blizzard",
+    "processNames": ["Overwatch"], "steamIds": ["2357570"], "nameMatches": ["Overwatch"],
+    "guided": [
+      { "where": "Options > Video > Frame Rate", "set": "Custom, at or above your refresh rate", "why": "The default cap can be lower than your screen.", "load": "cpu" },
+      { "where": "Options > Video > Graphics Quality > Shadow Detail", "set": "Low", "why": "Biggest single GPU cost.", "load": "gpu" },
+      { "where": "Options > Video > Graphics Quality > Local Fog Detail, Dynamic Reflections", "set": "Low / Off", "why": "Heavy effects in busy fights.", "load": "gpu" },
+      { "where": "Options > Video > NVIDIA Reflex", "set": "Enabled + Boost (NVIDIA only)", "why": "Lower input delay.", "load": "gpu" }
+    ]
+  },
+  {
+    "id": "league-of-legends", "cover": "store:9PB301R051CQ", "name": "League of Legends", "support": "guided", "strictAntiCheat": true, "antiCheat": "Riot Vanguard",
+    "processNames": ["League of Legends"], "riotIds": ["league_of_legends"], "nameMatches": ["League of Legends"],
+    "guided": [
+      { "where": "Settings > Video > Frame Rate Cap", "set": "Your refresh rate (or Uncapped)", "why": "The default cap can be lower than your screen.", "load": "cpu" },
+      { "where": "Settings > Video > Shadow Quality", "set": "Off or Low", "why": "Shadows are the main GPU cost in team fights.", "load": "gpu" },
+      { "where": "Settings > Video > Effects Quality", "set": "Medium", "why": "Ability effects spike frame times in fights.", "load": "gpu" },
+      { "where": "Settings > Video > Wait for Vertical Sync", "set": "Off", "why": "Removes the V-Sync cap and its delay.", "load": "gpu" }
+    ]
+  },
+  {
+    "id": "rainbow-six-siege", "cover": "steam:359550", "name": "Rainbow Six Siege", "support": "guided", "antiCheat": "BattlEye",
+    "processNames": ["RainbowSix", "RainbowSix_Vulkan"], "steamIds": ["359550"], "nameMatches": ["Rainbow Six"],
+    "guided": [
+      { "where": "Options > Graphics > Shadow Quality", "set": "Low", "why": "Big GPU cost.", "load": "gpu" },
+      { "where": "Options > Graphics > Ambient Occlusion, Lens Effects, Zoom-in Depth of Field", "set": "Off", "why": "Effects with little gameplay value.", "load": "gpu" },
+      { "where": "Options > Display > V-Sync", "set": "Off", "why": "Removes the cap and its input delay.", "load": "gpu" }
+    ]
+  },
+  {
+    "id": "pubg", "cover": "steam:578080", "name": "PUBG: BATTLEGROUNDS", "support": "guided", "antiCheat": "BattlEye",
+    "processNames": ["TslGame"], "steamIds": ["578080"], "nameMatches": ["PUBG"],
+    "guided": [
+      { "where": "Settings > Graphics > Shadows, Effects, Foliage", "set": "Very Low", "why": "The heaviest groups. Very Low foliage also helps spotting.", "load": "gpu" },
+      { "where": "Settings > Graphics > View Distance", "set": "Medium", "why": "CPU-heavy in towns. Medium keeps far players visible.", "load": "cpu" },
+      { "where": "Settings > Graphics > Frame Rate Limit", "set": "Unlimited or your refresh rate", "why": "Default caps can be low.", "load": "cpu" }
+    ]
+  },
+  {
+    "id": "roblox", "name": "Roblox", "cover": "store:9NBLGGGZM6WM", "support": "guided", "strictAntiCheat": true, "antiCheat": "Hyperion",
+    "processNames": ["RobloxPlayerBeta"], "nameMatches": ["Roblox"],
+    "notes": "Roblox protects its client with Hyperion, so Framecalm never touches its files or its process, and doesn't use FPS unlockers or client flags. These are the exact in-game steps.",
+    "guided": [
+      { "where": "Esc > Settings > Maximum Frame Rate", "set": "Your monitor's refresh rate (up to 240)", "why": "Roblox defaults to 60. This is the official setting, no unlocker needed.", "load": "cpu" },
+      { "where": "Esc > Settings > Graphics Mode", "set": "Manual", "why": "Automatic often picks a higher quality than your PC can hold.", "load": "gpu" },
+      { "where": "Esc > Settings > Graphics Quality", "set": "3 to 5 bars on laptops, then raise it until FPS drops", "why": "Each bar adds render distance, shadows and effects. It's the biggest lever in Roblox.", "load": "both" },
+      { "where": "Esc > Settings > Fullscreen", "set": "On", "why": "Fullscreen avoids extra work Windows does for windowed apps on some PCs.", "load": "gpu" }
+    ]
+  }
+]
