@@ -1,0 +1,1036 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>All 87 Windows tweaks, with their registry keys | Framecalm</title>
+  <meta name="description" content="Every one of Framecalm's 87 Windows tweaks: what it does, what it costs, its Safe, Advanced or Extreme tier and the exact registry value or power setting it writes.">
+  <link rel="canonical" href="https://framecalm.krezio.xyz/tweaks/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#100E33">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Framecalm">
+  <meta property="og:title" content="All 87 Windows tweaks, with their registry keys | Framecalm">
+  <meta property="og:description" content="Every one of Framecalm's 87 Windows tweaks: what it does, what it costs, its Safe, Advanced or Extreme tier and the exact registry value or power setting it writes.">
+  <meta property="og:url" content="https://framecalm.krezio.xyz/tweaks/">
+  <meta property="og:image" content="https://framecalm.krezio.xyz/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css?v=1c204c7a4c">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top">
+    <nav class="wrap nav" aria-label="Main">
+      <a class="brand" href="../"><img src="../assets/logo.svg" alt="" width="28" height="28"><span>framecalm</span></a>
+      <div class="nav-links">
+        <a href="../#auto">One click</a>
+        <a href="../tweaks/">Tweaks</a>
+        <a href="../#app">The app</a>
+        <a href="../#safety">Safety</a>
+        <a href="../guides/">Guides</a>
+      </div>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/krezio/framecalm-releases/releases/latest/download/Framecalm-Setup.exe">Download</a>
+    </nav>
+  </header>
+  <main id="main" class="tweaks-page">
+    <section class="wrap tweaks-intro">
+      <h1 class="big"><span class="line"><span>Every tweak,</span></span><span class="line"><span>in the open.</span></span></h1>
+      <p class="sub reveal">All 87 things Framecalm can change, what each one changes it to, and what you give up. Open any row for the exact registry key or power setting.</p>
+    </section>
+    <!-- ===== levels ===== -->
+    <section id="presets" class="presets wrap">
+      <h2 class="big"><span class="line"><span>Three levels.</span></span><span class="line"><span>You choose how far.</span></span></h2>
+      <div class="preset-grid">
+        <article class="preset p-safe">
+          <span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span>
+          <h3>Recommended</h3>
+          <p class="preset-n"><b>35</b> tweaks</p>
+          <p>Safe changes with a clear benefit. Good for every PC.</p>
+          <p class="preset-sub">Includes</p>
+          <ul><li>Keep USB devices awake</li><li>Hardware-accelerated GPU scheduling</li><li>No Game Bar pop-ups</li><li>Stop sharing updates with other PCs</li><li>Turn off Remote Assistance</li></ul>
+        </article>
+        <article class="preset p-advanced">
+          <span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span>
+          <h3>Competitive</h3>
+          <p class="preset-n"><b>65</b> tweaks</p>
+          <p>Recommended, plus Advanced changes that trade power use and convenience for lower latency.</p>
+          <p class="preset-sub">Adds, among others</p>
+          <ul><li>Turn off Fast Startup</li><li>Keep the CPU at full speed</li><li>Turn off core parking</li><li>Aggressive CPU boost</li><li>Turn off PCI Express power saving</li></ul>
+        </article>
+        <article class="preset p-extreme">
+          <span class="meter t-extreme" aria-hidden="true"><i></i><i></i><i></i></span>
+          <h3>Extreme</h3>
+          <p class="preset-n"><b>77</b> tweaks</p>
+          <p>Everything, including changes that lower Windows security. Only for a PC that is just for games.</p>
+          <p class="preset-sub">Adds, among others</p>
+          <ul><li>Turn off hibernation</li><li>Turn off fullscreen optimizations everywhere</li><li>Stop Store apps updating in the background</li><li>Ask before downloading Windows updates</li><li>Turn off automatic maintenance</li></ul>
+        </article>
+      </div>
+    </section>
+    <!-- ===== the full list ===== -->
+    <section id="tweaks" class="catalog wrap">
+      <h2 class="big"><span class="line"><span>All 87, in the open.</span></span></h2>
+      <p class="sub">Every value Framecalm can change, and what it changes it to. Open any row to see the registry key or power setting.</p>
+      <div class="catalog-tools">
+        <div class="seg" role="group" aria-label="Filter by tier">
+          <button type="button" aria-pressed="true" data-tier="all">All</button>
+          <button type="button" aria-pressed="false" data-tier="safe">Safe <span>44</span></button>
+          <button type="button" aria-pressed="false" data-tier="advanced">Advanced <span>38</span></button>
+          <button type="button" aria-pressed="false" data-tier="extreme">Extreme <span>5</span></button>
+        </div>
+        <label class="search"><span class="sr">Search tweaks</span><input type="search" placeholder="Search tweaks" data-search></label>
+      </div>
+      <div class="tier-key">
+        <p><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><b>Safe</b> Clear benefit, nothing you'd miss.</p>
+        <p><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><b>Advanced</b> Trades power use or a convenience for speed.</p>
+        <p><span class="meter t-extreme" aria-hidden="true"><i></i><i></i><i></i></span><b>Extreme</b> Turns off a protection or a feature.</p>
+      </div>
+      <div class="cat" data-cat="power">
+        <div class="cat-head"><h3>Power and CPU</h3><p>How hard the processor is allowed to work, and what Windows switches off to save energy.</p></div>
+        <ul class="tw-list">
+        <li class="tw" data-tier="safe" data-text="keep usb devices awake stops windows putting usb ports to sleep to save power. fixes mice, headsets and controllers that drop out or lag for a moment after sitting idle.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Keep USB devices awake</span><span class="tw-impact">Fixes specific problems</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Stops Windows putting USB ports to sleep to save power. Fixes mice, headsets and controllers that drop out or lag for a moment after sitting idle.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Laptops use slightly more battery.</p>
+              <ul class="tw-keys"><li><code>powercfg USB settings / USB selective suspend</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="turn off fast startup fast startup makes shut down a half-hibernate, so drivers and windows never get a clean start. turning it off means shut down really shuts down.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off Fast Startup</span><span class="tw-impact">Fixes specific problems</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Fast Startup makes Shut down a half-hibernate, so drivers and Windows never get a clean start. Turning it off means Shut down really shuts down.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Cold boots take a few seconds longer.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Power\HiberbootEnabled</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="keep the cpu at full speed sets the minimum processor state to 100%, so the cpu doesn't have to ramp its clock up when a game suddenly needs it.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Keep the CPU at full speed</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Sets the minimum processor state to 100%, so the CPU doesn't have to ramp its clock up when a game suddenly needs it.</p>
+              <p class="tw-trade"><b>Trade-off.</b> More heat and power use at idle. On laptops, fans may spin more.</p>
+              <ul class="tw-keys"><li><code>powercfg SUB_PROCESSOR / PROCTHROTTLEMIN</code><span>set to <code>100</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="turn off core parking keeps every cpu core available instead of letting windows park idle ones. can smooth out frame times when a game's load jumps between cores.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off core parking</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Keeps every CPU core available instead of letting Windows park idle ones. Can smooth out frame times when a game's load jumps between cores.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Higher idle power use.</p>
+              <ul class="tw-keys"><li><code>powercfg SUB_PROCESSOR / CPMINCORES</code><span>set to <code>100</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="aggressive cpu boost tells the cpu to use its turbo boost as soon as there's work, rather than waiting to see if the load sticks around.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Aggressive CPU boost</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Tells the CPU to use its turbo boost as soon as there's work, rather than waiting to see if the load sticks around.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Runs hotter. On thin laptops it can hit thermal limits sooner.</p>
+              <ul class="tw-keys"><li><code>powercfg SUB_PROCESSOR / PERFBOOSTMODE</code><span>set to <code>2</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="turn off pci express power saving stops windows lowering the power state of the link to your graphics card and nvme drive between bursts of work.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off PCI Express power saving</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Stops Windows lowering the power state of the link to your graphics card and NVMe drive between bursts of work.</p>
+              <p class="tw-trade"><b>Trade-off.</b> A few watts more at idle.</p>
+              <ul class="tw-keys"><li><code>powercfg SUB_PCIEXPRESS / ASPM</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="turn off power throttling windows slows down apps it thinks are in the background. this stops it, which helps when a game's launcher, voice chat or capture app gets throttled.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off power throttling</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Windows slows down apps it thinks are in the background. This stops it, which helps when a game's launcher, voice chat or capture app gets throttled.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Background apps use more power. Takes effect after a restart.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\Power\PowerThrottling\PowerThrottlingOff</code><span>set to <code>1</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="turn off hibernation removes the hibernation file, which is often 6 to 25 gb on drive c:. also turns off fast startup.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off hibernation</span><span class="tw-impact">Fixes specific problems</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Removes the hibernation file, which is often 6 to 25 GB on drive C:. Also turns off Fast Startup.</p>
+              <p class="tw-trade"><b>Trade-off.</b> No Hibernate option. Laptops that hibernate on low battery will shut down instead.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\Power\HibernateEnabled</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="keep drives spinning stops windows powering down drives after a few minutes idle, so a game doesn't hitch while a hard drive spins back up.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Keep drives spinning</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Stops Windows powering down drives after a few minutes idle, so a game doesn't hitch while a hard drive spins back up.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Hard drives use a little more power and make a little more noise.</p>
+              <ul class="tw-keys"><li><code>powercfg SUB_DISK / DISKIDLE</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="cpu energy preference: performance tells the processor to favour speed over saving energy when it decides how fast to run.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">CPU energy preference: performance</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Tells the processor to favour speed over saving energy when it decides how fast to run.</p>
+              <p class="tw-trade"><b>Trade-off.</b> More heat and power use, especially on laptops.</p>
+              <ul class="tw-keys"><li><code>powercfg SUB_PROCESSOR / PERFEPP</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="extreme" data-text="never let the cpu idle keeps every core out of its sleep states. shaves the wake-up delay some competitive players chase.">
+          <details>
+            <summary><span class="meter t-extreme" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Never let the CPU idle</span><span class="tw-impact">Fixes specific problems</span><span class="tw-tier">Extreme</span></summary>
+            <div class="tw-body">
+              <p>Keeps every core out of its sleep states. Shaves the wake-up delay some competitive players chase.</p>
+              <p class="tw-trade"><b>Trade-off.</b> The CPU runs hot and loud all the time and uses a lot more power. Never on a laptop.</p>
+              <ul class="tw-keys"><li><code>powercfg SUB_PROCESSOR / IDLEDISABLE</code><span>set to <code>1</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        </ul>
+      </div>
+      <div class="cat" data-cat="graphics">
+        <div class="cat-head"><h3>Graphics</h3><p>How Windows schedules the GPU and presents frames from games.</p></div>
+        <ul class="tw-list">
+        <li class="tw" data-tier="safe" data-text="hardware-accelerated gpu scheduling lets the graphics card manage its own memory and scheduling. required for dlss frame generation; on other games the effect is small either way.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Hardware-accelerated GPU scheduling</span><span class="tw-impact">Fixes specific problems</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Lets the graphics card manage its own memory and scheduling. Required for DLSS Frame Generation; on other games the effect is small either way.</p>
+              <p class="tw-trade"><b>Trade-off.</b> A few older drivers and capture tools behave badly with it. Takes effect after a restart.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\HwSchMode</code><span>set to <code>2</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="turn off xbox game bar stops the game bar overlay and its capture features from hooking into every game you start.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off Xbox Game Bar</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Stops the Game Bar overlay and its capture features from hooking into every game you start.</p>
+              <p class="tw-trade"><b>Trade-off.</b> No Win+G overlay, no clips from Game Bar. Your own capture app is unaffected.</p>
+              <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR\AppCaptureEnabled</code><span>set to <code>0</code></span></li><li><code>HKCU\System\GameConfigStore\GameDVR_Enabled</code><span>set to <code>0</code></span></li><li><code>HKCU\Software\Microsoft\GameBar\UseNexusForGameBarEnabled</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="no game bar pop-ups stops the &quot;press win+g&quot; tip from showing when a game starts.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">No Game Bar pop-ups</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Stops the &quot;Press Win+G&quot; tip from showing when a game starts.</p>
+              <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\GameBar\ShowStartupPanel</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="prioritize games in the multimedia scheduler windows has a scheduler profile just for games that it barely uses by default. this raises its cpu priority and i/o priority to high.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Prioritize games in the multimedia scheduler</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Windows has a scheduler profile just for games that it barely uses by default. This raises its CPU priority and I/O priority to High.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Background audio or streaming apps can get less time while a game runs.</p>
+              <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games\Priority</code><span>set to <code>6</code></span></li><li><code>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games\Scheduling Category</code><span>set to <code>&quot;High&quot;</code></span></li><li><code>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games\SFIO Priority</code><span>set to <code>&quot;High&quot;</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="give games more cpu time windows reserves 20% of cpu time for background tasks while multimedia apps run. this lowers the reservation to 10%.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Give games more CPU time</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Windows reserves 20% of CPU time for background tasks while multimedia apps run. This lowers the reservation to 10%.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Background tasks get less time during games.</p>
+              <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\SystemResponsiveness</code><span>set to <code>10</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="favor the window you're using gives the app in front shorter, more frequent turns on the cpu, so a game gets scheduled sooner after input.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Favor the window you're using</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Gives the app in front shorter, more frequent turns on the CPU, so a game gets scheduled sooner after input.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Background work such as encoding or downloads can run a little slower.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\PriorityControl\Win32PrioritySeparation</code><span>set to <code>38</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="turn off fullscreen optimizations everywhere makes fullscreen games use real exclusive fullscreen instead of a borderless window in disguise. some older directx 11 games feel more responsive this way.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off fullscreen optimizations everywhere</span><span class="tw-impact">Fixes specific problems</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Makes fullscreen games use real exclusive fullscreen instead of a borderless window in disguise. Some older DirectX 11 games feel more responsive this way.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Alt-Tab is slower and some overlays won't show over the game.</p>
+              <ul class="tw-keys"><li><code>HKCU\System\GameConfigStore\GameDVR_FSEBehaviorMode</code><span>set to <code>2</code></span></li><li><code>HKCU\System\GameConfigStore\GameDVR_HonorUserFSEBehaviorMode</code><span>set to <code>1</code></span></li><li><code>HKCU\System\GameConfigStore\GameDVR_DXGIHonorFSEWindowsCompatible</code><span>set to <code>1</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="turn off multiplane overlay a known fix for flicker, black flashes and stutter on some nvidia multi-monitor setups. leave it alone if you don't have those problems.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off multiplane overlay</span><span class="tw-impact">Fixes specific problems</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>A known fix for flicker, black flashes and stutter on some NVIDIA multi-monitor setups. Leave it alone if you don't have those problems.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Slightly higher GPU use for video playback. Takes effect after a restart.</p>
+              <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Microsoft\Windows\Dwm\OverlayTestMode</code><span>set to <code>5</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="block game dvr everywhere turns off windows game recording with a policy, so no app or update can switch it back on.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Block Game DVR everywhere</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Turns off Windows game recording with a policy, so no app or update can switch it back on.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Xbox Game Bar can't record clips at all.</p>
+              <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\GameDVR\AllowGameDVR</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="longer gpu timeout gives the graphics driver 10 seconds instead of 2 before windows decides it has hung and resets it. fixes &quot;display driver stopped responding&quot; in heavy games and on overclocked cards.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Longer GPU timeout</span><span class="tw-impact">Fixes specific problems</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Gives the graphics driver 10 seconds instead of 2 before Windows decides it has hung and resets it. Fixes &quot;display driver stopped responding&quot; in heavy games and on overclocked cards.</p>
+              <p class="tw-trade"><b>Trade-off.</b> A genuinely frozen GPU takes longer to recover. Takes effect after a restart.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\TdrDelay</code><span>set to <code>10</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="turn off fault tolerant heap if a game crashes a few times, windows quietly runs it with a slower, safer memory allocator from then on. this stops that.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off Fault Tolerant Heap</span><span class="tw-impact">Fixes specific problems</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>If a game crashes a few times, Windows quietly runs it with a slower, safer memory allocator from then on. This stops that.</p>
+              <p class="tw-trade"><b>Trade-off.</b> A game that really is unstable may crash more often instead of running slower.</p>
+              <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Microsoft\FTH\Enabled</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        </ul>
+      </div>
+      <div class="cat" data-cat="network">
+        <div class="cat-head"><h3>Network</h3><p>Latency and background bandwidth: what else is using your connection while you play.</p></div>
+        <ul class="tw-list">
+        <li class="tw" data-tier="safe" data-text="stop sharing updates with other pcs by default windows can upload update files to other pcs. on a slow upload connection that shows up as ping spikes. updates still download from microsoft.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Stop sharing updates with other PCs</span><span class="tw-impact">Noticeable</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>By default Windows can upload update files to other PCs. On a slow upload connection that shows up as ping spikes. Updates still download from Microsoft.</p>
+              <p class="tw-trade"><b>Trade-off.</b> None for most people.</p>
+              <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization\DODownloadMode</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="turn off remote assistance stops other people being invited to view or control this pc through remote assistance. fewer open doors.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off Remote Assistance</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Stops other people being invited to view or control this PC through Remote Assistance. Fewer open doors.</p>
+              <p class="tw-trade"><b>Trade-off.</b> You can't receive help through Remote Assistance until you turn it back on.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance\fAllowToGetHelp</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="turn off network throttling windows limits network processing while media plays so audio doesn't glitch. this removes the limit.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off network throttling</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Windows limits network processing while media plays so audio doesn't glitch. This removes the limit.</p>
+              <p class="tw-trade"><b>Trade-off.</b> On very old CPUs, audio can crackle under heavy network load.</p>
+              <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\NetworkThrottlingIndex</code><span>set to <code>0xFFFFFFFF</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="turn off nagle's algorithm sends small packets right away instead of bundling them. helps games that use tcp (some mmos and older titles). most shooters use udp and won't change.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off Nagle's algorithm</span><span class="tw-impact">Fixes specific problems</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Sends small packets right away instead of bundling them. Helps games that use TCP (some MMOs and older titles). Most shooters use UDP and won't change.</p>
+              <p class="tw-trade"><b>Trade-off.</b> A little more network overhead. Applies to your active network adapters; takes effect after a restart.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\{each network adapter}\TcpAckFrequency</code><span>set to <code>1</code></span></li><li><code>HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\{each network adapter}\TCPNoDelay</code><span>set to <code>1</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="stop store apps updating in the background microsoft store apps stop downloading updates on their own while you play.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Stop Store apps updating in the background</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Microsoft Store apps stop downloading updates on their own while you play.</p>
+              <p class="tw-trade"><b>Trade-off.</b> You update Store apps yourself from the Store's Library page. Games from the Xbox app are affected too.</p>
+              <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\WindowsStore\AutoDownload</code><span>set to <code>2</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="keep windows update away from drivers stops windows update replacing your graphics driver with an older or generic one.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Keep Windows Update away from drivers</span><span class="tw-impact">Fixes specific problems</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Stops Windows Update replacing your graphics driver with an older or generic one.</p>
+              <p class="tw-trade"><b>Trade-off.</b> You update drivers yourself, from NVIDIA, AMD or Intel.</p>
+              <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\ExcludeWUDriversInQualityUpdate</code><span>set to <code>1</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="ask before downloading windows updates windows tells you updates are ready instead of downloading and installing them in the middle of a session.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Ask before downloading Windows updates</span><span class="tw-impact">Noticeable</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Windows tells you updates are ready instead of downloading and installing them in the middle of a session.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Security updates wait for you. Install them regularly.</p>
+              <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU\AUOptions</code><span>set to <code>2</code></span></li><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU\NoAutoRebootWithLoggedOnUsers</code><span>set to <code>1</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="prefer ipv4 over ipv6 some games and launchers connect faster or more reliably over ipv4. ipv6 still works when it's the only option.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Prefer IPv4 over IPv6</span><span class="tw-impact">Fixes specific problems</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Some games and launchers connect faster or more reliably over IPv4. IPv6 still works when it's the only option.</p>
+              <p class="tw-trade"><b>Trade-off.</b> None for most people. Takes effect after a restart.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters\DisabledComponents</code><span>set to <code>32</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="faster copies over your home network turns off bandwidth throttling for file sharing, so copying from a nas or another pc isn't held back.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Faster copies over your home network</span><span class="tw-impact">Fixes specific problems</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Turns off bandwidth throttling for file sharing, so copying from a NAS or another PC isn't held back.</p>
+              <p class="tw-trade"><b>Trade-off.</b> None on a home network.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters\DisableBandwidthThrottling</code><span>set to <code>1</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        </ul>
+      </div>
+      <div class="cat" data-cat="input">
+        <div class="cat-head"><h3>Mouse and keyboard</h3><p>Raw, predictable input with no pop-ups that steal focus mid-game.</p></div>
+        <ul class="tw-list">
+        <li class="tw" data-tier="safe" data-text="turn off mouse acceleration turns off enhance pointer precision, so the same hand movement always moves the same distance. the single biggest change for aim consistency.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off mouse acceleration</span><span class="tw-impact">Big difference</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Turns off Enhance pointer precision, so the same hand movement always moves the same distance. The single biggest change for aim consistency.</p>
+              <p class="tw-trade"><b>Trade-off.</b> The desktop pointer feels slower at first. Takes effect after you sign out.</p>
+              <ul class="tw-keys"><li><code>HKCU\Control Panel\Mouse\MouseSpeed</code><span>set to <code>&quot;0&quot;</code></span></li><li><code>HKCU\Control Panel\Mouse\MouseThreshold1</code><span>set to <code>&quot;0&quot;</code></span></li><li><code>HKCU\Control Panel\Mouse\MouseThreshold2</code><span>set to <code>&quot;0&quot;</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="no sticky keys pop-up pressing shift five times no longer throws you out of the game to ask about sticky keys. same for filter keys and toggle keys.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">No Sticky Keys pop-up</span><span class="tw-impact">Fixes specific problems</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Pressing Shift five times no longer throws you out of the game to ask about Sticky Keys. Same for Filter Keys and Toggle Keys.</p>
+              <p class="tw-trade"><b>Trade-off.</b> None. You can still turn these on in Accessibility settings.</p>
+              <ul class="tw-keys"><li><code>HKCU\Control Panel\Accessibility\StickyKeys\Flags</code><span>set to <code>&quot;506&quot;</code></span></li><li><code>HKCU\Control Panel\Accessibility\Keyboard Response\Flags</code><span>set to <code>&quot;122&quot;</code></span></li><li><code>HKCU\Control Panel\Accessibility\ToggleKeys\Flags</code><span>set to <code>&quot;58&quot;</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="shortest key repeat delay holding a key starts repeating sooner. mostly noticeable in menus, chat and text.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Shortest key repeat delay</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Holding a key starts repeating sooner. Mostly noticeable in menus, chat and text.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Easier to type a letter twice by accident. Takes effect after you sign out.</p>
+              <ul class="tw-keys"><li><code>HKCU\Control Panel\Keyboard\KeyboardDelay</code><span>set to <code>&quot;0&quot;</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="no shake to minimize shaking a window while you drag it no longer minimizes everything else.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">No shake to minimize</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Shaking a window while you drag it no longer minimizes everything else.</p>
+              <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\DisallowShaking</code><span>set to <code>1</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="no typing insights windows stops collecting statistics about how you type.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">No typing insights</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Windows stops collecting statistics about how you type.</p>
+              <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Input\Settings\InsightsEnabled</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        </ul>
+      </div>
+      <div class="cat" data-cat="background">
+        <div class="cat-head"><h3>Background apps</h3><p>Apps and features that run when you didn't ask them to.</p></div>
+        <ul class="tw-list">
+        <li class="tw" data-tier="safe" data-text="stop apps running in the background store apps such as weather, phone link and mail stop running when they're closed.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Stop apps running in the background</span><span class="tw-impact">Noticeable</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Store apps such as Weather, Phone Link and Mail stop running when they're closed.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Those apps won't show live notifications until you open them.</p>
+              <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications\GlobalUserDisabled</code><span>set to <code>1</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="stop microsoft edge running in the background edge preloads itself at sign-in and keeps running after you close it. this stops both.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Stop Microsoft Edge running in the background</span><span class="tw-impact">Noticeable</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Edge preloads itself at sign-in and keeps running after you close it. This stops both.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Edge opens about a second slower.</p>
+              <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Edge\StartupBoostEnabled</code><span>set to <code>0</code></span></li><li><code>HKLM\SOFTWARE\Policies\Microsoft\Edge\BackgroundModeEnabled</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="turn off widgets removes the widgets board and the news feed process that keeps it filled.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off Widgets</span><span class="tw-impact">Noticeable</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Removes the Widgets board and the news feed process that keeps it filled.</p>
+              <p class="tw-trade"><b>Trade-off.</b> No weather or news on the taskbar.</p>
+              <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Dsh\AllowNewsAndInterests</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="turn off copilot in windows removes the copilot sidebar and its background process.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off Copilot in Windows</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Removes the Copilot sidebar and its background process.</p>
+              <p class="tw-trade"><b>Trade-off.</b> You can still use Copilot in a browser.</p>
+              <ul class="tw-keys"><li><code>HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot\TurnOffWindowsCopilot</code><span>set to <code>1</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="no startup delay windows waits about ten seconds after sign-in before starting your startup apps. this removes the wait.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">No startup delay</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Windows waits about ten seconds after sign-in before starting your startup apps. This removes the wait.</p>
+              <p class="tw-trade"><b>Trade-off.</b> If you have many startup apps, they all compete for the first few seconds.</p>
+              <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Serialize\StartupDelayInMSec</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="turn off recall stops windows taking snapshots of your screen to make your activity searchable, on pcs that support it.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off Recall</span><span class="tw-impact">Noticeable</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Stops Windows taking snapshots of your screen to make your activity searchable, on PCs that support it.</p>
+              <p class="tw-trade"><b>Trade-off.</b> No Recall timeline.</p>
+              <ul class="tw-keys"><li><code>HKCU\Software\Policies\Microsoft\Windows\WindowsAI\DisableAIDataAnalysis</code><span>set to <code>1</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="turn off cortana removes cortana and its background process on windows versions that still include it.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off Cortana</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Removes Cortana and its background process on Windows versions that still include it.</p>
+              <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search\AllowCortana</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="no feedback requests windows stops asking how it's doing.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">No feedback requests</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Windows stops asking how it's doing.</p>
+              <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Siuf\Rules\NumberOfSIUFInPeriod</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="turn off onedrive stops onedrive starting and syncing in the background, which can eat disk and upload bandwidth mid-game.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off OneDrive</span><span class="tw-impact">Noticeable</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Stops OneDrive starting and syncing in the background, which can eat disk and upload bandwidth mid-game.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Files stop syncing to OneDrive. Files already on this PC stay where they are.</p>
+              <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\OneDrive\DisableFileSyncNGSC</code><span>set to <code>1</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="extreme" data-text="turn off automatic maintenance stops windows' nightly maintenance (disk optimization, scans, update cleanup) starting while the pc is idle, which can spill into a gaming session.">
+          <details>
+            <summary><span class="meter t-extreme" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off automatic maintenance</span><span class="tw-impact">Noticeable</span><span class="tw-tier">Extreme</span></summary>
+            <div class="tw-body">
+              <p>Stops Windows' nightly maintenance (disk optimization, scans, update cleanup) starting while the PC is idle, which can spill into a gaming session.</p>
+              <p class="tw-trade"><b>Trade-off.</b> SSD TRIM and update cleanup no longer run on their own. Run Optimize Drives yourself every few weeks.</p>
+              <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\Maintenance\MaintenanceDisabled</code><span>set to <code>1</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        </ul>
+      </div>
+      <div class="cat" data-cat="services">
+        <div class="cat-head"><h3>Services</h3><p>Windows services you may not need. Each one is switched to Disabled, never deleted.</p></div>
+        <ul class="tw-list">
+        <li class="tw" data-tier="safe" data-text="disable telemetry services disables the connected user experiences service and the wap push service that sends diagnostic data to microsoft.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Disable telemetry services</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Disables the Connected User Experiences service and the WAP push service that sends diagnostic data to Microsoft.</p>
+              <p class="tw-trade"><b>Trade-off.</b> None you'll notice. Takes effect after a restart.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\DiagTrack\Start</code><span>set to <code>4 (disabled)</code></span></li><li><code>HKLM\SYSTEM\CurrentControlSet\Services\dmwappushservice\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="disable offline maps updates stops the service that downloads map data for the maps app.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Disable offline maps updates</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Stops the service that downloads map data for the Maps app.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Offline maps won't update.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\MapsBroker\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="disable fax disables the fax service.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Disable Fax</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Disables the Fax service.</p>
+              <p class="tw-trade"><b>Trade-off.</b> You can't send faxes from this PC.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\Fax\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="disable windows insider service disables the service used for insider preview builds.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Disable Windows Insider service</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Disables the service used for Insider preview builds.</p>
+              <p class="tw-trade"><b>Trade-off.</b> You can't join the Insider program until it's back on.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\wisvc\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="disable store demo mode disables the service that runs the demo mode shown on pcs in shops.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Disable store demo mode</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Disables the service that runs the demo mode shown on PCs in shops.</p>
+              <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\RetailDemo\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="disable media player sharing disables windows media player's network sharing service.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Disable Media Player sharing</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Disables Windows Media Player's network sharing service.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Media Player can't share your library on the network.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\WMPNetworkSvc\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="disable parental controls service disables the family safety monitoring service.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Disable parental controls service</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Disables the Family Safety monitoring service.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Microsoft Family limits on this PC stop working. Skip this on a child's PC.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\WpcMonSvc\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="disable payments and nfc disables the secure element service used for tap-to-pay.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Disable Payments and NFC</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Disables the secure element service used for tap-to-pay.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Tap-to-pay with this PC stops working.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\SEMgrSvc\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="disable diagnostics hub collector disables a diagnostics collector used by developer tools.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Disable diagnostics hub collector</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Disables a diagnostics collector used by developer tools.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Some Visual Studio profiling tools won't work.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\diagnosticshub.standardcollector.service\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="disable sysmain (superfetch) sysmain preloads apps into memory based on what you use. on an ssd the gain is small, and on some pcs it causes bursts of disk use.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Disable SysMain (Superfetch)</span><span class="tw-impact">Fixes specific problems</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>SysMain preloads apps into memory based on what you use. On an SSD the gain is small, and on some PCs it causes bursts of disk use.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Apps you open often may start a little slower, especially from a hard drive. Takes effect after a restart.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\SysMain\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="disable windows search indexing stops the indexer reading your drives in the background.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Disable Windows Search indexing</span><span class="tw-impact">Noticeable</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Stops the indexer reading your drives in the background.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Start menu and File Explorer search for files becomes much slower. App search still works.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\WSearch\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="disable error reporting crashes are no longer collected and uploaded in the background.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Disable error reporting</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Crashes are no longer collected and uploaded in the background.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Microsoft and app makers don't get your crash reports, so fixes for your exact crash may come later.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\WerSvc\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="disable xbox services disables xbox live sign-in, cloud saves and accessory services.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Disable Xbox services</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Disables Xbox Live sign-in, cloud saves and accessory services.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Game Pass, Xbox app games and Xbox controllers' extra features stop working. Skip this if you use any of them.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\XblAuthManager\Start</code><span>set to <code>4 (disabled)</code></span></li><li><code>HKLM\SYSTEM\CurrentControlSet\Services\XblGameSave\Start</code><span>set to <code>4 (disabled)</code></span></li><li><code>HKLM\SYSTEM\CurrentControlSet\Services\XboxNetApiSvc\Start</code><span>set to <code>4 (disabled)</code></span></li><li><code>HKLM\SYSTEM\CurrentControlSet\Services\XboxGipSvc\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="disable location service disables the service apps use to find where you are.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Disable location service</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Disables the service apps use to find where you are.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Maps, weather and Find my device can't use your location.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\lfsvc\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="disable compatibility assistant stops windows watching programs for compatibility problems and offering to re-run them with fixes.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Disable compatibility assistant</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Stops Windows watching programs for compatibility problems and offering to re-run them with fixes.</p>
+              <p class="tw-trade"><b>Trade-off.</b> No automatic compatibility prompts for old programs.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\PcaSvc\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="disable mobile hotspot disables the service that shares this pc's connection as a wi-fi hotspot.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Disable mobile hotspot</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Disables the service that shares this PC's connection as a Wi-Fi hotspot.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Mobile hotspot in Settings stops working.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\icssvc\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="disable diagnostic policy service disables the service behind windows troubleshooters and problem detection.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Disable diagnostic policy service</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Disables the service behind Windows troubleshooters and problem detection.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Troubleshooters in Settings won't work.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\DPS\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="disable smart cards disables smart card readers.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Disable smart cards</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Disables smart card readers.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Work or school smart cards stop working on this PC.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\SCardSvr\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="extreme" data-text="disable printing disables the print spooler. fewer services running, and it closes a part of windows that has had serious security bugs.">
+          <details>
+            <summary><span class="meter t-extreme" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Disable printing</span><span class="tw-impact">Small gain</span><span class="tw-tier">Extreme</span></summary>
+            <div class="tw-body">
+              <p>Disables the Print Spooler. Fewer services running, and it closes a part of Windows that has had serious security bugs.</p>
+              <p class="tw-trade"><b>Trade-off.</b> You can't print, or print to PDF, until you turn it back on.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\Spooler\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        </ul>
+      </div>
+      <div class="cat" data-cat="visual">
+        <div class="cat-head"><h3>Look and feel</h3><p>Animations and effects that make the desktop feel slower than it is.</p></div>
+        <ul class="tw-list">
+        <li class="tw" data-tier="safe" data-text="turn off transparency removes the blur behind the taskbar, start and settings. frees a little gpu time on integrated graphics.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off transparency</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Removes the blur behind the taskbar, Start and Settings. Frees a little GPU time on integrated graphics.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Windows looks flatter.</p>
+              <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize\EnableTransparency</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="turn off window animations windows open, close and minimize instantly instead of animating.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off window animations</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Windows open, close and minimize instantly instead of animating.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Less polish. Takes effect after you sign out.</p>
+              <ul class="tw-keys"><li><code>HKCU\Control Panel\Desktop\WindowMetrics\MinAnimate</code><span>set to <code>&quot;0&quot;</code></span></li><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarAnimations</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="open menus instantly removes the 400 ms pause before submenus open.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Open menus instantly</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Removes the 400 ms pause before submenus open.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Submenus open as soon as you hover, which some people find busy.</p>
+              <ul class="tw-keys"><li><code>HKCU\Control Panel\Desktop\MenuShowDelay</code><span>set to <code>&quot;0&quot;</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="turn off peek hovering the corner of the taskbar no longer fades every window to show the desktop.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off Peek</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Hovering the corner of the taskbar no longer fades every window to show the desktop.</p>
+              <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\DWM\EnableAeroPeek</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="no desktop icon shadows removes the drop shadow under desktop icon labels.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">No desktop icon shadows</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Removes the drop shadow under desktop icon labels.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Labels can be harder to read on busy wallpapers.</p>
+              <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\ListviewShadow</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="no recommendations in start hides recommended files and apps in the start menu.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">No recommendations in Start</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Hides recommended files and apps in the Start menu.</p>
+              <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Start_IrisRecommendations</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="drag windows as an outline shows just the window frame while you drag it, instead of redrawing the whole window.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Drag windows as an outline</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Shows just the window frame while you drag it, instead of redrawing the whole window.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Dragging looks old-fashioned. Takes effect after you sign out.</p>
+              <ul class="tw-keys"><li><code>HKCU\Control Panel\Desktop\DragFullWindows</code><span>set to <code>&quot;0&quot;</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="icons instead of thumbnails file explorer shows file icons instead of generating thumbnails, which speeds up big photo and video folders.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Icons instead of thumbnails</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>File Explorer shows file icons instead of generating thumbnails, which speeds up big photo and video folders.</p>
+              <p class="tw-trade"><b>Trade-off.</b> You can't preview images by their thumbnails.</p>
+              <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\IconsOnly</code><span>set to <code>1</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        </ul>
+      </div>
+      <div class="cat" data-cat="privacy">
+        <div class="cat-head"><h3>Privacy</h3><p>Ads, suggestions and data collection. Small speed effect, big quiet effect.</p></div>
+        <ul class="tw-list">
+        <li class="tw" data-tier="safe" data-text="turn off the advertising id apps can no longer use your windows advertising id to show you personalized ads.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off the advertising ID</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Apps can no longer use your Windows advertising ID to show you personalized ads.</p>
+              <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo\Enabled</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="no tips, suggestions or sponsored apps stops start suggestions, settings promotions, tips notifications and apps that install themselves.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">No tips, suggestions or sponsored apps</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Stops Start suggestions, Settings promotions, tips notifications and apps that install themselves.</p>
+              <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SystemPaneSuggestionsEnabled</code><span>set to <code>0</code></span></li><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SubscribedContent-338388Enabled</code><span>set to <code>0</code></span></li><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SubscribedContent-338389Enabled</code><span>set to <code>0</code></span></li><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SilentInstalledAppsEnabled</code><span>set to <code>0</code></span></li><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SoftLandingEnabled</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="no tailored experiences microsoft stops using your diagnostic data to pick tips and offers for you.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">No tailored experiences</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Microsoft stops using your diagnostic data to pick tips and offers for you.</p>
+              <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\Privacy\TailoredExperiencesWithDiagnosticDataEnabled</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="no web results in start search start search only looks at your pc, so it stops waiting on bing and returns results faster.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">No web results in Start search</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Start search only looks at your PC, so it stops waiting on Bing and returns results faster.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Web searches go through your browser instead. Takes effect after you sign out.</p>
+              <ul class="tw-keys"><li><code>HKCU\Software\Policies\Microsoft\Windows\Explorer\DisableSearchBoxSuggestions</code><span>set to <code>1</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="no activity history windows stops recording which apps and files you use.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">No activity history</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Windows stops recording which apps and files you use.</p>
+              <p class="tw-trade"><b>Trade-off.</b> None on current Windows versions.</p>
+              <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\System\PublishUserActivities</code><span>set to <code>0</code></span></li><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\System\UploadUserActivities</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="no ads on the lock screen turns off the rotating spotlight pictures and the tips and promotions printed over them.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">No ads on the lock screen</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Turns off the rotating Spotlight pictures and the tips and promotions printed over them.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Your lock screen shows a fixed picture.</p>
+              <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\RotatingLockScreenEnabled</code><span>set to <code>0</code></span></li><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\RotatingLockScreenOverlayEnabled</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="no app launch tracking windows stops recording which apps you open to sort start and search.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">No app launch tracking</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Windows stops recording which apps you open to sort Start and search.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Most-used apps in Start won't update.</p>
+              <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Start_TrackProgs</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="leave the improvement program opts this pc out of the customer experience improvement program.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Leave the improvement program</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Opts this PC out of the Customer Experience Improvement Program.</p>
+              <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\SQMClient\Windows\CEIPEnable</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="safe" data-text="no app compatibility telemetry stops the inventory collector that reports installed programs for compatibility analysis.">
+          <details>
+            <summary><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">No app compatibility telemetry</span><span class="tw-impact">Small gain</span><span class="tw-tier">Safe</span></summary>
+            <div class="tw-body">
+              <p>Stops the inventory collector that reports installed programs for compatibility analysis.</p>
+              <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\AppCompat\AITEnable</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="minimum diagnostic data sets diagnostic data to the lowest level your edition of windows allows.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Minimum diagnostic data</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Sets diagnostic data to the lowest level your edition of Windows allows.</p>
+              <p class="tw-trade"><b>Trade-off.</b> On Home editions this is the same as Required. Some Insider features need more.</p>
+              <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection\AllowTelemetry</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        </ul>
+      </div>
+      <div class="cat" data-cat="system">
+        <div class="cat-head"><h3>System and security</h3><p>Deep changes to how Windows protects itself. Real gains on some CPUs, real trade-offs on all of them.</p></div>
+        <ul class="tw-list">
+        <li class="tw" data-tier="advanced" data-text="stop recording file access times windows writes a timestamp every time a file is read. turning that off cuts small writes during loading screens.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Stop recording file access times</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Windows writes a timestamp every time a file is read. Turning that off cuts small writes during loading screens.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Backup and cleanup tools that sort by last opened lose that information.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\FileSystem\NtfsDisableLastAccessUpdate</code><span>set to <code>2147483649</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="advanced" data-text="stop creating short file names windows creates an old dos-style short name for every new file. turning that off saves work in folders with thousands of files.">
+          <details>
+            <summary><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Stop creating short file names</span><span class="tw-impact">Small gain</span><span class="tw-tier">Advanced</span></summary>
+            <div class="tw-body">
+              <p>Windows creates an old DOS-style short name for every new file. Turning that off saves work in folders with thousands of files.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Very old 16-bit programs may not find files. Existing short names stay.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\FileSystem\NtfsDisable8dot3NameCreation</code><span>set to <code>1</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="extreme" data-text="turn off memory integrity and vbs virtualization-based security costs some cpus 5 to 15% in games. microsoft itself suggests gamers can turn it off. this does both parts.">
+          <details>
+            <summary><span class="meter t-extreme" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off Memory Integrity and VBS</span><span class="tw-impact">Noticeable</span><span class="tw-tier">Extreme</span></summary>
+            <div class="tw-body">
+              <p>Virtualization-based security costs some CPUs 5 to 15% in games. Microsoft itself suggests gamers can turn it off. This does both parts.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Removes a layer of protection against kernel-level malware. A few anti-cheats and work devices require it. Takes effect after a restart.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\EnableVirtualizationBasedSecurity</code><span>set to <code>0</code></span></li><li><code>HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity\Enabled</code><span>set to <code>0</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        <li class="tw" data-tier="extreme" data-text="turn off spectre and meltdown protections removes the cpu security patches that slow down older intel processors, mostly 6th to 9th generation. newer cpus fix this in hardware and gain little.">
+          <details>
+            <summary><span class="meter t-extreme" aria-hidden="true"><i></i><i></i><i></i></span><span class="tw-name">Turn off Spectre and Meltdown protections</span><span class="tw-impact">Fixes specific problems</span><span class="tw-tier">Extreme</span></summary>
+            <div class="tw-body">
+              <p>Removes the CPU security patches that slow down older Intel processors, mostly 6th to 9th generation. Newer CPUs fix this in hardware and gain little.</p>
+              <p class="tw-trade"><b>Trade-off.</b> Malicious code, including in a web page, could read memory it shouldn't. Only for a PC used for games and nothing sensitive. Takes effect after a restart.</p>
+              <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\FeatureSettingsOverride</code><span>set to <code>3</code></span></li><li><code>HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\FeatureSettingsOverrideMask</code><span>set to <code>3</code></span></li></ul>
+            </div>
+          </details>
+        </li>
+        </ul>
+      </div>
+      <p class="empty" data-empty hidden>No tweaks match. Clear the search or pick another tier.</p>
+    </section>
+    <section class="leftout wrap">
+      <h2 class="big"><span class="line"><span>What we left out,</span></span><span class="line"><span>on purpose.</span></span></h2>
+      <dl class="leftout-list">
+        <div><dt>RAM cleaners</dt><dd>Windows already uses free memory as cache. Emptying it makes the next load slower, not faster.</dd></div>
+        <div><dt>Turning off Windows Defender</dt><dd>Tamper Protection switches it back on, and the scan cost during games is small. Add your game folders as exclusions in Windows Security instead.</dd></div>
+        <div><dt>HPET, dynamic tick and platform clock (bcdedit)</dt><dd>On current hardware these make no difference or make frame times worse.</dd></div>
+        <div><dt>TCP window, IRPStackSize and other network packs</dt><dd>Windows tunes these automatically and does it better than a fixed value.</dd></div>
+        <div><dt>Realtime process priority</dt><dd>It can starve the mouse, keyboard and audio drivers and freeze the PC.</dd></div>
+        <div><dt>Deleting services or Windows components</dt><dd>It can't be undone cleanly and breaks updates. Framecalm only switches services to Disabled.</dd></div>
+        <div><dt>Reserved bandwidth (QoS) tweaks</dt><dd>Windows doesn't actually hold back 20% of your bandwidth. Setting the limit to zero changes nothing for games.</dd></div>
+        <div><dt>Disabling paging executive or large system cache</dt><dd>Leftovers from Windows XP. On current Windows they either do nothing or take memory away from games.</dd></div>
+      </dl>
+    </section>
+  </main>
+  <script type="application/json" id="tweak-data">[{"id":"usb-suspend-off","tier":"safe","name":"Keep USB devices awake","restart":false,"atoms":[{"where":"powercfg USB settings / USB selective suspend","value":"0"}]},{"id":"fast-startup-off","tier":"safe","name":"Turn off Fast Startup","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power\\HiberbootEnabled","value":"0"}]},{"id":"cpu-min-100","tier":"advanced","name":"Keep the CPU at full speed","restart":false,"atoms":[{"where":"powercfg SUB_PROCESSOR / PROCTHROTTLEMIN","value":"100"}]},{"id":"core-parking-off","tier":"advanced","name":"Turn off core parking","restart":false,"atoms":[{"where":"powercfg SUB_PROCESSOR / CPMINCORES","value":"100"}]},{"id":"boost-aggressive","tier":"advanced","name":"Aggressive CPU boost","restart":false,"atoms":[{"where":"powercfg SUB_PROCESSOR / PERFBOOSTMODE","value":"2"}]},{"id":"pcie-aspm-off","tier":"advanced","name":"Turn off PCI Express power saving","restart":false,"atoms":[{"where":"powercfg SUB_PCIEXPRESS / ASPM","value":"0"}]},{"id":"power-throttling-off","tier":"advanced","name":"Turn off power throttling","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling\\PowerThrottlingOff","value":"1"}]},{"id":"hibernate-off","tier":"advanced","name":"Turn off hibernation","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\HibernateEnabled","value":"0"}]},{"id":"disk-idle-off","tier":"advanced","name":"Keep drives spinning","restart":false,"atoms":[{"where":"powercfg SUB_DISK / DISKIDLE","value":"0"}]},{"id":"epp-performance","tier":"advanced","name":"CPU energy preference: performance","restart":false,"atoms":[{"where":"powercfg SUB_PROCESSOR / PERFEPP","value":"0"}]},{"id":"idle-off","tier":"extreme","name":"Never let the CPU idle","restart":false,"atoms":[{"where":"powercfg SUB_PROCESSOR / IDLEDISABLE","value":"1"}]},{"id":"hags-on","tier":"safe","name":"Hardware-accelerated GPU scheduling","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\\HwSchMode","value":"2"}]},{"id":"game-bar-off","tier":"safe","name":"Turn off Xbox Game Bar","restart":false,"atoms":[{"where":"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR\\AppCaptureEnabled","value":"0"},{"where":"HKCU\\System\\GameConfigStore\\GameDVR_Enabled","value":"0"},{"where":"HKCU\\Software\\Microsoft\\GameBar\\UseNexusForGameBarEnabled","value":"0"}]},{"id":"game-bar-tips-off","tier":"safe","name":"No Game Bar pop-ups","restart":false,"atoms":[{"where":"HKCU\\Software\\Microsoft\\GameBar\\ShowStartupPanel","value":"0"}]},{"id":"mmcss-games","tier":"advanced","name":"Prioritize games in the multimedia scheduler","restart":false,"atoms":[{"where":"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\\Priority","value":"6"},{"where":"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\\Scheduling Category","value":"\"High\""},{"where":"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\\SFIO Priority","value":"\"High\""}]},{"id":"system-responsiveness","tier":"advanced","name":"Give games more CPU time","restart":false,"atoms":[{"where":"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\SystemResponsiveness","value":"10"}]},{"id":"win32-priority","tier":"advanced","name":"Favor the window you're using","restart":false,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl\\Win32PrioritySeparation","value":"38"}]},{"id":"fso-off","tier":"advanced","name":"Turn off fullscreen optimizations everywhere","restart":false,"atoms":[{"where":"HKCU\\System\\GameConfigStore\\GameDVR_FSEBehaviorMode","value":"2"},{"where":"HKCU\\System\\GameConfigStore\\GameDVR_HonorUserFSEBehaviorMode","value":"1"},{"where":"HKCU\\System\\GameConfigStore\\GameDVR_DXGIHonorFSEWindowsCompatible","value":"1"}]},{"id":"mpo-off","tier":"advanced","name":"Turn off multiplane overlay","restart":true,"atoms":[{"where":"HKLM\\SOFTWARE\\Microsoft\\Windows\\Dwm\\OverlayTestMode","value":"5"}]},{"id":"game-dvr-policy","tier":"advanced","name":"Block Game DVR everywhere","restart":false,"atoms":[{"where":"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR\\AllowGameDVR","value":"0"}]},{"id":"tdr-delay","tier":"advanced","name":"Longer GPU timeout","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\\TdrDelay","value":"10"}]},{"id":"fth-off","tier":"advanced","name":"Turn off Fault Tolerant Heap","restart":false,"atoms":[{"where":"HKLM\\SOFTWARE\\Microsoft\\FTH\\Enabled","value":"0"}]},{"id":"delivery-opt-off","tier":"safe","name":"Stop sharing updates with other PCs","restart":false,"atoms":[{"where":"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization\\DODownloadMode","value":"0"}]},{"id":"remote-assist-off","tier":"safe","name":"Turn off Remote Assistance","restart":false,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Remote Assistance\\fAllowToGetHelp","value":"0"}]},{"id":"network-throttling-off","tier":"advanced","name":"Turn off network throttling","restart":false,"atoms":[{"where":"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\NetworkThrottlingIndex","value":"0xFFFFFFFF"}]},{"id":"nagle-off","tier":"advanced","name":"Turn off Nagle's algorithm","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces\\{each network adapter}\\TcpAckFrequency","value":"1"},{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces\\{each network adapter}\\TCPNoDelay","value":"1"}]},{"id":"store-autoupdate-off","tier":"advanced","name":"Stop Store apps updating in the background","restart":false,"atoms":[{"where":"HKLM\\SOFTWARE\\Policies\\Microsoft\\WindowsStore\\AutoDownload","value":"2"}]},{"id":"wu-drivers-off","tier":"advanced","name":"Keep Windows Update away from drivers","restart":false,"atoms":[{"where":"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\ExcludeWUDriversInQualityUpdate","value":"1"}]},{"id":"wu-ask-first","tier":"advanced","name":"Ask before downloading Windows updates","restart":false,"atoms":[{"where":"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU\\AUOptions","value":"2"},{"where":"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU\\NoAutoRebootWithLoggedOnUsers","value":"1"}]},{"id":"prefer-ipv4","tier":"advanced","name":"Prefer IPv4 over IPv6","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip6\\Parameters\\DisabledComponents","value":"32"}]},{"id":"smb-throttle-off","tier":"advanced","name":"Faster copies over your home network","restart":false,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\LanmanWorkstation\\Parameters\\DisableBandwidthThrottling","value":"1"}]},{"id":"mouse-accel-off","tier":"safe","name":"Turn off mouse acceleration","restart":true,"atoms":[{"where":"HKCU\\Control Panel\\Mouse\\MouseSpeed","value":"\"0\""},{"where":"HKCU\\Control Panel\\Mouse\\MouseThreshold1","value":"\"0\""},{"where":"HKCU\\Control Panel\\Mouse\\MouseThreshold2","value":"\"0\""}]},{"id":"sticky-keys-off","tier":"safe","name":"No Sticky Keys pop-up","restart":true,"atoms":[{"where":"HKCU\\Control Panel\\Accessibility\\StickyKeys\\Flags","value":"\"506\""},{"where":"HKCU\\Control Panel\\Accessibility\\Keyboard Response\\Flags","value":"\"122\""},{"where":"HKCU\\Control Panel\\Accessibility\\ToggleKeys\\Flags","value":"\"58\""}]},{"id":"key-repeat-fast","tier":"safe","name":"Shortest key repeat delay","restart":true,"atoms":[{"where":"HKCU\\Control Panel\\Keyboard\\KeyboardDelay","value":"\"0\""}]},{"id":"shake-off","tier":"safe","name":"No shake to minimize","restart":false,"atoms":[{"where":"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\DisallowShaking","value":"1"}]},{"id":"typing-insights-off","tier":"safe","name":"No typing insights","restart":false,"atoms":[{"where":"HKCU\\Software\\Microsoft\\Input\\Settings\\InsightsEnabled","value":"0"}]},{"id":"background-apps-off","tier":"safe","name":"Stop apps running in the background","restart":false,"atoms":[{"where":"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications\\GlobalUserDisabled","value":"1"}]},{"id":"edge-background-off","tier":"safe","name":"Stop Microsoft Edge running in the background","restart":false,"atoms":[{"where":"HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge\\StartupBoostEnabled","value":"0"},{"where":"HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge\\BackgroundModeEnabled","value":"0"}]},{"id":"widgets-off","tier":"safe","name":"Turn off Widgets","restart":false,"atoms":[{"where":"HKLM\\SOFTWARE\\Policies\\Microsoft\\Dsh\\AllowNewsAndInterests","value":"0"}]},{"id":"copilot-off","tier":"safe","name":"Turn off Copilot in Windows","restart":true,"atoms":[{"where":"HKCU\\Software\\Policies\\Microsoft\\Windows\\WindowsCopilot\\TurnOffWindowsCopilot","value":"1"}]},{"id":"startup-delay-off","tier":"safe","name":"No startup delay","restart":false,"atoms":[{"where":"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Serialize\\StartupDelayInMSec","value":"0"}]},{"id":"recall-off","tier":"safe","name":"Turn off Recall","restart":false,"atoms":[{"where":"HKCU\\Software\\Policies\\Microsoft\\Windows\\WindowsAI\\DisableAIDataAnalysis","value":"1"}]},{"id":"cortana-off","tier":"safe","name":"Turn off Cortana","restart":false,"atoms":[{"where":"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search\\AllowCortana","value":"0"}]},{"id":"feedback-off","tier":"safe","name":"No feedback requests","restart":false,"atoms":[{"where":"HKCU\\Software\\Microsoft\\Siuf\\Rules\\NumberOfSIUFInPeriod","value":"0"}]},{"id":"onedrive-off","tier":"advanced","name":"Turn off OneDrive","restart":true,"atoms":[{"where":"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\OneDrive\\DisableFileSyncNGSC","value":"1"}]},{"id":"maintenance-off","tier":"extreme","name":"Turn off automatic maintenance","restart":false,"atoms":[{"where":"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\Maintenance\\MaintenanceDisabled","value":"1"}]},{"id":"svc-telemetry","tier":"safe","name":"Disable telemetry services","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\DiagTrack\\Start","value":"4 (disabled)"},{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\dmwappushservice\\Start","value":"4 (disabled)"}]},{"id":"svc-maps","tier":"safe","name":"Disable offline maps updates","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\MapsBroker\\Start","value":"4 (disabled)"}]},{"id":"svc-fax","tier":"safe","name":"Disable Fax","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Fax\\Start","value":"4 (disabled)"}]},{"id":"svc-insider","tier":"safe","name":"Disable Windows Insider service","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\wisvc\\Start","value":"4 (disabled)"}]},{"id":"svc-retaildemo","tier":"safe","name":"Disable store demo mode","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\RetailDemo\\Start","value":"4 (disabled)"}]},{"id":"svc-wmpshare","tier":"safe","name":"Disable Media Player sharing","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\WMPNetworkSvc\\Start","value":"4 (disabled)"}]},{"id":"svc-parental","tier":"safe","name":"Disable parental controls service","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\WpcMonSvc\\Start","value":"4 (disabled)"}]},{"id":"svc-payments","tier":"safe","name":"Disable Payments and NFC","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\SEMgrSvc\\Start","value":"4 (disabled)"}]},{"id":"svc-diaghub","tier":"safe","name":"Disable diagnostics hub collector","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\diagnosticshub.standardcollector.service\\Start","value":"4 (disabled)"}]},{"id":"svc-sysmain","tier":"advanced","name":"Disable SysMain (Superfetch)","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\SysMain\\Start","value":"4 (disabled)"}]},{"id":"svc-search","tier":"advanced","name":"Disable Windows Search indexing","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\WSearch\\Start","value":"4 (disabled)"}]},{"id":"svc-wer","tier":"advanced","name":"Disable error reporting","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\WerSvc\\Start","value":"4 (disabled)"}]},{"id":"svc-xbox","tier":"advanced","name":"Disable Xbox services","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\XblAuthManager\\Start","value":"4 (disabled)"},{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\XblGameSave\\Start","value":"4 (disabled)"},{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\XboxNetApiSvc\\Start","value":"4 (disabled)"},{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\XboxGipSvc\\Start","value":"4 (disabled)"}]},{"id":"svc-geolocation","tier":"advanced","name":"Disable location service","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\lfsvc\\Start","value":"4 (disabled)"}]},{"id":"svc-pca","tier":"advanced","name":"Disable compatibility assistant","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\PcaSvc\\Start","value":"4 (disabled)"}]},{"id":"svc-hotspot","tier":"advanced","name":"Disable mobile hotspot","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\icssvc\\Start","value":"4 (disabled)"}]},{"id":"svc-dps","tier":"advanced","name":"Disable diagnostic policy service","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\DPS\\Start","value":"4 (disabled)"}]},{"id":"svc-smartcard","tier":"advanced","name":"Disable smart cards","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\SCardSvr\\Start","value":"4 (disabled)"}]},{"id":"svc-print","tier":"extreme","name":"Disable printing","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Spooler\\Start","value":"4 (disabled)"}]},{"id":"transparency-off","tier":"safe","name":"Turn off transparency","restart":false,"atoms":[{"where":"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize\\EnableTransparency","value":"0"}]},{"id":"animations-off","tier":"safe","name":"Turn off window animations","restart":true,"atoms":[{"where":"HKCU\\Control Panel\\Desktop\\WindowMetrics\\MinAnimate","value":"\"0\""},{"where":"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\TaskbarAnimations","value":"0"}]},{"id":"menu-delay-off","tier":"safe","name":"Open menus instantly","restart":true,"atoms":[{"where":"HKCU\\Control Panel\\Desktop\\MenuShowDelay","value":"\"0\""}]},{"id":"aero-peek-off","tier":"safe","name":"Turn off Peek","restart":false,"atoms":[{"where":"HKCU\\Software\\Microsoft\\Windows\\DWM\\EnableAeroPeek","value":"0"}]},{"id":"listview-shadow-off","tier":"safe","name":"No desktop icon shadows","restart":false,"atoms":[{"where":"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\ListviewShadow","value":"0"}]},{"id":"start-recs-off","tier":"safe","name":"No recommendations in Start","restart":false,"atoms":[{"where":"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\Start_IrisRecommendations","value":"0"}]},{"id":"drag-outline","tier":"advanced","name":"Drag windows as an outline","restart":true,"atoms":[{"where":"HKCU\\Control Panel\\Desktop\\DragFullWindows","value":"\"0\""}]},{"id":"thumbs-off","tier":"advanced","name":"Icons instead of thumbnails","restart":false,"atoms":[{"where":"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\IconsOnly","value":"1"}]},{"id":"ad-id-off","tier":"safe","name":"Turn off the advertising ID","restart":false,"atoms":[{"where":"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo\\Enabled","value":"0"}]},{"id":"suggestions-off","tier":"safe","name":"No tips, suggestions or sponsored apps","restart":false,"atoms":[{"where":"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\\SystemPaneSuggestionsEnabled","value":"0"},{"where":"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\\SubscribedContent-338388Enabled","value":"0"},{"where":"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\\SubscribedContent-338389Enabled","value":"0"},{"where":"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\\SilentInstalledAppsEnabled","value":"0"},{"where":"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\\SoftLandingEnabled","value":"0"}]},{"id":"tailored-off","tier":"safe","name":"No tailored experiences","restart":false,"atoms":[{"where":"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Privacy\\TailoredExperiencesWithDiagnosticDataEnabled","value":"0"}]},{"id":"web-search-off","tier":"safe","name":"No web results in Start search","restart":true,"atoms":[{"where":"HKCU\\Software\\Policies\\Microsoft\\Windows\\Explorer\\DisableSearchBoxSuggestions","value":"1"}]},{"id":"activity-off","tier":"safe","name":"No activity history","restart":false,"atoms":[{"where":"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System\\PublishUserActivities","value":"0"},{"where":"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System\\UploadUserActivities","value":"0"}]},{"id":"spotlight-off","tier":"safe","name":"No ads on the lock screen","restart":false,"atoms":[{"where":"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\\RotatingLockScreenEnabled","value":"0"},{"where":"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\\RotatingLockScreenOverlayEnabled","value":"0"}]},{"id":"launch-tracking-off","tier":"safe","name":"No app launch tracking","restart":false,"atoms":[{"where":"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\Start_TrackProgs","value":"0"}]},{"id":"ceip-off","tier":"safe","name":"Leave the improvement program","restart":false,"atoms":[{"where":"HKLM\\SOFTWARE\\Policies\\Microsoft\\SQMClient\\Windows\\CEIPEnable","value":"0"}]},{"id":"appcompat-telemetry-off","tier":"safe","name":"No app compatibility telemetry","restart":false,"atoms":[{"where":"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AppCompat\\AITEnable","value":"0"}]},{"id":"telemetry-min","tier":"advanced","name":"Minimum diagnostic data","restart":false,"atoms":[{"where":"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection\\AllowTelemetry","value":"0"}]},{"id":"ntfs-last-access","tier":"advanced","name":"Stop recording file access times","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem\\NtfsDisableLastAccessUpdate","value":"2147483649"}]},{"id":"no-8dot3","tier":"advanced","name":"Stop creating short file names","restart":false,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem\\NtfsDisable8dot3NameCreation","value":"1"}]},{"id":"vbs-off","tier":"extreme","name":"Turn off Memory Integrity and VBS","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard\\EnableVirtualizationBasedSecurity","value":"0"},{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard\\Scenarios\\HypervisorEnforcedCodeIntegrity\\Enabled","value":"0"}]},{"id":"mitigations-off","tier":"extreme","name":"Turn off Spectre and Meltdown protections","restart":true,"atoms":[{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\FeatureSettingsOverride","value":"3"},{"where":"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\FeatureSettingsOverrideMask","value":"3"}]}]</script>
+  <script src="../main.js?v=1555c546fb" defer></script>
+
+  <footer class="footer">
+    <div class="wrap footer-in">
+      <span class="brand brand-sm"><img src="../assets/logo.svg" alt="" width="20" height="20"><span>framecalm</span></span>
+      <nav aria-label="Footer"><a href="../guides/">Guides</a><a href="../privacy.html">Privacy</a><a href="https://github.com/krezio/framecalm-releases/issues">Report a problem</a><a href="https://krezio.xyz">Made by krezio</a></nav>
+    </div>
+  </footer>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "22094a4c9ca14cf6838a007582902d9c"}'></script>
+</body>
+</html>

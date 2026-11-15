@@ -1,0 +1,40 @@
+  <main id="main" class="tweaks-page">
+    <section class="wrap tweaks-intro">
+      <h1 class="big"><span class="line"><span>Every tweak,</span></span><span class="line"><span>in the open.</span></span></h1>
+      <p class="sub reveal">All {{COUNT}} things Framecalm can change, what each one changes it to, and what you give up. Open any row for the exact registry key or power setting.</p>
+    </section>
+    <!-- ===== levels ===== -->
+    <section id="presets" class="presets wrap">
+      <h2 class="big"><span class="line"><span>Three levels.</span></span><span class="line"><span>You choose how far.</span></span></h2>
+      <div class="preset-grid">
+{{PRESETS}}
+      </div>
+    </section>
+    <!-- ===== the full list ===== -->
+    <section id="tweaks" class="catalog wrap">
+      <h2 class="big"><span class="line"><span>All {{COUNT}}, in the open.</span></span></h2>
+      <p class="sub">Every value Framecalm can change, and what it changes it to. Open any row to see the registry key or power setting.</p>
+      <div class="catalog-tools">
+        <div class="seg" role="group" aria-label="Filter by tier">
+          <button type="button" aria-pressed="true" data-tier="all">All</button>
+          <button type="button" aria-pressed="false" data-tier="safe">Safe <span>{{N_SAFE}}</span></button>
+          <button type="button" aria-pressed="false" data-tier="advanced">Advanced <span>{{N_ADVANCED}}</span></button>
+          <button type="button" aria-pressed="false" data-tier="extreme">Extreme <span>{{N_EXTREME}}</span></button>
+        </div>
+        <label class="search"><span class="sr">Search tweaks</span><input type="search" placeholder="Search tweaks" data-search></label>
+      </div>
+      <div class="tier-key">
+        <p><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span><b>Safe</b> Clear benefit, nothing you'd miss.</p>
+        <p><span class="meter t-advanced" aria-hidden="true"><i></i><i></i><i></i></span><b>Advanced</b> Trades power use or a convenience for speed.</p>
+        <p><span class="meter t-extreme" aria-hidden="true"><i></i><i></i><i></i></span><b>Extreme</b> Turns off a protection or a feature.</p>
+      </div>
+{{CATALOG}}
+      <p class="empty" data-empty hidden>No tweaks match. Clear the search or pick another tier.</p>
+    </section>
+    <section class="leftout wrap">
+      <h2 class="big"><span class="line"><span>What we left out,</span></span><span class="line"><span>on purpose.</span></span></h2>
+      <dl class="leftout-list">
+{{LEFTOUT}}
+      </dl>
+    </section>
+  </main>

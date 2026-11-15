@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Is my game using the wrong GPU? How to check and fix it on Windows</title>
+  <meta name="description" content="Gaming laptops have two graphics chips, and games sometimes start on the slow one. Here's how to check which GPU a game uses and pin it to the fast one.">
+  <link rel="canonical" href="https://framecalm.krezio.xyz/guides/wrong-gpu-laptop/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#100E33">
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" href="../../assets/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Framecalm">
+  <meta property="og:title" content="Is my game using the wrong GPU? How to check and fix it on Windows">
+  <meta property="og:description" content="Gaming laptops have two graphics chips, and games sometimes start on the slow one. Here's how to check which GPU a game uses and pin it to the fast one.">
+  <meta property="og:url" content="https://framecalm.krezio.xyz/guides/wrong-gpu-laptop/">
+  <meta property="og:image" content="https://framecalm.krezio.xyz/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css?v=1c204c7a4c">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"Is my game using the wrong GPU? How to check and fix it on Windows","description":"Gaming laptops have two graphics chips, and games sometimes start on the slow one. Here's how to check which GPU a game uses and pin it to the fast one.","url":"https://framecalm.krezio.xyz/guides/wrong-gpu-laptop/","mainEntityOfPage":"https://framecalm.krezio.xyz/guides/wrong-gpu-laptop/","datePublished":"2026-11-13","dateModified":"2026-11-13","image":"https://framecalm.krezio.xyz/assets/og.png","author":{"@type":"Organization","name":"krezio","url":"https://krezio.xyz"},"publisher":{"@type":"Organization","name":"krezio","logo":{"@type":"ImageObject","url":"https://framecalm.krezio.xyz/assets/icon-512.png"}}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Framecalm","item":"https://framecalm.krezio.xyz/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://framecalm.krezio.xyz/guides/"},{"@type":"ListItem","position":3,"name":"Is my game using the wrong GPU?","item":"https://framecalm.krezio.xyz/guides/wrong-gpu-laptop/"}]}]}</script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top">
+    <nav class="wrap nav" aria-label="Main">
+      <a class="brand" href="../../"><img src="../../assets/logo.svg" alt="" width="28" height="28"><span>framecalm</span></a>
+      <div class="nav-links">
+        <a href="../../#auto">One click</a>
+        <a href="../../tweaks/">Tweaks</a>
+        <a href="../../#app">The app</a>
+        <a href="../../#safety">Safety</a>
+        <a href="../../guides/">Guides</a>
+      </div>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/krezio/framecalm-releases/releases/latest/download/Framecalm-Setup.exe">Download</a>
+    </nav>
+  </header>
+
+  <main class="article" id="main">
+    <p class="label"><a href="../../" style="color:inherit">Framecalm</a> › <a href="../" style="color:inherit">Guides</a></p>
+    <h1>Is my game using the wrong GPU? How to check and fix it on Windows</h1>
+    <p class="label">Updated November 2026 · 5 min read</p>
+    <div class="tldr"><p class="tldr-h">Short answer</p><p>Open <b>Task Manager</b>, add the <b>GPU engine</b> column and look at your game: GPU 0 is usually the integrated chip. To fix it, go to <b>Settings → System → Display → Graphics</b>, add the game and choose <b>High performance</b>.</p></div>
+
+<p>Most gaming laptops have two GPUs: a small integrated one inside the processor (Intel Iris/UHD or AMD Radeon) that saves battery, and a dedicated one (NVIDIA GeForce, AMD Radeon RX) that's several times faster. Windows and the graphics driver decide which one each app uses. Usually they get games right. Sometimes they don't, and the game runs at a fraction of the frame rate it should.</p>
+
+<h2>Signs you're on the wrong GPU</h2>
+<ul>
+  <li>FPS is far lower than other people report with the same laptop.</li>
+  <li>Lowering settings barely changes anything.</li>
+  <li>The laptop stays quiet and cool while gaming.</li>
+  <li>It's a game launched through Java (Minecraft), an emulator, or a launcher that starts another exe.</li>
+</ul>
+
+<h2>How to check</h2>
+<ol>
+  <li>Start the game, then press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Esc</kbd> to open Task Manager.</li>
+  <li>On the <b>Processes</b> tab, right-click a column header and turn on <b>GPU engine</b>.</li>
+  <li>Find the game. If it says <b>GPU 0</b>, check the <b>Performance</b> tab to see which chip GPU 0 is. On most laptops GPU 0 is the integrated one.</li>
+</ol>
+
+<h2>How to fix it in Windows</h2>
+<ol>
+  <li>Open <b>Settings → System → Display → Graphics</b>.</li>
+  <li>Find the game in the list, or click <b>Browse</b> and pick the game's .exe (for Minecraft, that's the <code>javaw.exe</code> the launcher uses).</li>
+  <li>Choose <b>High performance</b> and save. Restart the game.</li>
+</ol>
+<p>This is a per-app setting stored for your user account, and you can set it back to <b>Let Windows decide</b> any time.</p>
+
+<h2>Other things that force the slow GPU</h2>
+<ul>
+  <li><b>Battery power.</b> Many laptops limit the dedicated GPU heavily on battery. Plug in.</li>
+  <li><b>MUX switch / Advanced Optimus.</b> If your laptop has a "dGPU only" or "Ultimate" mode in its control app, using it removes the integrated chip from the path entirely, usually for a few extra percent.</li>
+  <li><b>External monitor port.</b> On some laptops only certain ports are wired to the dedicated GPU (often the HDMI or a specific USB-C port).</li>
+</ul>
+<p>Framecalm checks every game you own for this and pins them in one click, using the same Windows setting.</p>
+
+
+    <aside class="cta-box">
+      <img src="../../assets/logo.svg" alt="" width="48" height="48">
+      <div>
+        <h2>Or let Framecalm do it</h2>
+        <p>One click builds a plan for your PC, or pick from 87 Windows tweaks yourself. PC fixes, per-game settings and measured benchmarks too. Every change can be switched back. Free for Windows 10 and 11.</p>
+      </div>
+      <a class="btn btn-primary" href="https://github.com/krezio/framecalm-releases/releases/latest/download/Framecalm-Setup.exe">Download free</a>
+    </aside>
+    <h2>More guides</h2>
+    <ul class="guide-list">
+      <li><a href="../minecraft-settings-for-more-fps/">Minecraft Java: settings for more FPS</a></li>
+      <li><a href="../fortnite-best-settings-low-end-pc/">Fortnite: best settings for low-end PCs</a></li>
+      <li><a href="../cpu-vs-gpu-bottleneck/">CPU vs GPU bottleneck explained</a></li>
+      <li><a href="../does-game-mode-help/">Does Game Mode help?</a></li>
+    </ul>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-in">
+      <span class="brand brand-sm"><img src="../../assets/logo.svg" alt="" width="20" height="20"><span>framecalm</span></span>
+      <nav aria-label="Footer"><a href="../../guides/">Guides</a><a href="../../privacy.html">Privacy</a><a href="https://github.com/krezio/framecalm-releases/issues">Report a problem</a><a href="https://krezio.xyz">Made by krezio</a></nav>
+    </div>
+  </footer>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "22094a4c9ca14cf6838a007582902d9c"}'></script>
+</body>
+</html>

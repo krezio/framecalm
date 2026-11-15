@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy | Framecalm</title>
+  <meta name="description" content="Framecalm has no account, no ads and no telemetry. Here's exactly what the app and this website do with data.">
+  <link rel="canonical" href="https://framecalm.krezio.xyz/privacy.html">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#100E33">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Framecalm">
+  <meta property="og:title" content="Privacy | Framecalm">
+  <meta property="og:description" content="Framecalm has no account, no ads and no telemetry. Here's exactly what the app and this website do with data.">
+  <meta property="og:url" content="https://framecalm.krezio.xyz/privacy.html">
+  <meta property="og:image" content="https://framecalm.krezio.xyz/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=1c204c7a4c">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top">
+    <nav class="wrap nav" aria-label="Main">
+      <a class="brand" href=""><img src="assets/logo.svg" alt="" width="28" height="28"><span>framecalm</span></a>
+      <div class="nav-links">
+        <a href="#auto">One click</a>
+        <a href="tweaks/">Tweaks</a>
+        <a href="#app">The app</a>
+        <a href="#safety">Safety</a>
+        <a href="guides/">Guides</a>
+      </div>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/krezio/framecalm-releases/releases/latest/download/Framecalm-Setup.exe">Download</a>
+    </nav>
+  </header>
+
+  <main class="article">
+    <p class="label">Privacy</p>
+    <h1>Privacy</h1>
+    <p>Short version: the Framecalm app doesn't collect anything, and this website counts visits without cookies.</p>
+    <h2>The app</h2>
+    <ul>
+      <li>No account, no sign-in, no ads, no telemetry, no crash reporting.</li>
+      <li>Everything Framecalm reads (your hardware, your launchers' game lists, your games' settings files, frame-time captures) stays on your PC.</li>
+      <li>Its own data (backups, history, captures, settings) lives in <code>%LOCALAPPDATA%\Framecalm</code>. Delete that folder and it's gone.</li>
+      <li>Tweaks you apply are Windows settings on your PC. Framecalm keeps their old values locally so it can put them back; nothing about them leaves your PC.</li>
+      <li>It works offline. It makes two kinds of network request, both of which you can switch off in Settings: downloading each game's official cover image once from Steam's or the Microsoft Store's image servers (on by default; those servers see your IP address and which cover was asked for, like any website), and a check for a newer version on GitHub when the app opens (<b>you choose at first launch</b>, and can switch it off in Settings). Neither sends anything about you or your PC.</li>
+      <li>Links to graphics driver pages or Windows Settings open in your own browser or Settings app.</li>
+    </ul>
+    <h2>This website</h2>
+    <ul>
+      <li>Hosted on Cloudflare Pages. Cloudflare may keep standard server logs (such as IP addresses) for security; see Cloudflare's privacy policy.</li>
+      <li>Visits are counted with <b>Cloudflare Web Analytics</b>, which doesn't use cookies, doesn't fingerprint you and doesn't track you across sites. It reports things like page views, referrers and country.</li>
+      <li>Fonts come from Google Fonts, the animation libraries from cdnjs and jsDelivr, and the game covers on the home page from Steam's and Microsoft's image servers, so your browser asks those servers for them.</li>
+      <li>The tweak demo on the home page runs entirely in your browser. Nothing you click in it is sent anywhere, and nothing on your PC is changed.</li>
+    </ul>
+    <h2>Contact</h2>
+    <p>Questions or concerns: <a href="https://github.com/krezio/framecalm-releases/issues">open an issue on GitHub</a>.</p>
+    <p class="label">Last updated November 2026</p>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-in">
+      <span class="brand brand-sm"><img src="assets/logo.svg" alt="" width="20" height="20"><span>framecalm</span></span>
+      <nav aria-label="Footer"><a href="guides/">Guides</a><a href="privacy.html">Privacy</a><a href="https://github.com/krezio/framecalm-releases/issues">Report a problem</a><a href="https://krezio.xyz">Made by krezio</a></nav>
+    </div>
+  </footer>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "22094a4c9ca14cf6838a007582902d9c"}'></script>
+</body>
+</html>
