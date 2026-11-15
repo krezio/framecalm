@@ -402,7 +402,8 @@ public sealed class SettingsVM(MainVM m) : Observable, IRefresh
     public string Version => "Version " + (typeof(SettingsVM).Assembly.GetName().Version?.ToString(3) ?? "0.1.0");
     public string DataPath => m.IsDemo ? "Demo mode keeps everything in memory." : Paths.State;
     public ICommand OpenDataCmd => new Cmd(() => MainVM.OpenUri(Paths.State));
-    public ICommand SourceCmd => new Cmd(() => MainVM.OpenUri("https://github.com/krezio/framecalm-releases/issues"));
+    public ICommand SourceCmd => new Cmd(() => MainVM.OpenUri("https://github.com/krezio/framecalm/issues"));
+    public ICommand CodeCmd => new Cmd(() => MainVM.OpenUri("https://github.com/krezio/framecalm"));
     public ICommand SiteCmd => new Cmd(() => MainVM.OpenUri("https://framecalm.krezio.xyz"));
     public ICommand UndoEverythingCmd => m.HistoryPage.UndoAllCmd;
     public void Refresh() => RaiseAll();

@@ -66,7 +66,7 @@ function foot(root) {
   <footer class="footer">
     <div class="wrap footer-in">
       <span class="brand brand-sm"><img src="${root}assets/logo.svg" alt="" width="20" height="20"><span>framecalm</span></span>
-      <nav aria-label="Footer"><a href="${root}guides/">Guides</a><a href="${root}privacy.html">Privacy</a><a href="https://github.com/krezio/framecalm-releases/issues">Report a problem</a><a href="https://krezio.xyz">Made by krezio</a></nav>
+      <nav aria-label="Footer"><a href="https://github.com/krezio/framecalm">Source code</a><a href="${root}guides/">Guides</a><a href="${root}privacy.html">Privacy</a><a href="https://github.com/krezio/framecalm/issues">Report a problem</a><a href="https://krezio.xyz">Made by krezio</a></nav>
     </div>
   </footer>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${CF_TOKEN}"}'></script>
@@ -80,7 +80,7 @@ const cta = (root) => `
       <img src="${root}assets/logo.svg" alt="" width="48" height="48">
       <div>
         <h2>Or let Framecalm do it</h2>
-        <p>One click builds a plan for your PC, or pick from ${CATALOG.tweaks.length} Windows tweaks yourself. PC fixes, per-game settings and measured benchmarks too. Every change can be switched back. Free for Windows 10 and 11.</p>
+        <p>One click builds a plan for your PC, or pick from ${CATALOG.tweaks.length} Windows tweaks yourself. PC fixes, per-game settings and measured benchmarks too. Every change can be switched back. Free and open source, for Windows 10 and 11.</p>
       </div>
       <a class="btn btn-primary" href="${DOWNLOAD}">Download free</a>
     </aside>`;
@@ -188,7 +188,7 @@ write("privacy.html",
       <li>The tweak demo on the home page runs entirely in your browser. Nothing you click in it is sent anywhere, and nothing on your PC is changed.</li>
     </ul>
     <h2>Contact</h2>
-    <p>Questions or concerns: <a href="https://github.com/krezio/framecalm-releases/issues">open an issue on GitHub</a>.</p>
+    <p>Questions or concerns: <a href="https://github.com/krezio/framecalm/issues">open an issue on GitHub</a>.</p>
     <p class="label">Last updated November 2026</p>
   </main>
 ` + foot(""));

@@ -1149,9 +1149,10 @@
                 </Grid>
                 <Border Style="{StaticResource Rule}" />
                 <TextBlock Text="About" Style="{StaticResource Label}" Margin="0,22,0,6" />
-                <TextBlock Style="{StaticResource Body}"><Run Text="Framecalm " /><Run Text="{Binding Version, Mode=OneWay}" /><Run Text=", free for Windows 10 and 11" /></TextBlock>
+                <TextBlock Style="{StaticResource Body}"><Run Text="Framecalm " /><Run Text="{Binding Version, Mode=OneWay}" /><Run Text=", free and open source (MIT)" /></TextBlock>
                 <TextBlock Style="{StaticResource Body}" Text="No account, no ads, no telemetry. Works offline. Frame capture uses PresentMon (MIT), made by Intel." />
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Button Style="{StaticResource Link}" Content="Source code" Command="{Binding CodeCmd}" Margin="0,0,20,0" />
                     <Button Style="{StaticResource Link}" Content="Report a problem" Command="{Binding SourceCmd}" Margin="0,0,20,0" />
                     <Button Style="{StaticResource Link}" Content="framecalm.krezio.xyz" Command="{Binding SiteCmd}" />
                 </StackPanel>

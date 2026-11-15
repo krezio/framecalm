@@ -286,11 +286,6 @@ p { margin: 0 0 1em; }
 
 /* ---------- games ---------- */
 .games { padding: clamp(80px, 10vw, 140px) 0; overflow: hidden; }
-.type-marquee { overflow: hidden; margin-bottom: 60px; border-block: 1px solid var(--rule); padding: 18px 0; }
-.tm-track { display: flex; align-items: center; gap: 40px; width: max-content; animation: slide 40s linear infinite; }
-.tm-track span { font-size: clamp(40px, 6vw, 90px); letter-spacing: -.05em; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(182, 179, 227, .6); white-space: nowrap; }
-.tm-track span:nth-child(4n+1) { color: var(--paper); -webkit-text-stroke: 0; }
-.tm-track b { font-size: clamp(40px, 6vw, 90px); line-height: 1; font-weight: 300; color: var(--rule-2); }
 .games-head { display: grid; gap: 20px; align-items: end; margin-bottom: 40px; }
 @media (min-width: 1000px) { .games-head { grid-template-columns: 1fr 24em; } }
 .games-head .big { margin: 0; }
