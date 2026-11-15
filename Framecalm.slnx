@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Framecalm.App/Framecalm.App.csproj" />
+    <Project Path="src/Framecalm.Backups/Framecalm.Backups.csproj" />
+    <Project Path="src/Framecalm.Benchmarks/Framecalm.Benchmarks.csproj" />
+    <Project Path="src/Framecalm.Core/Framecalm.Core.csproj" />
+    <Project Path="src/Framecalm.Demo/Framecalm.Demo.csproj" />
+    <Project Path="src/Framecalm.Discovery/Framecalm.Discovery.csproj" />
+    <Project Path="src/Framecalm.ElevatedHelper/Framecalm.ElevatedHelper.csproj" />
+    <Project Path="src/Framecalm.GameAdapters/Framecalm.GameAdapters.csproj" />
+    <Project Path="src/Framecalm.Windows/Framecalm.Windows.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Framecalm.Tests/Framecalm.Tests.csproj" />
+  </Folder>
+</Solution>

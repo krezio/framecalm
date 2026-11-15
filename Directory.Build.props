@@ -1,0 +1,15 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <Version>0.4.0</Version>
+    <Company>krezio</Company>
+    <Authors>krezio</Authors>
+    <Product>Framecalm</Product>
+    <Copyright>© 2026 krezio</Copyright>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <NoWarn>$(NoWarn);CA1416;SYSLIB1054;CS1591</NoWarn>
+  </PropertyGroup>
+</Project>
