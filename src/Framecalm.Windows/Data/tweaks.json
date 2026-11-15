@@ -1,0 +1,2094 @@
+{
+  "categories": [
+    {
+      "id": "power",
+      "name": "Power and CPU",
+      "about": "How hard the processor is allowed to work, and what Windows switches off to save energy."
+    },
+    {
+      "id": "graphics",
+      "name": "Graphics",
+      "about": "How Windows schedules the GPU and presents frames from games."
+    },
+    {
+      "id": "network",
+      "name": "Network",
+      "about": "Latency and background bandwidth: what else is using your connection while you play."
+    },
+    {
+      "id": "input",
+      "name": "Mouse and keyboard",
+      "about": "Raw, predictable input with no pop-ups that steal focus mid-game."
+    },
+    {
+      "id": "background",
+      "name": "Background apps",
+      "about": "Apps and features that run when you didn't ask them to."
+    },
+    {
+      "id": "services",
+      "name": "Services",
+      "about": "Windows services you may not need. Each one is switched to Disabled, never deleted."
+    },
+    {
+      "id": "visual",
+      "name": "Look and feel",
+      "about": "Animations and effects that make the desktop feel slower than it is."
+    },
+    {
+      "id": "privacy",
+      "name": "Privacy",
+      "about": "Ads, suggestions and data collection. Small speed effect, big quiet effect."
+    },
+    {
+      "id": "system",
+      "name": "System and security",
+      "about": "Deep changes to how Windows protects itself. Real gains on some CPUs, real trade-offs on all of them."
+    }
+  ],
+  "presets": [
+    {
+      "id": "recommended",
+      "name": "Recommended",
+      "about": "Safe changes with a clear benefit. Good for every PC."
+    },
+    {
+      "id": "competitive",
+      "name": "Competitive",
+      "about": "Recommended, plus Advanced changes that trade power use and convenience for lower latency."
+    },
+    {
+      "id": "extreme",
+      "name": "Extreme",
+      "about": "Everything, including changes that lower Windows security. Only for a PC that is just for games."
+    }
+  ],
+  "tweaks": [
+    {
+      "id": "usb-suspend-off",
+      "category": "power",
+      "tier": "safe",
+      "impact": "situational",
+      "name": "Keep USB devices awake",
+      "what": "Stops Windows putting USB ports to sleep to save power. Fixes mice, headsets and controllers that drop out or lag for a moment after sitting idle.",
+      "tradeoff": "Laptops use slightly more battery.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "power": "2a737441-1930-4402-8d77-b2bebba308a3/48e6b7a6-50f5-4782-a5d4-53bb8f07e226",
+          "alias": "USB settings / USB selective suspend",
+          "value": 0,
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "fast-startup-off",
+      "category": "power",
+      "tier": "safe",
+      "impact": "situational",
+      "name": "Turn off Fast Startup",
+      "what": "Fast Startup makes Shut down a half-hibernate, so drivers and Windows never get a clean start. Turning it off means Shut down really shuts down.",
+      "tradeoff": "Cold boots take a few seconds longer.",
+      "restart": true,
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power",
+          "name": "HiberbootEnabled",
+          "dword": 0,
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "cpu-min-100",
+      "category": "power",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Keep the CPU at full speed",
+      "what": "Sets the minimum processor state to 100%, so the CPU doesn't have to ramp its clock up when a game suddenly needs it.",
+      "tradeoff": "More heat and power use at idle. On laptops, fans may spin more.",
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "power": "54533251-82be-4824-96c1-47b60b740d00/893dee8e-2bef-41e0-89c6-b55d0929964c",
+          "alias": "SUB_PROCESSOR / PROCTHROTTLEMIN",
+          "value": 100,
+          "default": 5
+        }
+      ]
+    },
+    {
+      "id": "core-parking-off",
+      "category": "power",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Turn off core parking",
+      "what": "Keeps every CPU core available instead of letting Windows park idle ones. Can smooth out frame times when a game's load jumps between cores.",
+      "tradeoff": "Higher idle power use.",
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "power": "54533251-82be-4824-96c1-47b60b740d00/0cc5b647-c1df-4637-891a-dec35c318583",
+          "alias": "SUB_PROCESSOR / CPMINCORES",
+          "value": 100,
+          "default": 10
+        }
+      ]
+    },
+    {
+      "id": "boost-aggressive",
+      "category": "power",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Aggressive CPU boost",
+      "what": "Tells the CPU to use its turbo boost as soon as there's work, rather than waiting to see if the load sticks around.",
+      "tradeoff": "Runs hotter. On thin laptops it can hit thermal limits sooner.",
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "power": "54533251-82be-4824-96c1-47b60b740d00/be337238-0d82-4146-a960-4f3749d470c7",
+          "alias": "SUB_PROCESSOR / PERFBOOSTMODE",
+          "value": 2,
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "pcie-aspm-off",
+      "category": "power",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Turn off PCI Express power saving",
+      "what": "Stops Windows lowering the power state of the link to your graphics card and NVMe drive between bursts of work.",
+      "tradeoff": "A few watts more at idle.",
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "power": "501a4d13-42af-4429-9fd1-a8218c268e20/ee12f906-d277-404b-b6da-e5fa1a576df5",
+          "alias": "SUB_PCIEXPRESS / ASPM",
+          "value": 0,
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "power-throttling-off",
+      "category": "power",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Turn off power throttling",
+      "what": "Windows slows down apps it thinks are in the background. This stops it, which helps when a game's launcher, voice chat or capture app gets throttled.",
+      "tradeoff": "Background apps use more power. Takes effect after a restart.",
+      "restart": true,
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling",
+          "name": "PowerThrottlingOff",
+          "dword": 1,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "hibernate-off",
+      "category": "power",
+      "tier": "advanced",
+      "impact": "situational",
+      "name": "Turn off hibernation",
+      "what": "Removes the hibernation file, which is often 6 to 25 GB on drive C:. Also turns off Fast Startup.",
+      "tradeoff": "No Hibernate option. Laptops that hibernate on low battery will shut down instead.",
+      "restart": true,
+      "presets": [
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power",
+          "name": "HibernateEnabled",
+          "dword": 0,
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "disk-idle-off",
+      "category": "power",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Keep drives spinning",
+      "what": "Stops Windows powering down drives after a few minutes idle, so a game doesn't hitch while a hard drive spins back up.",
+      "tradeoff": "Hard drives use a little more power and make a little more noise.",
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "power": "0012ee47-9041-4b5d-9b77-535fba8b1442/6738e2c4-e8a5-4a42-b16a-e040e769756e",
+          "alias": "SUB_DISK / DISKIDLE",
+          "value": 0,
+          "default": 1200
+        }
+      ]
+    },
+    {
+      "id": "epp-performance",
+      "category": "power",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "CPU energy preference: performance",
+      "what": "Tells the processor to favour speed over saving energy when it decides how fast to run.",
+      "tradeoff": "More heat and power use, especially on laptops.",
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "power": "54533251-82be-4824-96c1-47b60b740d00/36687f9e-e3a5-4dbf-b1dc-15eb381c6863",
+          "alias": "SUB_PROCESSOR / PERFEPP",
+          "value": 0,
+          "default": 50
+        }
+      ]
+    },
+    {
+      "id": "idle-off",
+      "category": "power",
+      "tier": "extreme",
+      "impact": "situational",
+      "name": "Never let the CPU idle",
+      "what": "Keeps every core out of its sleep states. Shaves the wake-up delay some competitive players chase.",
+      "tradeoff": "The CPU runs hot and loud all the time and uses a lot more power. Never on a laptop.",
+      "presets": [],
+      "atoms": [
+        {
+          "power": "54533251-82be-4824-96c1-47b60b740d00/5d76a2ca-e8c0-402f-a133-2158492d58ad",
+          "alias": "SUB_PROCESSOR / IDLEDISABLE",
+          "value": 1,
+          "default": 0
+        }
+      ]
+    },
+    {
+      "id": "hags-on",
+      "category": "graphics",
+      "tier": "safe",
+      "impact": "situational",
+      "name": "Hardware-accelerated GPU scheduling",
+      "what": "Lets the graphics card manage its own memory and scheduling. Required for DLSS Frame Generation; on other games the effect is small either way.",
+      "tradeoff": "A few older drivers and capture tools behave badly with it. Takes effect after a restart.",
+      "restart": true,
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers",
+          "name": "HwSchMode",
+          "dword": 2,
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "game-bar-off",
+      "category": "graphics",
+      "tier": "safe",
+      "impact": "low",
+      "name": "Turn off Xbox Game Bar",
+      "what": "Stops the Game Bar overlay and its capture features from hooking into every game you start.",
+      "tradeoff": "No Win+G overlay, no clips from Game Bar. Your own capture app is unaffected.",
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR",
+          "name": "AppCaptureEnabled",
+          "dword": 0,
+          "default": 1
+        },
+        {
+          "reg": "HKCU\\System\\GameConfigStore",
+          "name": "GameDVR_Enabled",
+          "dword": 0,
+          "default": 1
+        },
+        {
+          "reg": "HKCU\\Software\\Microsoft\\GameBar",
+          "name": "UseNexusForGameBarEnabled",
+          "dword": 0,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "game-bar-tips-off",
+      "category": "graphics",
+      "tier": "safe",
+      "impact": "low",
+      "name": "No Game Bar pop-ups",
+      "what": "Stops the \"Press Win+G\" tip from showing when a game starts.",
+      "tradeoff": "None.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Software\\Microsoft\\GameBar",
+          "name": "ShowStartupPanel",
+          "dword": 0,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "mmcss-games",
+      "category": "graphics",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Prioritize games in the multimedia scheduler",
+      "what": "Windows has a scheduler profile just for games that it barely uses by default. This raises its CPU priority and I/O priority to High.",
+      "tradeoff": "Background audio or streaming apps can get less time while a game runs.",
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+          "name": "Priority",
+          "dword": 6,
+          "default": 2
+        },
+        {
+          "reg": "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+          "name": "Scheduling Category",
+          "sz": "High",
+          "default": "Medium"
+        },
+        {
+          "reg": "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+          "name": "SFIO Priority",
+          "sz": "High",
+          "default": "Normal"
+        }
+      ]
+    },
+    {
+      "id": "system-responsiveness",
+      "category": "graphics",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Give games more CPU time",
+      "what": "Windows reserves 20% of CPU time for background tasks while multimedia apps run. This lowers the reservation to 10%.",
+      "tradeoff": "Background tasks get less time during games.",
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile",
+          "name": "SystemResponsiveness",
+          "dword": 10,
+          "default": 20
+        }
+      ]
+    },
+    {
+      "id": "win32-priority",
+      "category": "graphics",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Favor the window you're using",
+      "what": "Gives the app in front shorter, more frequent turns on the CPU, so a game gets scheduled sooner after input.",
+      "tradeoff": "Background work such as encoding or downloads can run a little slower.",
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl",
+          "name": "Win32PrioritySeparation",
+          "dword": 38,
+          "default": 2
+        }
+      ]
+    },
+    {
+      "id": "fso-off",
+      "category": "graphics",
+      "tier": "advanced",
+      "impact": "situational",
+      "name": "Turn off fullscreen optimizations everywhere",
+      "what": "Makes fullscreen games use real exclusive fullscreen instead of a borderless window in disguise. Some older DirectX 11 games feel more responsive this way.",
+      "tradeoff": "Alt-Tab is slower and some overlays won't show over the game.",
+      "presets": [
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\System\\GameConfigStore",
+          "name": "GameDVR_FSEBehaviorMode",
+          "dword": 2,
+          "default": 0
+        },
+        {
+          "reg": "HKCU\\System\\GameConfigStore",
+          "name": "GameDVR_HonorUserFSEBehaviorMode",
+          "dword": 1,
+          "default": 0
+        },
+        {
+          "reg": "HKCU\\System\\GameConfigStore",
+          "name": "GameDVR_DXGIHonorFSEWindowsCompatible",
+          "dword": 1,
+          "default": 0
+        }
+      ]
+    },
+    {
+      "id": "mpo-off",
+      "category": "graphics",
+      "tier": "advanced",
+      "impact": "situational",
+      "name": "Turn off multiplane overlay",
+      "what": "A known fix for flicker, black flashes and stutter on some NVIDIA multi-monitor setups. Leave it alone if you don't have those problems.",
+      "tradeoff": "Slightly higher GPU use for video playback. Takes effect after a restart.",
+      "restart": true,
+      "presets": [],
+      "atoms": [
+        {
+          "reg": "HKLM\\SOFTWARE\\Microsoft\\Windows\\Dwm",
+          "name": "OverlayTestMode",
+          "dword": 5,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "game-dvr-policy",
+      "category": "graphics",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Block Game DVR everywhere",
+      "what": "Turns off Windows game recording with a policy, so no app or update can switch it back on.",
+      "tradeoff": "Xbox Game Bar can't record clips at all.",
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR",
+          "name": "AllowGameDVR",
+          "dword": 0,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "tdr-delay",
+      "category": "graphics",
+      "tier": "advanced",
+      "impact": "situational",
+      "name": "Longer GPU timeout",
+      "what": "Gives the graphics driver 10 seconds instead of 2 before Windows decides it has hung and resets it. Fixes \"display driver stopped responding\" in heavy games and on overclocked cards.",
+      "tradeoff": "A genuinely frozen GPU takes longer to recover. Takes effect after a restart.",
+      "restart": true,
+      "presets": [],
+      "atoms": [
+        {
+          "reg": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers",
+          "name": "TdrDelay",
+          "dword": 10,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "fth-off",
+      "category": "graphics",
+      "tier": "advanced",
+      "impact": "situational",
+      "name": "Turn off Fault Tolerant Heap",
+      "what": "If a game crashes a few times, Windows quietly runs it with a slower, safer memory allocator from then on. This stops that.",
+      "tradeoff": "A game that really is unstable may crash more often instead of running slower.",
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SOFTWARE\\Microsoft\\FTH",
+          "name": "Enabled",
+          "dword": 0,
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "delivery-opt-off",
+      "category": "network",
+      "tier": "safe",
+      "impact": "medium",
+      "name": "Stop sharing updates with other PCs",
+      "what": "By default Windows can upload update files to other PCs. On a slow upload connection that shows up as ping spikes. Updates still download from Microsoft.",
+      "tradeoff": "None for most people.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization",
+          "name": "DODownloadMode",
+          "dword": 0,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "remote-assist-off",
+      "category": "network",
+      "tier": "safe",
+      "impact": "low",
+      "name": "Turn off Remote Assistance",
+      "what": "Stops other people being invited to view or control this PC through Remote Assistance. Fewer open doors.",
+      "tradeoff": "You can't receive help through Remote Assistance until you turn it back on.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Remote Assistance",
+          "name": "fAllowToGetHelp",
+          "dword": 0,
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "network-throttling-off",
+      "category": "network",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Turn off network throttling",
+      "what": "Windows limits network processing while media plays so audio doesn't glitch. This removes the limit.",
+      "tradeoff": "On very old CPUs, audio can crackle under heavy network load.",
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile",
+          "name": "NetworkThrottlingIndex",
+          "dword": 4294967295,
+          "default": 10
+        }
+      ]
+    },
+    {
+      "id": "nagle-off",
+      "category": "network",
+      "tier": "advanced",
+      "impact": "situational",
+      "name": "Turn off Nagle's algorithm",
+      "what": "Sends small packets right away instead of bundling them. Helps games that use TCP (some MMOs and older titles). Most shooters use UDP and won't change.",
+      "tradeoff": "A little more network overhead. Applies to your active network adapters; takes effect after a restart.",
+      "restart": true,
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces\\{nic}",
+          "name": "TcpAckFrequency",
+          "dword": 1,
+          "default": null
+        },
+        {
+          "reg": "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces\\{nic}",
+          "name": "TCPNoDelay",
+          "dword": 1,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "store-autoupdate-off",
+      "category": "network",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Stop Store apps updating in the background",
+      "what": "Microsoft Store apps stop downloading updates on their own while you play.",
+      "tradeoff": "You update Store apps yourself from the Store's Library page. Games from the Xbox app are affected too.",
+      "presets": [
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SOFTWARE\\Policies\\Microsoft\\WindowsStore",
+          "name": "AutoDownload",
+          "dword": 2,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "wu-drivers-off",
+      "category": "network",
+      "tier": "advanced",
+      "impact": "situational",
+      "name": "Keep Windows Update away from drivers",
+      "what": "Stops Windows Update replacing your graphics driver with an older or generic one.",
+      "tradeoff": "You update drivers yourself, from NVIDIA, AMD or Intel.",
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate",
+          "name": "ExcludeWUDriversInQualityUpdate",
+          "dword": 1,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "wu-ask-first",
+      "category": "network",
+      "tier": "advanced",
+      "impact": "medium",
+      "name": "Ask before downloading Windows updates",
+      "what": "Windows tells you updates are ready instead of downloading and installing them in the middle of a session.",
+      "tradeoff": "Security updates wait for you. Install them regularly.",
+      "presets": [
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU",
+          "name": "AUOptions",
+          "dword": 2,
+          "default": null
+        },
+        {
+          "reg": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU",
+          "name": "NoAutoRebootWithLoggedOnUsers",
+          "dword": 1,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "prefer-ipv4",
+      "category": "network",
+      "tier": "advanced",
+      "impact": "situational",
+      "name": "Prefer IPv4 over IPv6",
+      "what": "Some games and launchers connect faster or more reliably over IPv4. IPv6 still works when it's the only option.",
+      "tradeoff": "None for most people. Takes effect after a restart.",
+      "restart": true,
+      "presets": [],
+      "atoms": [
+        {
+          "reg": "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip6\\Parameters",
+          "name": "DisabledComponents",
+          "dword": 32,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "smb-throttle-off",
+      "category": "network",
+      "tier": "advanced",
+      "impact": "situational",
+      "name": "Faster copies over your home network",
+      "what": "Turns off bandwidth throttling for file sharing, so copying from a NAS or another PC isn't held back.",
+      "tradeoff": "None on a home network.",
+      "presets": [],
+      "atoms": [
+        {
+          "reg": "HKLM\\SYSTEM\\CurrentControlSet\\Services\\LanmanWorkstation\\Parameters",
+          "name": "DisableBandwidthThrottling",
+          "dword": 1,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "mouse-accel-off",
+      "category": "input",
+      "tier": "safe",
+      "impact": "high",
+      "name": "Turn off mouse acceleration",
+      "what": "Turns off Enhance pointer precision, so the same hand movement always moves the same distance. The single biggest change for aim consistency.",
+      "tradeoff": "The desktop pointer feels slower at first. Takes effect after you sign out.",
+      "restart": true,
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Control Panel\\Mouse",
+          "name": "MouseSpeed",
+          "sz": "0",
+          "default": "1"
+        },
+        {
+          "reg": "HKCU\\Control Panel\\Mouse",
+          "name": "MouseThreshold1",
+          "sz": "0",
+          "default": "6"
+        },
+        {
+          "reg": "HKCU\\Control Panel\\Mouse",
+          "name": "MouseThreshold2",
+          "sz": "0",
+          "default": "10"
+        }
+      ]
+    },
+    {
+      "id": "sticky-keys-off",
+      "category": "input",
+      "tier": "safe",
+      "impact": "situational",
+      "name": "No Sticky Keys pop-up",
+      "what": "Pressing Shift five times no longer throws you out of the game to ask about Sticky Keys. Same for Filter Keys and Toggle Keys.",
+      "tradeoff": "None. You can still turn these on in Accessibility settings.",
+      "restart": true,
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Control Panel\\Accessibility\\StickyKeys",
+          "name": "Flags",
+          "sz": "506",
+          "default": "510"
+        },
+        {
+          "reg": "HKCU\\Control Panel\\Accessibility\\Keyboard Response",
+          "name": "Flags",
+          "sz": "122",
+          "default": "126"
+        },
+        {
+          "reg": "HKCU\\Control Panel\\Accessibility\\ToggleKeys",
+          "name": "Flags",
+          "sz": "58",
+          "default": "62"
+        }
+      ]
+    },
+    {
+      "id": "key-repeat-fast",
+      "category": "input",
+      "tier": "safe",
+      "impact": "low",
+      "name": "Shortest key repeat delay",
+      "what": "Holding a key starts repeating sooner. Mostly noticeable in menus, chat and text.",
+      "tradeoff": "Easier to type a letter twice by accident. Takes effect after you sign out.",
+      "restart": true,
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Control Panel\\Keyboard",
+          "name": "KeyboardDelay",
+          "sz": "0",
+          "default": "1"
+        }
+      ]
+    },
+    {
+      "id": "shake-off",
+      "category": "input",
+      "tier": "safe",
+      "impact": "low",
+      "name": "No shake to minimize",
+      "what": "Shaking a window while you drag it no longer minimizes everything else.",
+      "tradeoff": "None.",
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "name": "DisallowShaking",
+          "dword": 1,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "typing-insights-off",
+      "category": "input",
+      "tier": "safe",
+      "impact": "low",
+      "name": "No typing insights",
+      "what": "Windows stops collecting statistics about how you type.",
+      "tradeoff": "None.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Input\\Settings",
+          "name": "InsightsEnabled",
+          "dword": 0,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "background-apps-off",
+      "category": "background",
+      "tier": "safe",
+      "impact": "medium",
+      "name": "Stop apps running in the background",
+      "what": "Store apps such as Weather, Phone Link and Mail stop running when they're closed.",
+      "tradeoff": "Those apps won't show live notifications until you open them.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications",
+          "name": "GlobalUserDisabled",
+          "dword": 1,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "edge-background-off",
+      "category": "background",
+      "tier": "safe",
+      "impact": "medium",
+      "name": "Stop Microsoft Edge running in the background",
+      "what": "Edge preloads itself at sign-in and keeps running after you close it. This stops both.",
+      "tradeoff": "Edge opens about a second slower.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "name": "StartupBoostEnabled",
+          "dword": 0,
+          "default": null
+        },
+        {
+          "reg": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "name": "BackgroundModeEnabled",
+          "dword": 0,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "widgets-off",
+      "category": "background",
+      "tier": "safe",
+      "impact": "medium",
+      "name": "Turn off Widgets",
+      "what": "Removes the Widgets board and the news feed process that keeps it filled.",
+      "tradeoff": "No weather or news on the taskbar.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Dsh",
+          "name": "AllowNewsAndInterests",
+          "dword": 0,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "copilot-off",
+      "category": "background",
+      "tier": "safe",
+      "impact": "low",
+      "name": "Turn off Copilot in Windows",
+      "what": "Removes the Copilot sidebar and its background process.",
+      "tradeoff": "You can still use Copilot in a browser.",
+      "restart": true,
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Software\\Policies\\Microsoft\\Windows\\WindowsCopilot",
+          "name": "TurnOffWindowsCopilot",
+          "dword": 1,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "startup-delay-off",
+      "category": "background",
+      "tier": "safe",
+      "impact": "low",
+      "name": "No startup delay",
+      "what": "Windows waits about ten seconds after sign-in before starting your startup apps. This removes the wait.",
+      "tradeoff": "If you have many startup apps, they all compete for the first few seconds.",
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Serialize",
+          "name": "StartupDelayInMSec",
+          "dword": 0,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "recall-off",
+      "category": "background",
+      "tier": "safe",
+      "impact": "medium",
+      "name": "Turn off Recall",
+      "what": "Stops Windows taking snapshots of your screen to make your activity searchable, on PCs that support it.",
+      "tradeoff": "No Recall timeline.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Software\\Policies\\Microsoft\\Windows\\WindowsAI",
+          "name": "DisableAIDataAnalysis",
+          "dword": 1,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "cortana-off",
+      "category": "background",
+      "tier": "safe",
+      "impact": "low",
+      "name": "Turn off Cortana",
+      "what": "Removes Cortana and its background process on Windows versions that still include it.",
+      "tradeoff": "None.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search",
+          "name": "AllowCortana",
+          "dword": 0,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "feedback-off",
+      "category": "background",
+      "tier": "safe",
+      "impact": "low",
+      "name": "No feedback requests",
+      "what": "Windows stops asking how it's doing.",
+      "tradeoff": "None.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Siuf\\Rules",
+          "name": "NumberOfSIUFInPeriod",
+          "dword": 0,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "onedrive-off",
+      "category": "background",
+      "tier": "advanced",
+      "impact": "medium",
+      "name": "Turn off OneDrive",
+      "what": "Stops OneDrive starting and syncing in the background, which can eat disk and upload bandwidth mid-game.",
+      "tradeoff": "Files stop syncing to OneDrive. Files already on this PC stay where they are.",
+      "restart": true,
+      "presets": [],
+      "atoms": [
+        {
+          "reg": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\OneDrive",
+          "name": "DisableFileSyncNGSC",
+          "dword": 1,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "maintenance-off",
+      "category": "background",
+      "tier": "extreme",
+      "impact": "medium",
+      "name": "Turn off automatic maintenance",
+      "what": "Stops Windows' nightly maintenance (disk optimization, scans, update cleanup) starting while the PC is idle, which can spill into a gaming session.",
+      "tradeoff": "SSD TRIM and update cleanup no longer run on their own. Run Optimize Drives yourself every few weeks.",
+      "presets": [
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\Maintenance",
+          "name": "MaintenanceDisabled",
+          "dword": 1,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "svc-telemetry",
+      "category": "services",
+      "tier": "safe",
+      "impact": "low",
+      "name": "Disable telemetry services",
+      "what": "Disables the Connected User Experiences service and the WAP push service that sends diagnostic data to Microsoft.",
+      "tradeoff": "None you'll notice. Takes effect after a restart.",
+      "restart": true,
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "service": "DiagTrack",
+          "start": "disabled",
+          "default": "automatic"
+        },
+        {
+          "service": "dmwappushservice",
+          "start": "disabled",
+          "default": "manual"
+        }
+      ]
+    },
+    {
+      "id": "svc-maps",
+      "category": "services",
+      "tier": "safe",
+      "impact": "low",
+      "name": "Disable offline maps updates",
+      "what": "Stops the service that downloads map data for the Maps app.",
+      "tradeoff": "Offline maps won't update.",
+      "restart": true,
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "service": "MapsBroker",
+          "start": "disabled",
+          "default": "delayed"
+        }
+      ]
+    },
+    {
+      "id": "svc-fax",
+      "category": "services",
+      "tier": "safe",
+      "impact": "low",
+      "name": "Disable Fax",
+      "what": "Disables the Fax service.",
+      "tradeoff": "You can't send faxes from this PC.",
+      "restart": true,
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "service": "Fax",
+          "start": "disabled",
+          "default": "manual"
+        }
+      ]
+    },
+    {
+      "id": "svc-insider",
+      "category": "services",
+      "tier": "safe",
+      "impact": "low",
+      "name": "Disable Windows Insider service",
+      "what": "Disables the service used for Insider preview builds.",
+      "tradeoff": "You can't join the Insider program until it's back on.",
+      "restart": true,
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "service": "wisvc",
+          "start": "disabled",
+          "default": "manual"
+        }
+      ]
+    },
+    {
+      "id": "svc-retaildemo",
+      "category": "services",
+      "tier": "safe",
+      "impact": "low",
+      "name": "Disable store demo mode",
+      "what": "Disables the service that runs the demo mode shown on PCs in shops.",
+      "tradeoff": "None.",
+      "restart": true,
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "service": "RetailDemo",
+          "start": "disabled",
+          "default": "manual"
+        }
+      ]
+    },
+    {
+      "id": "svc-wmpshare",
+      "category": "services",
+      "tier": "safe",
+      "impact": "low",
+      "name": "Disable Media Player sharing",
+      "what": "Disables Windows Media Player's network sharing service.",
+      "tradeoff": "Media Player can't share your library on the network.",
+      "restart": true,
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "service": "WMPNetworkSvc",
+          "start": "disabled",
+          "default": "manual"
+        }
+      ]
+    },
+    {
+      "id": "svc-parental",
+      "category": "services",
+      "tier": "safe",
+      "impact": "low",
+      "name": "Disable parental controls service",
+      "what": "Disables the Family Safety monitoring service.",
+      "tradeoff": "Microsoft Family limits on this PC stop working. Skip this on a child's PC.",
+      "restart": true,
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "service": "WpcMonSvc",
+          "start": "disabled",
+          "default": "manual"
+        }
+      ]
+    },
+    {
+      "id": "svc-payments",
+      "category": "services",
+      "tier": "safe",
+      "impact": "low",
+      "name": "Disable Payments and NFC",
+      "what": "Disables the secure element service used for tap-to-pay.",
+      "tradeoff": "Tap-to-pay with this PC stops working.",
+      "restart": true,
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "service": "SEMgrSvc",
+          "start": "disabled",
+          "default": "manual"
+        }
+      ]
+    },
+    {
+      "id": "svc-diaghub",
+      "category": "services",
+      "tier": "safe",
+      "impact": "low",
+      "name": "Disable diagnostics hub collector",
+      "what": "Disables a diagnostics collector used by developer tools.",
+      "tradeoff": "Some Visual Studio profiling tools won't work.",
+      "restart": true,
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "service": "diagnosticshub.standardcollector.service",
+          "start": "disabled",
+          "default": "manual"
+        }
+      ]
+    },
+    {
+      "id": "svc-sysmain",
+      "category": "services",
+      "tier": "advanced",
+      "impact": "situational",
+      "name": "Disable SysMain (Superfetch)",
+      "what": "SysMain preloads apps into memory based on what you use. On an SSD the gain is small, and on some PCs it causes bursts of disk use.",
+      "tradeoff": "Apps you open often may start a little slower, especially from a hard drive. Takes effect after a restart.",
+      "restart": true,
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "service": "SysMain",
+          "start": "disabled",
+          "default": "automatic"
+        }
+      ]
+    },
+    {
+      "id": "svc-search",
+      "category": "services",
+      "tier": "advanced",
+      "impact": "medium",
+      "name": "Disable Windows Search indexing",
+      "what": "Stops the indexer reading your drives in the background.",
+      "tradeoff": "Start menu and File Explorer search for files becomes much slower. App search still works.",
+      "restart": true,
+      "presets": [
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "service": "WSearch",
+          "start": "disabled",
+          "default": "automatic"
+        }
+      ]
+    },
+    {
+      "id": "svc-wer",
+      "category": "services",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Disable error reporting",
+      "what": "Crashes are no longer collected and uploaded in the background.",
+      "tradeoff": "Microsoft and app makers don't get your crash reports, so fixes for your exact crash may come later.",
+      "restart": true,
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "service": "WerSvc",
+          "start": "disabled",
+          "default": "manual"
+        }
+      ]
+    },
+    {
+      "id": "svc-xbox",
+      "category": "services",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Disable Xbox services",
+      "what": "Disables Xbox Live sign-in, cloud saves and accessory services.",
+      "tradeoff": "Game Pass, Xbox app games and Xbox controllers' extra features stop working. Skip this if you use any of them.",
+      "restart": true,
+      "presets": [],
+      "atoms": [
+        {
+          "service": "XblAuthManager",
+          "start": "disabled",
+          "default": "manual"
+        },
+        {
+          "service": "XblGameSave",
+          "start": "disabled",
+          "default": "manual"
+        },
+        {
+          "service": "XboxNetApiSvc",
+          "start": "disabled",
+          "default": "manual"
+        },
+        {
+          "service": "XboxGipSvc",
+          "start": "disabled",
+          "default": "manual"
+        }
+      ]
+    },
+    {
+      "id": "svc-geolocation",
+      "category": "services",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Disable location service",
+      "what": "Disables the service apps use to find where you are.",
+      "tradeoff": "Maps, weather and Find my device can't use your location.",
+      "restart": true,
+      "presets": [],
+      "atoms": [
+        {
+          "service": "lfsvc",
+          "start": "disabled",
+          "default": "manual"
+        }
+      ]
+    },
+    {
+      "id": "svc-pca",
+      "category": "services",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Disable compatibility assistant",
+      "what": "Stops Windows watching programs for compatibility problems and offering to re-run them with fixes.",
+      "tradeoff": "No automatic compatibility prompts for old programs.",
+      "restart": true,
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "service": "PcaSvc",
+          "start": "disabled",
+          "default": "automatic"
+        }
+      ]
+    },
+    {
+      "id": "svc-hotspot",
+      "category": "services",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Disable mobile hotspot",
+      "what": "Disables the service that shares this PC's connection as a Wi-Fi hotspot.",
+      "tradeoff": "Mobile hotspot in Settings stops working.",
+      "restart": true,
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "service": "icssvc",
+          "start": "disabled",
+          "default": "manual"
+        }
+      ]
+    },
+    {
+      "id": "svc-dps",
+      "category": "services",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Disable diagnostic policy service",
+      "what": "Disables the service behind Windows troubleshooters and problem detection.",
+      "tradeoff": "Troubleshooters in Settings won't work.",
+      "restart": true,
+      "presets": [
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "service": "DPS",
+          "start": "disabled",
+          "default": "automatic"
+        }
+      ]
+    },
+    {
+      "id": "svc-smartcard",
+      "category": "services",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Disable smart cards",
+      "what": "Disables smart card readers.",
+      "tradeoff": "Work or school smart cards stop working on this PC.",
+      "restart": true,
+      "presets": [],
+      "atoms": [
+        {
+          "service": "SCardSvr",
+          "start": "disabled",
+          "default": "manual"
+        }
+      ]
+    },
+    {
+      "id": "svc-print",
+      "category": "services",
+      "tier": "extreme",
+      "impact": "low",
+      "name": "Disable printing",
+      "what": "Disables the Print Spooler. Fewer services running, and it closes a part of Windows that has had serious security bugs.",
+      "tradeoff": "You can't print, or print to PDF, until you turn it back on.",
+      "restart": true,
+      "presets": [
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "service": "Spooler",
+          "start": "disabled",
+          "default": "automatic"
+        }
+      ]
+    },
+    {
+      "id": "transparency-off",
+      "category": "visual",
+      "tier": "safe",
+      "impact": "low",
+      "name": "Turn off transparency",
+      "what": "Removes the blur behind the taskbar, Start and Settings. Frees a little GPU time on integrated graphics.",
+      "tradeoff": "Windows looks flatter.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+          "name": "EnableTransparency",
+          "dword": 0,
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "animations-off",
+      "category": "visual",
+      "tier": "safe",
+      "impact": "low",
+      "name": "Turn off window animations",
+      "what": "Windows open, close and minimize instantly instead of animating.",
+      "tradeoff": "Less polish. Takes effect after you sign out.",
+      "restart": true,
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Control Panel\\Desktop\\WindowMetrics",
+          "name": "MinAnimate",
+          "sz": "0",
+          "default": "1"
+        },
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "name": "TaskbarAnimations",
+          "dword": 0,
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "menu-delay-off",
+      "category": "visual",
+      "tier": "safe",
+      "impact": "low",
+      "name": "Open menus instantly",
+      "what": "Removes the 400 ms pause before submenus open.",
+      "tradeoff": "Submenus open as soon as you hover, which some people find busy.",
+      "restart": true,
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Control Panel\\Desktop",
+          "name": "MenuShowDelay",
+          "sz": "0",
+          "default": "400"
+        }
+      ]
+    },
+    {
+      "id": "aero-peek-off",
+      "category": "visual",
+      "tier": "safe",
+      "impact": "low",
+      "name": "Turn off Peek",
+      "what": "Hovering the corner of the taskbar no longer fades every window to show the desktop.",
+      "tradeoff": "None.",
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Windows\\DWM",
+          "name": "EnableAeroPeek",
+          "dword": 0,
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "listview-shadow-off",
+      "category": "visual",
+      "tier": "safe",
+      "impact": "low",
+      "name": "No desktop icon shadows",
+      "what": "Removes the drop shadow under desktop icon labels.",
+      "tradeoff": "Labels can be harder to read on busy wallpapers.",
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "name": "ListviewShadow",
+          "dword": 0,
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "start-recs-off",
+      "category": "visual",
+      "tier": "safe",
+      "impact": "low",
+      "name": "No recommendations in Start",
+      "what": "Hides recommended files and apps in the Start menu.",
+      "tradeoff": "None.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "name": "Start_IrisRecommendations",
+          "dword": 0,
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "drag-outline",
+      "category": "visual",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Drag windows as an outline",
+      "what": "Shows just the window frame while you drag it, instead of redrawing the whole window.",
+      "tradeoff": "Dragging looks old-fashioned. Takes effect after you sign out.",
+      "restart": true,
+      "presets": [
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Control Panel\\Desktop",
+          "name": "DragFullWindows",
+          "sz": "0",
+          "default": "1"
+        }
+      ]
+    },
+    {
+      "id": "thumbs-off",
+      "category": "visual",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Icons instead of thumbnails",
+      "what": "File Explorer shows file icons instead of generating thumbnails, which speeds up big photo and video folders.",
+      "tradeoff": "You can't preview images by their thumbnails.",
+      "presets": [
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "name": "IconsOnly",
+          "dword": 1,
+          "default": 0
+        }
+      ]
+    },
+    {
+      "id": "ad-id-off",
+      "category": "privacy",
+      "tier": "safe",
+      "impact": "low",
+      "name": "Turn off the advertising ID",
+      "what": "Apps can no longer use your Windows advertising ID to show you personalized ads.",
+      "tradeoff": "None.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo",
+          "name": "Enabled",
+          "dword": 0,
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "suggestions-off",
+      "category": "privacy",
+      "tier": "safe",
+      "impact": "low",
+      "name": "No tips, suggestions or sponsored apps",
+      "what": "Stops Start suggestions, Settings promotions, tips notifications and apps that install themselves.",
+      "tradeoff": "None.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "SystemPaneSuggestionsEnabled",
+          "dword": 0,
+          "default": 1
+        },
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "SubscribedContent-338388Enabled",
+          "dword": 0,
+          "default": 1
+        },
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "SubscribedContent-338389Enabled",
+          "dword": 0,
+          "default": 1
+        },
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "SilentInstalledAppsEnabled",
+          "dword": 0,
+          "default": 1
+        },
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "SoftLandingEnabled",
+          "dword": 0,
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "tailored-off",
+      "category": "privacy",
+      "tier": "safe",
+      "impact": "low",
+      "name": "No tailored experiences",
+      "what": "Microsoft stops using your diagnostic data to pick tips and offers for you.",
+      "tradeoff": "None.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Privacy",
+          "name": "TailoredExperiencesWithDiagnosticDataEnabled",
+          "dword": 0,
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "web-search-off",
+      "category": "privacy",
+      "tier": "safe",
+      "impact": "low",
+      "name": "No web results in Start search",
+      "what": "Start search only looks at your PC, so it stops waiting on Bing and returns results faster.",
+      "tradeoff": "Web searches go through your browser instead. Takes effect after you sign out.",
+      "restart": true,
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Software\\Policies\\Microsoft\\Windows\\Explorer",
+          "name": "DisableSearchBoxSuggestions",
+          "dword": 1,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "activity-off",
+      "category": "privacy",
+      "tier": "safe",
+      "impact": "low",
+      "name": "No activity history",
+      "what": "Windows stops recording which apps and files you use.",
+      "tradeoff": "None on current Windows versions.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+          "name": "PublishUserActivities",
+          "dword": 0,
+          "default": null
+        },
+        {
+          "reg": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+          "name": "UploadUserActivities",
+          "dword": 0,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "spotlight-off",
+      "category": "privacy",
+      "tier": "safe",
+      "impact": "low",
+      "name": "No ads on the lock screen",
+      "what": "Turns off the rotating Spotlight pictures and the tips and promotions printed over them.",
+      "tradeoff": "Your lock screen shows a fixed picture.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "RotatingLockScreenEnabled",
+          "dword": 0,
+          "default": 1
+        },
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "RotatingLockScreenOverlayEnabled",
+          "dword": 0,
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "launch-tracking-off",
+      "category": "privacy",
+      "tier": "safe",
+      "impact": "low",
+      "name": "No app launch tracking",
+      "what": "Windows stops recording which apps you open to sort Start and search.",
+      "tradeoff": "Most-used apps in Start won't update.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "name": "Start_TrackProgs",
+          "dword": 0,
+          "default": 1
+        }
+      ]
+    },
+    {
+      "id": "ceip-off",
+      "category": "privacy",
+      "tier": "safe",
+      "impact": "low",
+      "name": "Leave the improvement program",
+      "what": "Opts this PC out of the Customer Experience Improvement Program.",
+      "tradeoff": "None.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SOFTWARE\\Policies\\Microsoft\\SQMClient\\Windows",
+          "name": "CEIPEnable",
+          "dword": 0,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "appcompat-telemetry-off",
+      "category": "privacy",
+      "tier": "safe",
+      "impact": "low",
+      "name": "No app compatibility telemetry",
+      "what": "Stops the inventory collector that reports installed programs for compatibility analysis.",
+      "tradeoff": "None.",
+      "presets": [
+        "recommended",
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AppCompat",
+          "name": "AITEnable",
+          "dword": 0,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "telemetry-min",
+      "category": "privacy",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Minimum diagnostic data",
+      "what": "Sets diagnostic data to the lowest level your edition of Windows allows.",
+      "tradeoff": "On Home editions this is the same as Required. Some Insider features need more.",
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection",
+          "name": "AllowTelemetry",
+          "dword": 0,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "ntfs-last-access",
+      "category": "system",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Stop recording file access times",
+      "what": "Windows writes a timestamp every time a file is read. Turning that off cuts small writes during loading screens.",
+      "tradeoff": "Backup and cleanup tools that sort by last opened lose that information.",
+      "restart": true,
+      "presets": [
+        "competitive",
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem",
+          "name": "NtfsDisableLastAccessUpdate",
+          "dword": 2147483649,
+          "default": 2147483650
+        }
+      ]
+    },
+    {
+      "id": "no-8dot3",
+      "category": "system",
+      "tier": "advanced",
+      "impact": "low",
+      "name": "Stop creating short file names",
+      "what": "Windows creates an old DOS-style short name for every new file. Turning that off saves work in folders with thousands of files.",
+      "tradeoff": "Very old 16-bit programs may not find files. Existing short names stay.",
+      "presets": [
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem",
+          "name": "NtfsDisable8dot3NameCreation",
+          "dword": 1,
+          "default": 2
+        }
+      ]
+    },
+    {
+      "id": "vbs-off",
+      "category": "system",
+      "tier": "extreme",
+      "impact": "medium",
+      "name": "Turn off Memory Integrity and VBS",
+      "what": "Virtualization-based security costs some CPUs 5 to 15% in games. Microsoft itself suggests gamers can turn it off. This does both parts.",
+      "tradeoff": "Removes a layer of protection against kernel-level malware. A few anti-cheats and work devices require it. Takes effect after a restart.",
+      "restart": true,
+      "presets": [
+        "extreme"
+      ],
+      "atoms": [
+        {
+          "reg": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard",
+          "name": "EnableVirtualizationBasedSecurity",
+          "dword": 0,
+          "default": null
+        },
+        {
+          "reg": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard\\Scenarios\\HypervisorEnforcedCodeIntegrity",
+          "name": "Enabled",
+          "dword": 0,
+          "default": null
+        }
+      ]
+    },
+    {
+      "id": "mitigations-off",
+      "category": "system",
+      "tier": "extreme",
+      "impact": "situational",
+      "name": "Turn off Spectre and Meltdown protections",
+      "what": "Removes the CPU security patches that slow down older Intel processors, mostly 6th to 9th generation. Newer CPUs fix this in hardware and gain little.",
+      "tradeoff": "Malicious code, including in a web page, could read memory it shouldn't. Only for a PC used for games and nothing sensitive. Takes effect after a restart.",
+      "restart": true,
+      "presets": [],
+      "atoms": [
+        {
+          "reg": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management",
+          "name": "FeatureSettingsOverride",
+          "dword": 3,
+          "default": null
+        },
+        {
+          "reg": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management",
+          "name": "FeatureSettingsOverrideMask",
+          "dword": 3,
+          "default": null
+        }
+      ]
+    }
+  ],
+  "leftOut": [
+    {
+      "name": "RAM cleaners",
+      "why": "Windows already uses free memory as cache. Emptying it makes the next load slower, not faster."
+    },
+    {
+      "name": "Turning off Windows Defender",
+      "why": "Tamper Protection switches it back on, and the scan cost during games is small. Add your game folders as exclusions in Windows Security instead."
+    },
+    {
+      "name": "HPET, dynamic tick and platform clock (bcdedit)",
+      "why": "On current hardware these make no difference or make frame times worse."
+    },
+    {
+      "name": "TCP window, IRPStackSize and other network packs",
+      "why": "Windows tunes these automatically and does it better than a fixed value."
+    },
+    {
+      "name": "Realtime process priority",
+      "why": "It can starve the mouse, keyboard and audio drivers and freeze the PC."
+    },
+    {
+      "name": "Deleting services or Windows components",
+      "why": "It can't be undone cleanly and breaks updates. Framecalm only switches services to Disabled."
+    },
+    {
+      "name": "Reserved bandwidth (QoS) tweaks",
+      "why": "Windows doesn't actually hold back 20% of your bandwidth. Setting the limit to zero changes nothing for games."
+    },
+    {
+      "name": "Disabling paging executive or large system cache",
+      "why": "Leftovers from Windows XP. On current Windows they either do nothing or take memory away from games."
+    }
+  ]
+}
