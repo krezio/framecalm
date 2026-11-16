@@ -633,6 +633,8 @@ ${cta("../")}
     </table>
     <h2>"Windows protected your PC"</h2>
     <p>Windows SmartScreen shows this for new programs that aren't code-signed yet or haven't been downloaded many times. Click <b>More info</b>, then <b>Run anyway</b>. If you'd rather check first, the <a href="https://github.com/krezio/framecalm">full source code is on GitHub</a> and you can build it yourself.</p>
+    <h2>Code signing</h2>
+    <p>Framecalm's Windows releases are built automatically by GitHub Actions from the public source code. We've applied to the <a href="https://signpath.org">SignPath Foundation</a>'s free code signing program for open source projects. Once approved, releases will be signed with a certificate issued by SignPath Foundation, so Windows shows a verified publisher instead of "Unknown publisher".</p>
     <h2>After installing</h2>
     <ol>
       <li>Open Framecalm. It looks at your PC first and changes nothing.</li>
