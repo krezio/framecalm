@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Best Windows power plan for gaming (Balanced vs High performance vs Ultimate)</title>
+  <meta name="description" content="Which Windows 10 and 11 power plan to use for games on a desktop or a laptop, what High performance and Ultimate Performance actually change, and how to switch.">
+  <link rel="canonical" href="https://framecalm.krezio.xyz/guides/best-power-plan-for-gaming/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#100E33">
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" href="../../assets/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Framecalm">
+  <meta property="og:title" content="Best Windows power plan for gaming (Balanced vs High performance vs Ultimate)">
+  <meta property="og:description" content="Which Windows 10 and 11 power plan to use for games on a desktop or a laptop, what High performance and Ultimate Performance actually change, and how to switch.">
+  <meta property="og:url" content="https://framecalm.krezio.xyz/guides/best-power-plan-for-gaming/">
+  <meta property="og:image" content="https://framecalm.krezio.xyz/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css?v=e655bef7aa">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"Best Windows power plan for gaming (Balanced vs High performance vs Ultimate)","description":"Which Windows 10 and 11 power plan to use for games on a desktop or a laptop, what High performance and Ultimate Performance actually change, and how to switch.","url":"https://framecalm.krezio.xyz/guides/best-power-plan-for-gaming/","mainEntityOfPage":"https://framecalm.krezio.xyz/guides/best-power-plan-for-gaming/","datePublished":"2026-11-16","dateModified":"2026-11-16","image":"https://framecalm.krezio.xyz/assets/og.png","author":{"@type":"Organization","name":"krezio","url":"https://krezio.xyz"},"publisher":{"@type":"Organization","name":"krezio","logo":{"@type":"ImageObject","url":"https://framecalm.krezio.xyz/assets/icon-512.png"}}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Framecalm","item":"https://framecalm.krezio.xyz/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://framecalm.krezio.xyz/guides/"},{"@type":"ListItem","position":3,"name":"Best power plan for gaming","item":"https://framecalm.krezio.xyz/guides/best-power-plan-for-gaming/"}]}]}</script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top">
+    <nav class="wrap nav" aria-label="Main">
+      <a class="brand" href="../../"><img src="../../assets/logo.svg" alt="" width="28" height="28"><span>framecalm</span></a>
+      <div class="nav-links">
+        <a href="../../#auto">One click</a>
+        <a href="../../tweaks/">Tweaks</a>
+        <a href="../../#app">The app</a>
+        <a href="../../#safety">Safety</a>
+        <a href="../../guides/">Guides</a>
+      </div>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe">Download</a>
+    </nav>
+  </header>
+
+  <main class="article" id="main">
+    <p class="label"><a href="../../" style="color:inherit">Framecalm</a> › <a href="../" style="color:inherit">Guides</a></p>
+    <h1>Best Windows power plan for gaming (Balanced vs High performance vs Ultimate)</h1>
+    <p class="label">Updated November 2026 · 5 min read</p>
+    <div class="tldr"><p class="tldr-h">Short answer</p><p>On a <b>desktop</b>, High performance (or Ultimate Performance) keeps the CPU ready and avoids small hitches when it ramps up. On a <b>laptop</b>, plug in and set the Windows power mode to <b>Best performance</b>; forcing High performance on battery mostly adds heat. The biggest wins are usually elsewhere: the right GPU, the right refresh rate, and no power saving on USB and Wi-Fi.</p></div>
+
+<p>A power plan is a bundle of settings that decide how eagerly Windows lets the processor speed up, how quickly it parks cores, and what it puts to sleep. The differences between plans are real but smaller than most "FPS boost" videos suggest. Here's what each one does and when it matters.</p>
+
+<h2>The plans, in plain English</h2>
+<table>
+  <tr><th>Plan</th><th>What it does</th><th>Good for</th></tr>
+  <tr><td><b>Balanced</b></td><td>Lets the CPU drop to low clocks when idle and boost quickly under load. On modern CPUs it boosts almost as fast as High performance.</td><td>Laptops, and most desktops if you don't notice hitches</td></tr>
+  <tr><td><b>High performance</b></td><td>Keeps the minimum processor state high and parks fewer cores, so the CPU is already awake when a game asks for work.</td><td>Desktops, competitive games, CPU-heavy games</td></tr>
+  <tr><td><b>Ultimate Performance</b></td><td>High performance plus a few extra timers set to "never". Meant for workstations. Uses more power at idle.</td><td>Desktops where every millisecond matters</td></tr>
+</table>
+
+<h2>How to switch</h2>
+<ol>
+  <li>Press <kbd>Win</kbd> + <kbd>R</kbd>, type <code>powercfg.cpl</code> and press Enter.</li>
+  <li>Pick a plan. If you only see Balanced, click <b>Show additional plans</b>.</li>
+  <li>On Windows 11 laptops, also open <b>Settings › System › Power &amp; battery</b> and set <b>Power mode</b> to <b>Best performance</b> while plugged in.</li>
+</ol>
+<p>Ultimate Performance is hidden by default. To add it, open Command Prompt as administrator and run:</p>
+<pre><code>powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61</code></pre>
+<p>It then shows up in the list. To see which plans you have, run <code>powercfg /list</code>.</p>
+
+<h2>Laptops: be careful</h2>
+<p>Laptops are limited by heat, not by how eagerly the CPU wakes up. Forcing the CPU to stay at high clocks makes the fans louder and can make the GPU throttle sooner, because they share the same cooler. Plug in, use Best performance, and spend the effort on the things that really cost laptops frames: running games on the integrated GPU and heat.</p>
+
+<h2>The settings inside the plan that matter more</h2>
+<ul>
+  <li><a href="../../tweaks/usb-suspend-off/">USB selective suspend</a>: turning it off stops mice and headsets dropping out after being idle.</li>
+  <li><a href="../../tweaks/cpu-min-100/">Minimum processor state</a>: 100% keeps the CPU ready, which is most of what High performance does.</li>
+  <li><a href="../../tweaks/core-parking-off/">Core parking</a>: stops Windows putting cores to sleep mid-game.</li>
+  <li><a href="../../tweaks/power-throttling-off/">Power throttling</a>: stops Windows slowing down apps it thinks are in the background, like voice chat or a capture app.</li>
+</ul>
+
+<h2>How to know if it helped</h2>
+<p>Average FPS rarely moves much. Look at <b>1% lows</b> and frame-time spikes instead: that's where a sleepy CPU shows up as stutter. Measure the same scene three times before and three times after. <a href="../how-to-measure-fps/">Here's how to measure FPS properly.</a></p>
+
+
+    <aside class="cta-box">
+      <img src="../../assets/logo.svg" alt="" width="48" height="48">
+      <div>
+        <h2>Or let Framecalm do it</h2>
+        <p>One click builds a plan for your PC, or pick from 87 Windows tweaks yourself. PC fixes, per-game settings and measured benchmarks too. Every change can be switched back. Free and open source, for Windows 10 and 11.</p>
+      </div>
+      <a class="btn btn-primary" href="https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe">Download free</a>
+    </aside>
+    <h2>More guides</h2>
+    <ul class="guide-list">
+      <li><a href="../minecraft-settings-for-more-fps/">Minecraft Java: settings for more FPS</a></li>
+      <li><a href="../fortnite-best-settings-low-end-pc/">Fortnite: best settings for low-end PCs</a></li>
+      <li><a href="../wrong-gpu-laptop/">Is my game using the wrong GPU?</a></li>
+      <li><a href="../cpu-vs-gpu-bottleneck/">CPU vs GPU bottleneck explained</a></li>
+    </ul>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-in">
+      <span class="brand brand-sm"><img src="../../assets/logo.svg" alt="" width="20" height="20"><span>framecalm</span></span>
+      <nav aria-label="Footer"><a href="https://github.com/krezio/framecalm">Source code</a><a href="../../download/">Download</a><a href="../../tweaks/">All tweaks</a><a href="../../guides/">Guides</a><a href="../../faq/">FAQ</a><a href="../../changelog/">Changelog</a><a href="../../privacy.html">Privacy</a><a href="https://github.com/krezio/framecalm/issues">Report a problem</a><a href="https://krezio.xyz">Made by krezio</a></nav>
+    </div>
+  </footer>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "22094a4c9ca14cf6838a007582902d9c"}'></script>
+</body>
+</html>

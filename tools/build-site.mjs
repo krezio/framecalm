@@ -8,7 +8,7 @@ import { guides } from "./guides.mjs";
 
 const SITE = join(dirname(fileURLToPath(import.meta.url)), "..", "site");
 const BASE = "https://framecalm.krezio.xyz";
-const UPDATED = "2026-11-13";
+const UPDATED = "2026-11-16";
 const DOWNLOAD = "https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe";
 const PORTABLE = "https://github.com/krezio/framecalm/releases/latest/download/Framecalm-portable.zip";
 const CF_TOKEN = "22094a4c9ca14cf6838a007582902d9c";
@@ -66,7 +66,7 @@ function foot(root) {
   <footer class="footer">
     <div class="wrap footer-in">
       <span class="brand brand-sm"><img src="${root}assets/logo.svg" alt="" width="20" height="20"><span>framecalm</span></span>
-      <nav aria-label="Footer"><a href="https://github.com/krezio/framecalm">Source code</a><a href="${root}guides/">Guides</a><a href="${root}privacy.html">Privacy</a><a href="https://github.com/krezio/framecalm/issues">Report a problem</a><a href="https://krezio.xyz">Made by krezio</a></nav>
+      <nav aria-label="Footer"><a href="https://github.com/krezio/framecalm">Source code</a><a href="${root}download/">Download</a><a href="${root}tweaks/">All tweaks</a><a href="${root}guides/">Guides</a><a href="${root}faq/">FAQ</a><a href="${root}changelog/">Changelog</a><a href="${root}privacy.html">Privacy</a><a href="https://github.com/krezio/framecalm/issues">Report a problem</a><a href="https://krezio.xyz">Made by krezio</a></nav>
     </div>
   </footer>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${CF_TOKEN}"}'></script>
@@ -272,13 +272,14 @@ const catalogHtml = CATALOG.categories.map((c) => {
             <div class="tw-body">
               <p>${esc(t.what)}</p>
               <p class="tw-trade"><b>Trade-off.</b> ${esc(t.tradeoff)}</p>
+              <p class="tw-more"><a href="/tweaks/${t.id}/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys">${keys}</ul>
             </div>
           </details>
         </li>`;
   }).join("\n");
   return `      <div class="cat" data-cat="${c.id}">
-        <div class="cat-head"><h3>${c.name}</h3><p>${esc(c.about)}</p></div>
+        <div class="cat-head"><h3><a href="/tweaks/${c.id}/">${c.name}</a></h3><p>${esc(c.about)}</p></div>
         <ul class="tw-list">
 ${rows}
         </ul>
@@ -287,17 +288,31 @@ ${rows}
 
 const leftout = CATALOG.leftOut.map((l) => `        <div><dt>${esc(l.name)}</dt><dd>${esc(l.why)}</dd></div>`).join("\n");
 const data = JSON.stringify(T.map((t) => ({ id: t.id, tier: t.tier, name: t.name, restart: !!t.restart, atoms: keyLines(t) }))).replace(/</g, "\\u003c");
+const homeFaq = [...readFileSync(join(TOOLS, "index.template.html"), "utf8").matchAll(/<details><summary>(.*?)<\/summary><p>(.*?)<\/p><\/details>/g)]
+  .map((m) => ({ "@type": "Question", name: m[1].replace(/<[^>]+>/g, ""), acceptedAnswer: { "@type": "Answer", text: m[2].replace(/<[^>]+>/g, "") } }));
 const jsonld = JSON.stringify({
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: "Framecalm",
-  operatingSystem: "Windows 10, Windows 11",
-  applicationCategory: "UtilitiesApplication",
-  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-  description: `Free Windows optimizer: one-click plans for your hardware and ${count} tweaks from safe to extreme, each explained and undoable.`,
-  url: `${BASE}/`,
-  downloadUrl: DOWNLOAD,
-  publisher: { "@type": "Organization", name: "krezio", url: "https://krezio.xyz" },
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      name: "Framecalm",
+      operatingSystem: "Windows 10, Windows 11",
+      applicationCategory: "UtilitiesApplication",
+      applicationSubCategory: "System optimizer",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+      description: `Free, open source Windows optimizer: one-click plans for your hardware and ${count} tweaks from safe to extreme, each explained and undoable.`,
+      url: `${BASE}/`,
+      downloadUrl: DOWNLOAD,
+      license: "https://opensource.org/licenses/MIT",
+      isAccessibleForFree: true,
+      screenshot: `${BASE}/assets/og.png`,
+      featureList: ["One-click optimization plan", `${count} Windows tweaks with registry values`, "Restore point and full undo", "PC fixes", "Startup apps", "Game settings tuning", "Before and after benchmarks"],
+      publisher: { "@id": `${BASE}/#org` },
+    },
+    { "@type": "Organization", "@id": `${BASE}/#org`, name: "krezio", url: "https://krezio.xyz", logo: `${BASE}/assets/icon-512.png`, sameAs: ["https://github.com/krezio", "https://github.com/krezio/framecalm"] },
+    { "@type": "WebSite", name: "Framecalm", url: `${BASE}/`, publisher: { "@id": `${BASE}/#org` } },
+    { "@type": "FAQPage", mainEntity: homeFaq },
+  ],
 });
 // game covers for the moving strip: official art, loaded from the publishers' store image servers
 const MS = (id) => `https://store-images.s-microsoft.com/image/apps.${id}?w=264&h=396&q=85`;
@@ -363,12 +378,19 @@ write("tweaks/index.html",
 
 
 
+// ---------- one page per tweak, one per category, FAQ, download, changelog, llms.txt ----------
+const extra = buildSeoPages();
+
 // ---------- sitemap ----------
 const urls = [
   { loc: `${BASE}/`, priority: "1.0" },
+  { loc: `${BASE}/download/`, priority: "0.9" },
   { loc: `${BASE}/tweaks/`, priority: "0.9" },
   { loc: `${BASE}/guides/`, priority: "0.8" },
+  { loc: `${BASE}/faq/`, priority: "0.7" },
   ...guides.map((g) => ({ loc: `${BASE}/guides/${g.slug}/`, priority: "0.7" })),
+  ...extra,
+  { loc: `${BASE}/changelog/`, priority: "0.4" },
   { loc: `${BASE}/privacy.html`, priority: "0.3" },
 ];
 write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
@@ -378,3 +400,312 @@ ${urls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${UPDATED}</lastmod><prior
 `);
 
 console.log(`Built home page (${count} tweaks), ${guides.length} guides, guides index, privacy, 404 and sitemap (${urls.length} URLs).`);
+
+// =====================================================================================
+// Search pages: every tweak and category gets its own page, plus FAQ, download, changelog
+// and llms.txt for AI search. Everything is generated from tweaks.json, so it stays true.
+// =====================================================================================
+function buildSeoPages() {
+  const VERSION = (readFileSync(join(TOOLS, "..", "Directory.Build.props"), "utf8").match(/<Version>([^<]+)<\/Version>/) || [])[1] || "";
+  const catOf = (id) => CATALOG.categories.find((c) => c.id === id);
+  const tierText = {
+    safe: "Safe: a clear benefit and nothing most people would miss.",
+    advanced: "Advanced: trades some power use or a convenience for lower latency.",
+    extreme: "Extreme: turns off a Windows protection or feature. Only for people who know what they give up.",
+  };
+  const presetNames = (t) => CATALOG.presets.filter((p) => t.presets.includes(p.id)).map((p) => p.name);
+  const svcSc = { disabled: "disabled", manual: "demand", automatic: "auto", delayed: "delayed-auto" };
+  const fmtDword = (n) => (n === 4294967295 ? "0xFFFFFFFF" : String(n));
+  const label = (t) => {
+    const a = t.atoms[0];
+    if (a.service) return `${t.atoms.map((x) => x.service).slice(0, 2).join(", ")} service${t.atoms.length > 1 ? "s" : ""}`;
+    if (a.power) return a.alias.split("/").pop().trim();
+    return [...new Set(t.atoms.map((x) => x.name))].slice(0, 2).join(", ");
+  };
+  const defText = (a) => {
+    if (a.service) return a.default ?? "not set";
+    if (a.power) return a.default === undefined || a.default === null ? "depends on the power plan" : String(a.default);
+    if (a.default === null || a.default === undefined) return "not set (the value doesn't exist)";
+    return a.dword !== undefined ? fmtDword(a.default) : `"${a.default}"`;
+  };
+  const rows = (t) => t.atoms.map((a, i) => {
+    const k = keyLines(t)[i];
+    return `      <li><code class="where">${esc(k.where)}</code><span>Set to <code>${esc(k.value)}</code> · Windows default: ${esc(defText(a))}</span></li>`;
+  }).join("\n");
+  function commands(t) {
+    const doIt = [], undo = [];
+    let nic = false;
+    for (const a of t.atoms) {
+      if (a.service) {
+        doIt.push(`sc config ${a.service} start= ${svcSc[a.start]}`);
+        if (a.default) undo.push(`sc config ${a.service} start= ${svcSc[a.default] ?? "demand"}`);
+      } else if (a.power) {
+        const [sub, set] = a.power.split("/");
+        doIt.push(`powercfg /setacvalueindex SCHEME_CURRENT ${sub} ${set} ${a.value}`, `powercfg /setdcvalueindex SCHEME_CURRENT ${sub} ${set} ${a.value}`);
+        if (a.default !== undefined && a.default !== null) undo.push(`powercfg /setacvalueindex SCHEME_CURRENT ${sub} ${set} ${a.default}`, `powercfg /setdcvalueindex SCHEME_CURRENT ${sub} ${set} ${a.default}`);
+      } else if (a.reg.includes("{nic}")) {
+        nic = true;
+      } else {
+        const type = a.dword !== undefined ? "REG_DWORD" : "REG_SZ";
+        const val = a.dword !== undefined ? fmtDword(a.dword) : `"${a.sz}"`;
+        doIt.push(`reg add "${a.reg}" /v "${a.name}" /t ${type} /d ${val} /f`);
+        if (a.default === null || a.default === undefined) undo.push(`reg delete "${a.reg}" /v "${a.name}" /f`);
+        else undo.push(`reg add "${a.reg}" /v "${a.name}" /t ${type} /d ${a.dword !== undefined ? fmtDword(a.default) : `"${a.default}"`} /f`);
+      }
+    }
+    if (t.atoms.some((a) => a.power)) { doIt.push("powercfg /setactive SCHEME_CURRENT"); if (undo.length) undo.push("powercfg /setactive SCHEME_CURRENT"); }
+    return { doIt, undo, nic };
+  }
+  const cap = (s) => s[0].toUpperCase() + s.slice(1);
+  const firstOf = (s) => s.split(/(?<=\.)\s/)[0];
+
+  const out = [];
+  const twRoot = "../../";
+
+  // ---- one page per tweak ----
+  for (const t of T) {
+    const c = catOf(t.category);
+    const url = `${BASE}/tweaks/${t.id}/`;
+    const title = `${t.name} (${label(t)}) on Windows 10 and 11 | Framecalm`;
+    const description = `${firstOf(t.what)} What it changes in the registry, what it costs you, and how to undo it.`;
+    const { doIt, undo, nic } = commands(t);
+    const admin = needsAdmin(t);
+    const same = T.filter((x) => x.category === t.category && x.id !== t.id);
+    const faq = [
+      { q: `What does "${t.name}" do?`, a: t.what },
+      { q: "What's the downside?", a: t.tradeoff },
+      { q: "How do I undo it?", a: `Set the values back to the Windows default listed on this page${undo.length ? ", or run the undo commands" : ""}. In Framecalm, switch the tweak off or undo it from History and the original value comes back.` },
+      { q: "Is it safe?", a: tierText[t.tier] },
+    ];
+    const jsonld = {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle", headline: `${t.name} on Windows 10 and 11`, description, url, mainEntityOfPage: url,
+          datePublished: UPDATED, dateModified: UPDATED, image: `${BASE}/assets/og.png`, proficiencyLevel: t.tier === "safe" ? "Beginner" : "Expert",
+          about: { "@type": "SoftwareApplication", name: "Microsoft Windows", operatingSystem: "Windows 10, Windows 11" },
+          author: { "@type": "Organization", name: "krezio", url: "https://krezio.xyz" },
+          publisher: { "@type": "Organization", name: "krezio", logo: { "@type": "ImageObject", url: `${BASE}/assets/icon-512.png` } },
+        },
+        { "@type": "FAQPage", mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) },
+        {
+          "@type": "BreadcrumbList", itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Framecalm", item: `${BASE}/` },
+            { "@type": "ListItem", position: 2, name: "Tweaks", item: `${BASE}/tweaks/` },
+            { "@type": "ListItem", position: 3, name: c.name, item: `${BASE}/tweaks/${c.id}/` },
+            { "@type": "ListItem", position: 4, name: t.name, item: url },
+          ],
+        },
+      ],
+    };
+    let manual = "";
+    if (nic) manual += `    <p>This one is set per network adapter. In <code>regedit</code>, open <code>HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces</code>, find the subkey (a long ID in braces) that shows your adapter's IP address, and add the values from the table there. Repeat for each adapter you play on.</p>\n`;
+    if (doIt.length) manual += `    <p>Open <b>Command Prompt${admin ? " as administrator" : ""}</b> and run:</p>\n    <pre><code>${esc(doIt.join("\n"))}</code></pre>\n`;
+    if (undo.length) manual += `    <p>To undo it:</p>\n    <pre><code>${esc(undo.join("\n"))}</code></pre>\n`;
+    manual += `    <p>${t.restart ? "Restart Windows afterwards. " : ""}Make a restore point first if you're changing several things at once. Framecalm does that for you, keeps the old values, and checks each one after writing it.</p>\n`;
+
+    write(`tweaks/${t.id}/index.html`, head({ title, description, url, root: twRoot, jsonld, type: "article" }) + `
+  <main class="article" id="main">
+    <p class="label"><a href="${twRoot}">Framecalm</a> › <a href="../">Tweaks</a> › <a href="../${c.id}/">${esc(c.name)}</a></p>
+    <h1>${esc(t.name)}</h1>
+    <p class="label tw-meta">${meter(t.tier)} ${cap(t.tier)} · ${impactText[t.impact]} · Windows 10 and 11</p>
+    <div class="tldr"><p class="tldr-h">What it does</p><p>${esc(t.what)}</p></div>
+    <table class="facts">
+      <tr><th>Category</th><td><a href="../${c.id}/">${esc(c.name)}</a></td></tr>
+      <tr><th>Tier</th><td>${esc(tierText[t.tier])}</td></tr>
+      <tr><th>Expected difference</th><td>${impactText[t.impact]}</td></tr>
+      <tr><th>Needs admin</th><td>${admin ? "Yes" : "No, it's a per-user setting"}</td></tr>
+      <tr><th>Restart</th><td>${t.restart ? "Needed before it takes effect" : "Not needed"}</td></tr>
+      <tr><th>Framecalm presets</th><td>${presetNames(t).join(", ") || "Not in a preset. Pick it yourself."}</td></tr>
+    </table>
+    <h2>The trade-off</h2>
+    <p>${esc(t.tradeoff)}</p>
+    <h2>Exactly what it changes</h2>
+    <ul class="changes">
+${rows(t)}
+    </ul>
+    <h2>Do it by hand</h2>
+${manual}${cta(twRoot)}
+    <h2>More ${esc(c.name.toLowerCase())} tweaks</h2>
+    <ul class="guide-list">
+${same.map((x) => `      <li><a href="../${x.id}/">${esc(x.name)}</a><p>${esc(firstOf(x.what))}</p></li>`).join("\n")}
+    </ul>
+  </main>
+` + foot(twRoot));
+    out.push({ loc: url, priority: "0.6" });
+  }
+
+  // ---- one page per category ----
+  for (const c of CATALOG.categories) {
+    const mine = T.filter((t) => t.category === c.id);
+    const url = `${BASE}/tweaks/${c.id}/`;
+    const title = `${mine.length} ${c.name} tweaks for Windows 10 and 11, explained | Framecalm`;
+    const description = `${c.about} Every ${c.name.toLowerCase()} tweak in Framecalm, with what it does, what it costs and the exact registry value.`;
+    const jsonld = {
+      "@context": "https://schema.org",
+      "@graph": [
+        { "@type": "CollectionPage", name: title, url, description, hasPart: mine.map((t) => ({ "@type": "TechArticle", headline: t.name, url: `${BASE}/tweaks/${t.id}/` })) },
+        {
+          "@type": "BreadcrumbList", itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Framecalm", item: `${BASE}/` },
+            { "@type": "ListItem", position: 2, name: "Tweaks", item: `${BASE}/tweaks/` },
+            { "@type": "ListItem", position: 3, name: c.name, item: url },
+          ],
+        },
+      ],
+    };
+    write(`tweaks/${c.id}/index.html`, head({ title, description, url, root: twRoot, jsonld }) + `
+  <main class="article" id="main">
+    <p class="label"><a href="${twRoot}">Framecalm</a> › <a href="../">Tweaks</a></p>
+    <h1>${esc(c.name)} tweaks</h1>
+    <p class="muted">${esc(c.about)} ${mine.length} tweaks: ${["safe", "advanced", "extreme"].map((tr) => `${mine.filter((t) => t.tier === tr).length} ${tr}`).join(", ")}.</p>
+    <ul class="guide-list" style="margin-top:28px">
+${mine.map((t) => `      <li><a href="../${t.id}/">${esc(t.name)}</a><p>${cap(t.tier)} · ${impactText[t.impact]}. ${esc(t.what)}</p></li>`).join("\n")}
+    </ul>
+${cta(twRoot)}
+    <h2>Other categories</h2>
+    <ul class="guide-list">
+${CATALOG.categories.filter((o) => o.id !== c.id).map((o) => `      <li><a href="../${o.id}/">${esc(o.name)}</a><p>${esc(o.about)}</p></li>`).join("\n")}
+    </ul>
+  </main>
+` + foot(twRoot));
+    out.push({ loc: url, priority: "0.7" });
+  }
+
+  // ---- FAQ ----
+  const homeFaq = [...readFileSync(join(TOOLS, "index.template.html"), "utf8").matchAll(/<details><summary>(.*?)<\/summary><p>(.*?)<\/p><\/details>/g)].map((m) => ({ q: m[1], a: m[2] }));
+  const moreFaq = [
+    { q: "Does it work on Windows 10?", a: "Yes. Framecalm runs on Windows 10 (version 2004 or newer) and Windows 11, 64-bit." },
+    { q: "Does it work on laptops?", a: "Yes. The one-click plan checks whether it's running on a laptop and skips tweaks that cost battery life or add heat. It can also pin games to the dedicated graphics card when a laptop keeps using the integrated one." },
+    { q: "What's the difference between Safe, Advanced and Extreme?", a: `${tierText.safe} ${tierText.advanced} ${tierText.extreme}` },
+    { q: "Which games does it support?", a: "It finds games from Steam, Epic, Riot, Battle.net, the Xbox app, Minecraft and Roblox. It tunes the settings files of Minecraft Java, Fortnite and Rocket League for your hardware, and gives exact in-game steps for games with strict anti-cheat. The Windows tweaks help every game." },
+    { q: "Windows SmartScreen warned me. Is it safe?", a: "SmartScreen warns about new programs that aren't code-signed yet or haven't been downloaded much. Framecalm is open source, so you can read the code or build it yourself. Click More info, then Run anyway." },
+    { q: "Does it need the internet?", a: "No. It works offline. It can download game cover images and check for a newer version, and both can be switched off in Settings." },
+    { q: "Where does it keep backups?", a: "In %LOCALAPPDATA%\\Framecalm on your PC: the original value of everything it changed, the history and its settings. Nothing is uploaded." },
+    { q: "How do I uninstall it?", a: "First open History and choose Undo everything if you want Windows exactly as it was. Then uninstall Framecalm from Settings, Apps, Installed apps. The portable version is just a folder you can delete." },
+    { q: "What if a tweak causes a problem?", a: "Open History and undo it: the exact old value is written back. If Windows won't start normally, use the restore point Framecalm made before the first change. Please also report it on GitHub so it can be fixed." },
+  ];
+  const allFaq = [...homeFaq, ...moreFaq];
+  const strip = (s) => s.replace(/<[^>]+>/g, "");
+  write("faq/index.html", head({
+    title: "Framecalm FAQ: is it safe, will it raise FPS, how to undo | Framecalm",
+    description: "Answers about Framecalm, the free Windows optimizer: what it changes, whether it's safe, admin rights, anti-cheat, laptops, SmartScreen, backups and how to undo or uninstall it.",
+    url: `${BASE}/faq/`, root: "../",
+    jsonld: { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: allFaq.map((f) => ({ "@type": "Question", name: strip(f.q), acceptedAnswer: { "@type": "Answer", text: strip(f.a) } })) },
+  }) + `
+  <main class="article" id="main">
+    <p class="label"><a href="../">Framecalm</a> › FAQ</p>
+    <h1>Questions</h1>
+${allFaq.map((f) => `    <h2>${f.q}</h2>\n    <p>${f.a}</p>`).join("\n")}
+${cta("../")}
+  </main>
+` + foot("../"));
+
+  // ---- download ----
+  write("download/index.html", head({
+    title: `Download Framecalm ${VERSION} for Windows 10 and 11 (free) | Framecalm`,
+    description: `Download Framecalm ${VERSION}, the free and open source Windows optimizer. Installer or portable zip, no account, no admin needed to install. Windows 10 and 11, 64-bit.`,
+    url: `${BASE}/download/`, root: "../",
+    jsonld: {
+      "@context": "https://schema.org", "@type": "SoftwareApplication", name: "Framecalm", softwareVersion: VERSION,
+      operatingSystem: "Windows 10, Windows 11", applicationCategory: "UtilitiesApplication", downloadUrl: DOWNLOAD, installUrl: DOWNLOAD,
+      license: "https://opensource.org/licenses/MIT", isAccessibleForFree: true, url: `${BASE}/download/`,
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+      publisher: { "@type": "Organization", name: "krezio", url: "https://krezio.xyz" },
+    },
+  }) + `
+  <main class="article" id="main">
+    <p class="label"><a href="../">Framecalm</a> › Download</p>
+    <h1>Download Framecalm</h1>
+    <p class="muted">Version ${VERSION}. Free and open source. No account, no ads, no telemetry.</p>
+    <p style="margin-top:28px"><a class="btn btn-primary" href="${DOWNLOAD}">Download installer (.exe)</a> <a class="btn" href="${PORTABLE}">Portable zip</a></p>
+    <h2>Which one?</h2>
+    <ul>
+      <li><b>Installer:</b> installs for your account only, so it doesn't need admin to install. Adds a Start menu entry and an uninstaller.</li>
+      <li><b>Portable:</b> unzip anywhere and run <code>Framecalm.exe</code>. Nothing is installed. Delete the folder to remove it.</li>
+    </ul>
+    <h2>System requirements</h2>
+    <table class="facts">
+      <tr><th>Windows</th><td>Windows 10 (version 2004 or newer) or Windows 11, 64-bit</td></tr>
+      <tr><th>Memory</th><td>4 GB or more</td></tr>
+      <tr><th>Disk</th><td>About 200 MB</td></tr>
+      <tr><th>Admin rights</th><td>Not needed to install. Windows asks once per batch when you apply machine-wide settings.</td></tr>
+    </table>
+    <h2>"Windows protected your PC"</h2>
+    <p>Windows SmartScreen shows this for new programs that aren't code-signed yet or haven't been downloaded many times. Click <b>More info</b>, then <b>Run anyway</b>. If you'd rather check first, the <a href="https://github.com/krezio/framecalm">full source code is on GitHub</a> and you can build it yourself.</p>
+    <h2>After installing</h2>
+    <ol>
+      <li>Open Framecalm. It looks at your PC first and changes nothing.</li>
+      <li>Press <b>Optimize now</b> for the one-click plan, or open <b>Tweaks</b> and pick changes yourself.</li>
+      <li>Everything you change is listed under <b>History</b>, where you can undo any of it.</li>
+    </ol>
+    <h2>Uninstalling</h2>
+    <p>Open <b>History</b> and choose <b>Undo everything</b> if you want Windows exactly as it was, then remove Framecalm from <b>Settings › Apps › Installed apps</b>.</p>
+    <p class="label" style="margin-top:28px">Release notes: <a href="../changelog/">changelog</a> · <a href="https://github.com/krezio/framecalm/releases">GitHub releases</a></p>
+  </main>
+` + foot("../"));
+
+  // ---- changelog ----
+  const changes = [
+    { v: "0.5.2", d: "2026-11-15", items: ["The update check and download links now point to the main open source repository.", "The Microsoft Store build leaves updates and starting with Windows to the Store."] },
+    { v: "0.5.1", d: "2026-11-15", items: ["Framecalm is now open source under the MIT license. Settings links to the code."] },
+    { v: "0.5.0", d: "2026-11-15", items: ["A complete redesign: top navigation, a one-click Home screen, and list-style Tweaks, PC fixes and Startup apps pages.", "The Onest typeface throughout."] },
+    { v: "0.4.0", d: "2026-11-15", items: ["One-click Optimize builds a plan for your PC and applies it with a restore point first.", `${count} tweaks in nine categories, each marked Safe, Advanced or Extreme.`, "PC fixes, startup apps, game tuning, benchmarks, Game Session and full History with undo.", "Tray icon, optional start with Windows, and a notice when a new version is out."] },
+  ];
+  write("changelog/index.html", head({
+    title: "Framecalm changelog: what's new in each version | Framecalm",
+    description: "Every Framecalm release and what changed in it.",
+    url: `${BASE}/changelog/`, root: "../",
+  }) + `
+  <main class="article" id="main">
+    <p class="label"><a href="../">Framecalm</a> › Changelog</p>
+    <h1>Changelog</h1>
+${changes.map((r) => `    <h2>${r.v}</h2>\n    <p class="label">${r.d}</p>\n    <ul>${r.items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>`).join("\n")}
+    <p style="margin-top:28px"><a class="btn btn-primary" href="../download/">Download the latest version</a></p>
+  </main>
+` + foot("../"));
+
+  // ---- llms.txt and llms-full.txt: a plain summary for AI assistants and AI search ----
+  writeFileSync(join(SITE, "llms.txt"), `# Framecalm
+
+> Framecalm is a free, open source (MIT) Windows 10 and 11 optimizer for games and everyday speed. One click builds a tuning plan from the PC's hardware, or the user picks from ${count} tweaks. Every change is explained, saved first and can be undone. No account, no ads, no telemetry.
+
+Made by krezio. Current version: ${VERSION}. Source code: https://github.com/krezio/framecalm
+
+## Key facts
+- Price: free. License: MIT.
+- Platform: Windows 10 (2004+) and Windows 11, 64-bit.
+- ${count} tweaks in nine categories (${CATALOG.categories.map((c) => c.name).join(", ")}), each marked Safe, Advanced or Extreme, each listing the exact registry value or power setting it writes.
+- Safety: makes a System Restore point before the first admin change, saves every original value, reads each value back after writing, rolls back the whole batch on any mismatch, and lists every change in History for undo.
+- The main app runs without admin; a small helper does elevated writes and refuses any registry key not in the published catalog.
+- Never touches game files, game memory, launch options or anti-cheat.
+- Deliberately left out: ${CATALOG.leftOut.map((l) => l.name).join(", ")}.
+- Also: PC fixes (screen below its refresh rate, Wi-Fi power saving, Game DVR, power plans), startup apps, game detection (Steam, Epic, Riot, Battle.net, Xbox app, Minecraft, Roblox), settings tuning for Minecraft Java, Fortnite and Rocket League, PresentMon benchmarks, Game Session.
+
+## Pages
+- [Home](${BASE}/): what Framecalm does
+- [Download](${BASE}/download/): installer and portable zip, requirements, SmartScreen
+- [All tweaks](${BASE}/tweaks/): the full catalog
+- [FAQ](${BASE}/faq/): safety, anti-cheat, laptops, undo, uninstall
+- [Guides](${BASE}/guides/): plain-English PC gaming performance guides
+- [Full catalog as text](${BASE}/llms-full.txt): every tweak with its registry values
+
+## Tweak categories
+${CATALOG.categories.map((c) => `- [${c.name}](${BASE}/tweaks/${c.id}/): ${c.about}`).join("\n")}
+
+## Guides
+${guides.map((g) => `- [${g.nav}](${BASE}/guides/${g.slug}/): ${g.description}`).join("\n")}
+`);
+  writeFileSync(join(SITE, "llms-full.txt"), `# Framecalm: every tweak
+
+Framecalm ${VERSION}, free and open source (MIT) Windows optimizer. ${BASE}/
+Each tweak below lists what it does, its trade-off, its tier and the exact values it writes.
+
+${CATALOG.categories.map((c) => `## ${c.name}\n\n${c.about}\n\n${T.filter((t) => t.category === c.id).map((t) => `### ${t.name}\n\n- Page: ${BASE}/tweaks/${t.id}/\n- Tier: ${t.tier}. Expected difference: ${impactText[t.impact]}.\n- What it does: ${t.what}\n- Trade-off: ${t.tradeoff}\n- Writes:\n${keyLines(t).map((k, i) => `  - ${k.where} = ${k.value} (Windows default: ${defText(t.atoms[i])})`).join("\n")}`).join("\n\n")}`).join("\n\n")}
+
+## Left out on purpose
+
+${CATALOG.leftOut.map((l) => `- ${l.name}: ${l.why}`).join("\n")}
+`);
+  return out;
+}

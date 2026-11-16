@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>11 Power and CPU tweaks for Windows 10 and 11, explained | Framecalm</title>
+  <meta name="description" content="How hard the processor is allowed to work, and what Windows switches off to save energy. Every power and cpu tweak in Framecalm, with what it does, what it costs and the exact registry value.">
+  <link rel="canonical" href="https://framecalm.krezio.xyz/tweaks/power/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#100E33">
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" href="../../assets/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Framecalm">
+  <meta property="og:title" content="11 Power and CPU tweaks for Windows 10 and 11, explained | Framecalm">
+  <meta property="og:description" content="How hard the processor is allowed to work, and what Windows switches off to save energy. Every power and cpu tweak in Framecalm, with what it does, what it costs and the exact registry value.">
+  <meta property="og:url" content="https://framecalm.krezio.xyz/tweaks/power/">
+  <meta property="og:image" content="https://framecalm.krezio.xyz/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css?v=e655bef7aa">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","name":"11 Power and CPU tweaks for Windows 10 and 11, explained | Framecalm","url":"https://framecalm.krezio.xyz/tweaks/power/","description":"How hard the processor is allowed to work, and what Windows switches off to save energy. Every power and cpu tweak in Framecalm, with what it does, what it costs and the exact registry value.","hasPart":[{"@type":"TechArticle","headline":"Keep USB devices awake","url":"https://framecalm.krezio.xyz/tweaks/usb-suspend-off/"},{"@type":"TechArticle","headline":"Turn off Fast Startup","url":"https://framecalm.krezio.xyz/tweaks/fast-startup-off/"},{"@type":"TechArticle","headline":"Keep the CPU at full speed","url":"https://framecalm.krezio.xyz/tweaks/cpu-min-100/"},{"@type":"TechArticle","headline":"Turn off core parking","url":"https://framecalm.krezio.xyz/tweaks/core-parking-off/"},{"@type":"TechArticle","headline":"Aggressive CPU boost","url":"https://framecalm.krezio.xyz/tweaks/boost-aggressive/"},{"@type":"TechArticle","headline":"Turn off PCI Express power saving","url":"https://framecalm.krezio.xyz/tweaks/pcie-aspm-off/"},{"@type":"TechArticle","headline":"Turn off power throttling","url":"https://framecalm.krezio.xyz/tweaks/power-throttling-off/"},{"@type":"TechArticle","headline":"Turn off hibernation","url":"https://framecalm.krezio.xyz/tweaks/hibernate-off/"},{"@type":"TechArticle","headline":"Keep drives spinning","url":"https://framecalm.krezio.xyz/tweaks/disk-idle-off/"},{"@type":"TechArticle","headline":"CPU energy preference: performance","url":"https://framecalm.krezio.xyz/tweaks/epp-performance/"},{"@type":"TechArticle","headline":"Never let the CPU idle","url":"https://framecalm.krezio.xyz/tweaks/idle-off/"}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Framecalm","item":"https://framecalm.krezio.xyz/"},{"@type":"ListItem","position":2,"name":"Tweaks","item":"https://framecalm.krezio.xyz/tweaks/"},{"@type":"ListItem","position":3,"name":"Power and CPU","item":"https://framecalm.krezio.xyz/tweaks/power/"}]}]}</script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top">
+    <nav class="wrap nav" aria-label="Main">
+      <a class="brand" href="../../"><img src="../../assets/logo.svg" alt="" width="28" height="28"><span>framecalm</span></a>
+      <div class="nav-links">
+        <a href="../../#auto">One click</a>
+        <a href="../../tweaks/">Tweaks</a>
+        <a href="../../#app">The app</a>
+        <a href="../../#safety">Safety</a>
+        <a href="../../guides/">Guides</a>
+      </div>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe">Download</a>
+    </nav>
+  </header>
+
+  <main class="article" id="main">
+    <p class="label"><a href="../../">Framecalm</a> › <a href="../">Tweaks</a></p>
+    <h1>Power and CPU tweaks</h1>
+    <p class="muted">How hard the processor is allowed to work, and what Windows switches off to save energy. 11 tweaks: 2 safe, 8 advanced, 1 extreme.</p>
+    <ul class="guide-list" style="margin-top:28px">
+      <li><a href="../usb-suspend-off/">Keep USB devices awake</a><p>Safe · Fixes specific problems. Stops Windows putting USB ports to sleep to save power. Fixes mice, headsets and controllers that drop out or lag for a moment after sitting idle.</p></li>
+      <li><a href="../fast-startup-off/">Turn off Fast Startup</a><p>Safe · Fixes specific problems. Fast Startup makes Shut down a half-hibernate, so drivers and Windows never get a clean start. Turning it off means Shut down really shuts down.</p></li>
+      <li><a href="../cpu-min-100/">Keep the CPU at full speed</a><p>Advanced · Small gain. Sets the minimum processor state to 100%, so the CPU doesn't have to ramp its clock up when a game suddenly needs it.</p></li>
+      <li><a href="../core-parking-off/">Turn off core parking</a><p>Advanced · Small gain. Keeps every CPU core available instead of letting Windows park idle ones. Can smooth out frame times when a game's load jumps between cores.</p></li>
+      <li><a href="../boost-aggressive/">Aggressive CPU boost</a><p>Advanced · Small gain. Tells the CPU to use its turbo boost as soon as there's work, rather than waiting to see if the load sticks around.</p></li>
+      <li><a href="../pcie-aspm-off/">Turn off PCI Express power saving</a><p>Advanced · Small gain. Stops Windows lowering the power state of the link to your graphics card and NVMe drive between bursts of work.</p></li>
+      <li><a href="../power-throttling-off/">Turn off power throttling</a><p>Advanced · Small gain. Windows slows down apps it thinks are in the background. This stops it, which helps when a game's launcher, voice chat or capture app gets throttled.</p></li>
+      <li><a href="../hibernate-off/">Turn off hibernation</a><p>Advanced · Fixes specific problems. Removes the hibernation file, which is often 6 to 25 GB on drive C:. Also turns off Fast Startup.</p></li>
+      <li><a href="../disk-idle-off/">Keep drives spinning</a><p>Advanced · Small gain. Stops Windows powering down drives after a few minutes idle, so a game doesn't hitch while a hard drive spins back up.</p></li>
+      <li><a href="../epp-performance/">CPU energy preference: performance</a><p>Advanced · Small gain. Tells the processor to favour speed over saving energy when it decides how fast to run.</p></li>
+      <li><a href="../idle-off/">Never let the CPU idle</a><p>Extreme · Fixes specific problems. Keeps every core out of its sleep states. Shaves the wake-up delay some competitive players chase.</p></li>
+    </ul>
+
+    <aside class="cta-box">
+      <img src="../../assets/logo.svg" alt="" width="48" height="48">
+      <div>
+        <h2>Or let Framecalm do it</h2>
+        <p>One click builds a plan for your PC, or pick from 87 Windows tweaks yourself. PC fixes, per-game settings and measured benchmarks too. Every change can be switched back. Free and open source, for Windows 10 and 11.</p>
+      </div>
+      <a class="btn btn-primary" href="https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe">Download free</a>
+    </aside>
+    <h2>Other categories</h2>
+    <ul class="guide-list">
+      <li><a href="../graphics/">Graphics</a><p>How Windows schedules the GPU and presents frames from games.</p></li>
+      <li><a href="../network/">Network</a><p>Latency and background bandwidth: what else is using your connection while you play.</p></li>
+      <li><a href="../input/">Mouse and keyboard</a><p>Raw, predictable input with no pop-ups that steal focus mid-game.</p></li>
+      <li><a href="../background/">Background apps</a><p>Apps and features that run when you didn't ask them to.</p></li>
+      <li><a href="../services/">Services</a><p>Windows services you may not need. Each one is switched to Disabled, never deleted.</p></li>
+      <li><a href="../visual/">Look and feel</a><p>Animations and effects that make the desktop feel slower than it is.</p></li>
+      <li><a href="../privacy/">Privacy</a><p>Ads, suggestions and data collection. Small speed effect, big quiet effect.</p></li>
+      <li><a href="../system/">System and security</a><p>Deep changes to how Windows protects itself. Real gains on some CPUs, real trade-offs on all of them.</p></li>
+    </ul>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-in">
+      <span class="brand brand-sm"><img src="../../assets/logo.svg" alt="" width="20" height="20"><span>framecalm</span></span>
+      <nav aria-label="Footer"><a href="https://github.com/krezio/framecalm">Source code</a><a href="../../download/">Download</a><a href="../../tweaks/">All tweaks</a><a href="../../guides/">Guides</a><a href="../../faq/">FAQ</a><a href="../../changelog/">Changelog</a><a href="../../privacy.html">Privacy</a><a href="https://github.com/krezio/framecalm/issues">Report a problem</a><a href="https://krezio.xyz">Made by krezio</a></nav>
+    </div>
+  </footer>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "22094a4c9ca14cf6838a007582902d9c"}'></script>
+</body>
+</html>

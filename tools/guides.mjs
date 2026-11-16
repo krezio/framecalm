@@ -374,4 +374,168 @@ export const guides = [
 <p>Play for 10 minutes and watch FPS. If it starts high and drops steadily while the fans get loud, that's thermal throttling. Framecalm's benchmarks watch clock speeds during a capture and tell you when they sag.</p>
 `,
   },
+  {
+    slug: "best-power-plan-for-gaming",
+    title: "Best Windows power plan for gaming (Balanced vs High performance vs Ultimate)",
+    nav: "Best power plan for gaming",
+    description: "Which Windows 10 and 11 power plan to use for games on a desktop or a laptop, what High performance and Ultimate Performance actually change, and how to switch.",
+    minutes: 5,
+    tldr: "On a <b>desktop</b>, High performance (or Ultimate Performance) keeps the CPU ready and avoids small hitches when it ramps up. On a <b>laptop</b>, plug in and set the Windows power mode to <b>Best performance</b>; forcing High performance on battery mostly adds heat. The biggest wins are usually elsewhere: the right GPU, the right refresh rate, and no power saving on USB and Wi-Fi.",
+    body: `
+<p>A power plan is a bundle of settings that decide how eagerly Windows lets the processor speed up, how quickly it parks cores, and what it puts to sleep. The differences between plans are real but smaller than most "FPS boost" videos suggest. Here's what each one does and when it matters.</p>
+
+<h2>The plans, in plain English</h2>
+<table>
+  <tr><th>Plan</th><th>What it does</th><th>Good for</th></tr>
+  <tr><td><b>Balanced</b></td><td>Lets the CPU drop to low clocks when idle and boost quickly under load. On modern CPUs it boosts almost as fast as High performance.</td><td>Laptops, and most desktops if you don't notice hitches</td></tr>
+  <tr><td><b>High performance</b></td><td>Keeps the minimum processor state high and parks fewer cores, so the CPU is already awake when a game asks for work.</td><td>Desktops, competitive games, CPU-heavy games</td></tr>
+  <tr><td><b>Ultimate Performance</b></td><td>High performance plus a few extra timers set to "never". Meant for workstations. Uses more power at idle.</td><td>Desktops where every millisecond matters</td></tr>
+</table>
+
+<h2>How to switch</h2>
+<ol>
+  <li>Press <kbd>Win</kbd> + <kbd>R</kbd>, type <code>powercfg.cpl</code> and press Enter.</li>
+  <li>Pick a plan. If you only see Balanced, click <b>Show additional plans</b>.</li>
+  <li>On Windows 11 laptops, also open <b>Settings › System › Power &amp; battery</b> and set <b>Power mode</b> to <b>Best performance</b> while plugged in.</li>
+</ol>
+<p>Ultimate Performance is hidden by default. To add it, open Command Prompt as administrator and run:</p>
+<pre><code>powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61</code></pre>
+<p>It then shows up in the list. To see which plans you have, run <code>powercfg /list</code>.</p>
+
+<h2>Laptops: be careful</h2>
+<p>Laptops are limited by heat, not by how eagerly the CPU wakes up. Forcing the CPU to stay at high clocks makes the fans louder and can make the GPU throttle sooner, because they share the same cooler. Plug in, use Best performance, and spend the effort on the things that really cost laptops frames: running games on the integrated GPU and heat.</p>
+
+<h2>The settings inside the plan that matter more</h2>
+<ul>
+  <li><a href="../../tweaks/usb-suspend-off/">USB selective suspend</a>: turning it off stops mice and headsets dropping out after being idle.</li>
+  <li><a href="../../tweaks/cpu-min-100/">Minimum processor state</a>: 100% keeps the CPU ready, which is most of what High performance does.</li>
+  <li><a href="../../tweaks/core-parking-off/">Core parking</a>: stops Windows putting cores to sleep mid-game.</li>
+  <li><a href="../../tweaks/power-throttling-off/">Power throttling</a>: stops Windows slowing down apps it thinks are in the background, like voice chat or a capture app.</li>
+</ul>
+
+<h2>How to know if it helped</h2>
+<p>Average FPS rarely moves much. Look at <b>1% lows</b> and frame-time spikes instead: that's where a sleepy CPU shows up as stutter. Measure the same scene three times before and three times after. <a href="../how-to-measure-fps/">Here's how to measure FPS properly.</a></p>
+`,
+  },
+  {
+    slug: "hardware-accelerated-gpu-scheduling",
+    title: "Hardware-accelerated GPU scheduling: should you turn it on for gaming?",
+    nav: "Hardware-accelerated GPU scheduling: on or off?",
+    description: "What hardware-accelerated GPU scheduling (HAGS) does in Windows 10 and 11, when it helps, when to leave it off, and how to switch it.",
+    minutes: 4,
+    tldr: "Turn it <b>on</b> if you use DLSS Frame Generation, which needs it. For other games the difference is small and can go either way, so test it: if you see new stutter or a capture tool misbehaves, turn it back off. It needs a restart either way.",
+    body: `
+<p>Normally Windows decides when each program gets time on the graphics card. Hardware-accelerated GPU scheduling (HAGS) hands that job to a scheduler on the GPU itself. The idea is a little less overhead and latency between the game and the screen.</p>
+
+<h2>When it helps</h2>
+<ul>
+  <li><b>DLSS Frame Generation</b> on NVIDIA RTX 40-series and newer requires it. The option is greyed out in games without it.</li>
+  <li>Some games show slightly better frame pacing, especially when the CPU is the bottleneck.</li>
+</ul>
+
+<h2>When to leave it off</h2>
+<ul>
+  <li>Older drivers, or a GPU too old to support it (the switch won't appear at all).</li>
+  <li>If a capture or streaming tool, or a VR setup, starts stuttering after you turn it on.</li>
+  <li>If your own before-and-after test shows worse 1% lows. It happens on some systems.</li>
+</ul>
+
+<h2>How to switch it</h2>
+<ol>
+  <li>Open <b>Settings › System › Display › Graphics</b>.</li>
+  <li>On Windows 11, click <b>Change default graphics settings</b> (or <b>Advanced graphics settings</b>). On Windows 10 it's <b>Graphics settings</b> under Display.</li>
+  <li>Switch <b>Hardware-accelerated GPU scheduling</b> on or off, then restart.</li>
+</ol>
+<p>If the switch isn't there, your GPU or driver doesn't support it. Update the graphics driver from NVIDIA, AMD or Intel first. Under the hood it's one registry value: <a href="../../tweaks/hags-on/">here's the exact key</a>.</p>
+
+<h2>Test it, don't trust it</h2>
+<p>Play the same scene with it off and on, after a restart each time, and compare 1% lows rather than average FPS. If you can't tell the difference, leave it on: it's the default on new Windows 11 installs with supported GPUs and it's required for frame generation.</p>
+`,
+  },
+  {
+    slug: "memory-integrity-vbs-gaming",
+    title: "Memory Integrity and VBS: do they slow down games, and should you turn them off?",
+    nav: "Memory Integrity (VBS) and gaming",
+    description: "What virtualization-based security and Memory Integrity do in Windows 11, how much they can cost in games, how to check if they're on, and the real trade-off of turning them off.",
+    minutes: 6,
+    tldr: "Virtualization-based security (VBS) and Memory Integrity can cost some CPUs around 5 to 15% in games, and Microsoft itself has said gamers can turn them off. But they protect Windows from a whole class of kernel-level malware, and some work devices and anti-cheats require them. Check whether they're on first, and only turn them off on a personal gaming PC if you accept that trade.",
+    body: `
+<p>Windows 11 runs part of itself inside a small virtual machine to keep the most sensitive parts of the system out of reach of malware. That's <b>virtualization-based security (VBS)</b>. <b>Memory Integrity</b> (also called HVCI) uses it to check every driver before it's allowed to run. Both are on by default on many new PCs.</p>
+
+<h2>Is it on?</h2>
+<ol>
+  <li>Press <kbd>Win</kbd> + <kbd>R</kbd>, type <code>msinfo32</code> and press Enter.</li>
+  <li>On the System Summary page, look for <b>Virtualization-based security</b>. "Running" means it's on.</li>
+  <li>For Memory Integrity specifically: <b>Windows Security › Device security › Core isolation details</b>.</li>
+</ol>
+
+<h2>How much does it cost?</h2>
+<p>It depends a lot on the CPU. Older processors without fast support for the checks it does lose the most; very recent ones lose little. Tests on affected systems have shown roughly 5 to 15% lower FPS in some games. The only way to know for your PC is to measure the same scene with it on and off.</p>
+
+<h2>What you give up</h2>
+<ul>
+  <li>Protection against malware that tries to load a malicious or vulnerable driver into the Windows kernel. That kind of attack is rare on home PCs, but it's serious when it happens.</li>
+  <li>Some <b>work or school devices</b> require it by policy. Don't change it on a PC you don't own.</li>
+  <li>A few <b>anti-cheat systems</b> and security tools expect it on. If a game complains after you turn it off, turn it back on.</li>
+</ul>
+
+<h2>How to turn Memory Integrity off</h2>
+<ol>
+  <li>Open <b>Windows Security › Device security › Core isolation details</b>.</li>
+  <li>Switch <b>Memory integrity</b> off and restart.</li>
+</ol>
+<p>That leaves VBS itself running on some PCs. Turning off both parts takes two registry values, listed exactly on the <a href="../../tweaks/vbs-off/">VBS off tweak page</a> with the commands to undo it.</p>
+
+<h2>A sensible way to decide</h2>
+<ul>
+  <li><b>Personal gaming PC, CPU a few years old, you keep Windows and drivers updated:</b> worth testing with it off.</li>
+  <li><b>Work laptop, shared family PC, or you install a lot of random software:</b> leave it on.</li>
+  <li><b>Very recent CPU:</b> measure first. The gain may be too small to be worth it.</li>
+</ul>
+<p>Framecalm puts this in its <b>Extreme</b> tier: it asks you to confirm, says what you lose, and can switch it back from History.</p>
+`,
+  },
+  {
+    slug: "debloat-windows-11-safely",
+    title: "How to debloat Windows 11 safely (what to remove, and what to leave alone)",
+    nav: "Debloat Windows 11 safely",
+    description: "A careful Windows 11 debloat: which apps, startup items and background features are safe to remove or switch off, and which 'debloat scripts' break things you need later.",
+    minutes: 7,
+    tldr: "Uninstall apps you don't use from Settings, switch off startup apps you don't need, and turn off background features like widgets, tips and ad tracking. Leave Microsoft Store, Edge WebView2, Windows Update, Windows Security and the Xbox services you use alone. Avoid scripts that delete system components: you can't easily undo them, and updates can break.",
+    body: `
+<p>"Debloating" means removing the extra apps and background features Windows ships with. Done carefully it frees memory, startup time and a bit of background CPU. Done with an aggressive script, it can break the Store, Windows Update or games that rely on Xbox services, and leave no easy way back.</p>
+
+<h2>1. Uninstall apps you don't use</h2>
+<p>Open <b>Settings › Apps › Installed apps</b>, sort by name, and remove what you don't use: preinstalled games, trial apps, news and weather apps, and anything your PC maker added. This is the safest debloat there is, because you can reinstall any of it from the Store.</p>
+
+<h2>2. Turn off startup apps</h2>
+<p><b>Settings › Apps › Startup</b> (or Task Manager › Startup apps). Switch off launchers, updaters and chat apps you don't need the moment Windows starts. Keep your audio driver panel, touchpad driver and security software on.</p>
+
+<h2>3. Switch off background features</h2>
+<p>These cost a little memory and CPU each, and switching them off is fully reversible:</p>
+<ul>
+  <li><a href="../../tweaks/widgets-off/">Widgets</a> and the news feed</li>
+  <li><a href="../../tweaks/background-apps-off/">Background apps</a> that run when you didn't open them</li>
+  <li><a href="../../tweaks/suggestions-off/">Tips and suggestions</a> in Start and Settings</li>
+  <li><a href="../../tweaks/ad-id-off/">The advertising ID</a></li>
+  <li><a href="../../tweaks/web-search-off/">Web results in Start search</a></li>
+  <li><a href="../../tweaks/edge-background-off/">Edge running in the background</a> after you close it</li>
+  <li><a href="../../tweaks/copilot-off/">Copilot</a> and <a href="../../tweaks/recall-off/">Recall</a>, if you don't use them</li>
+</ul>
+
+<h2>What to leave alone</h2>
+<table>
+  <tr><th>Keep</th><th>Why</th></tr>
+  <tr><td>Microsoft Store</td><td>Updates many built-in apps, and you'll want it to reinstall anything you removed.</td></tr>
+  <tr><td>Edge WebView2 Runtime</td><td>Many apps and game launchers use it to draw their windows, even if you never open Edge.</td></tr>
+  <tr><td>Windows Update services</td><td>Security fixes and drivers. Turning them off leaves you exposed and causes trouble later.</td></tr>
+  <tr><td>Windows Security (Defender)</td><td>Tamper Protection turns it back on anyway, and you'd have no protection in between.</td></tr>
+  <tr><td>Xbox app and Xbox services</td><td>Game Pass and many PC games use them for sign-in and saves. Only remove them if you never use either.</td></tr>
+</table>
+
+<h2>Why not just run a debloat script?</h2>
+<p>Many popular scripts remove system packages, delete services or block update servers in one go. Some of that can't be undone without reinstalling Windows, and the next big Windows update may fail or put things back half-working. If you use one, read exactly what it does first, and make a restore point.</p>
+<p>Framecalm's approach is the opposite: every change is a setting, listed with the exact value it writes, and every one can be switched back. Services are set to Disabled, never deleted.</p>
+`,
+  },
 ];

@@ -1,0 +1,860 @@
+# Framecalm: every tweak
+
+Framecalm 0.5.2, free and open source (MIT) Windows optimizer. https://framecalm.krezio.xyz/
+Each tweak below lists what it does, its trade-off, its tier and the exact values it writes.
+
+## Power and CPU
+
+How hard the processor is allowed to work, and what Windows switches off to save energy.
+
+### Keep USB devices awake
+
+- Page: https://framecalm.krezio.xyz/tweaks/usb-suspend-off/
+- Tier: safe. Expected difference: Fixes specific problems.
+- What it does: Stops Windows putting USB ports to sleep to save power. Fixes mice, headsets and controllers that drop out or lag for a moment after sitting idle.
+- Trade-off: Laptops use slightly more battery.
+- Writes:
+  - powercfg USB settings / USB selective suspend = 0 (Windows default: 1)
+
+### Turn off Fast Startup
+
+- Page: https://framecalm.krezio.xyz/tweaks/fast-startup-off/
+- Tier: safe. Expected difference: Fixes specific problems.
+- What it does: Fast Startup makes Shut down a half-hibernate, so drivers and Windows never get a clean start. Turning it off means Shut down really shuts down.
+- Trade-off: Cold boots take a few seconds longer.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Power\HiberbootEnabled = 0 (Windows default: 1)
+
+### Keep the CPU at full speed
+
+- Page: https://framecalm.krezio.xyz/tweaks/cpu-min-100/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Sets the minimum processor state to 100%, so the CPU doesn't have to ramp its clock up when a game suddenly needs it.
+- Trade-off: More heat and power use at idle. On laptops, fans may spin more.
+- Writes:
+  - powercfg SUB_PROCESSOR / PROCTHROTTLEMIN = 100 (Windows default: 5)
+
+### Turn off core parking
+
+- Page: https://framecalm.krezio.xyz/tweaks/core-parking-off/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Keeps every CPU core available instead of letting Windows park idle ones. Can smooth out frame times when a game's load jumps between cores.
+- Trade-off: Higher idle power use.
+- Writes:
+  - powercfg SUB_PROCESSOR / CPMINCORES = 100 (Windows default: 10)
+
+### Aggressive CPU boost
+
+- Page: https://framecalm.krezio.xyz/tweaks/boost-aggressive/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Tells the CPU to use its turbo boost as soon as there's work, rather than waiting to see if the load sticks around.
+- Trade-off: Runs hotter. On thin laptops it can hit thermal limits sooner.
+- Writes:
+  - powercfg SUB_PROCESSOR / PERFBOOSTMODE = 2 (Windows default: 1)
+
+### Turn off PCI Express power saving
+
+- Page: https://framecalm.krezio.xyz/tweaks/pcie-aspm-off/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Stops Windows lowering the power state of the link to your graphics card and NVMe drive between bursts of work.
+- Trade-off: A few watts more at idle.
+- Writes:
+  - powercfg SUB_PCIEXPRESS / ASPM = 0 (Windows default: 1)
+
+### Turn off power throttling
+
+- Page: https://framecalm.krezio.xyz/tweaks/power-throttling-off/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Windows slows down apps it thinks are in the background. This stops it, which helps when a game's launcher, voice chat or capture app gets throttled.
+- Trade-off: Background apps use more power. Takes effect after a restart.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Control\Power\PowerThrottling\PowerThrottlingOff = 1 (Windows default: not set (the value doesn't exist))
+
+### Turn off hibernation
+
+- Page: https://framecalm.krezio.xyz/tweaks/hibernate-off/
+- Tier: advanced. Expected difference: Fixes specific problems.
+- What it does: Removes the hibernation file, which is often 6 to 25 GB on drive C:. Also turns off Fast Startup.
+- Trade-off: No Hibernate option. Laptops that hibernate on low battery will shut down instead.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Control\Power\HibernateEnabled = 0 (Windows default: 1)
+
+### Keep drives spinning
+
+- Page: https://framecalm.krezio.xyz/tweaks/disk-idle-off/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Stops Windows powering down drives after a few minutes idle, so a game doesn't hitch while a hard drive spins back up.
+- Trade-off: Hard drives use a little more power and make a little more noise.
+- Writes:
+  - powercfg SUB_DISK / DISKIDLE = 0 (Windows default: 1200)
+
+### CPU energy preference: performance
+
+- Page: https://framecalm.krezio.xyz/tweaks/epp-performance/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Tells the processor to favour speed over saving energy when it decides how fast to run.
+- Trade-off: More heat and power use, especially on laptops.
+- Writes:
+  - powercfg SUB_PROCESSOR / PERFEPP = 0 (Windows default: 50)
+
+### Never let the CPU idle
+
+- Page: https://framecalm.krezio.xyz/tweaks/idle-off/
+- Tier: extreme. Expected difference: Fixes specific problems.
+- What it does: Keeps every core out of its sleep states. Shaves the wake-up delay some competitive players chase.
+- Trade-off: The CPU runs hot and loud all the time and uses a lot more power. Never on a laptop.
+- Writes:
+  - powercfg SUB_PROCESSOR / IDLEDISABLE = 1 (Windows default: 0)
+
+## Graphics
+
+How Windows schedules the GPU and presents frames from games.
+
+### Hardware-accelerated GPU scheduling
+
+- Page: https://framecalm.krezio.xyz/tweaks/hags-on/
+- Tier: safe. Expected difference: Fixes specific problems.
+- What it does: Lets the graphics card manage its own memory and scheduling. Required for DLSS Frame Generation; on other games the effect is small either way.
+- Trade-off: A few older drivers and capture tools behave badly with it. Takes effect after a restart.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\HwSchMode = 2 (Windows default: 1)
+
+### Turn off Xbox Game Bar
+
+- Page: https://framecalm.krezio.xyz/tweaks/game-bar-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Stops the Game Bar overlay and its capture features from hooking into every game you start.
+- Trade-off: No Win+G overlay, no clips from Game Bar. Your own capture app is unaffected.
+- Writes:
+  - HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR\AppCaptureEnabled = 0 (Windows default: 1)
+  - HKCU\System\GameConfigStore\GameDVR_Enabled = 0 (Windows default: 1)
+  - HKCU\Software\Microsoft\GameBar\UseNexusForGameBarEnabled = 0 (Windows default: not set (the value doesn't exist))
+
+### No Game Bar pop-ups
+
+- Page: https://framecalm.krezio.xyz/tweaks/game-bar-tips-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Stops the "Press Win+G" tip from showing when a game starts.
+- Trade-off: None.
+- Writes:
+  - HKCU\Software\Microsoft\GameBar\ShowStartupPanel = 0 (Windows default: not set (the value doesn't exist))
+
+### Prioritize games in the multimedia scheduler
+
+- Page: https://framecalm.krezio.xyz/tweaks/mmcss-games/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Windows has a scheduler profile just for games that it barely uses by default. This raises its CPU priority and I/O priority to High.
+- Trade-off: Background audio or streaming apps can get less time while a game runs.
+- Writes:
+  - HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games\Priority = 6 (Windows default: 2)
+  - HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games\Scheduling Category = "High" (Windows default: "Medium")
+  - HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games\SFIO Priority = "High" (Windows default: "Normal")
+
+### Give games more CPU time
+
+- Page: https://framecalm.krezio.xyz/tweaks/system-responsiveness/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Windows reserves 20% of CPU time for background tasks while multimedia apps run. This lowers the reservation to 10%.
+- Trade-off: Background tasks get less time during games.
+- Writes:
+  - HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\SystemResponsiveness = 10 (Windows default: 20)
+
+### Favor the window you're using
+
+- Page: https://framecalm.krezio.xyz/tweaks/win32-priority/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Gives the app in front shorter, more frequent turns on the CPU, so a game gets scheduled sooner after input.
+- Trade-off: Background work such as encoding or downloads can run a little slower.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Control\PriorityControl\Win32PrioritySeparation = 38 (Windows default: 2)
+
+### Turn off fullscreen optimizations everywhere
+
+- Page: https://framecalm.krezio.xyz/tweaks/fso-off/
+- Tier: advanced. Expected difference: Fixes specific problems.
+- What it does: Makes fullscreen games use real exclusive fullscreen instead of a borderless window in disguise. Some older DirectX 11 games feel more responsive this way.
+- Trade-off: Alt-Tab is slower and some overlays won't show over the game.
+- Writes:
+  - HKCU\System\GameConfigStore\GameDVR_FSEBehaviorMode = 2 (Windows default: 0)
+  - HKCU\System\GameConfigStore\GameDVR_HonorUserFSEBehaviorMode = 1 (Windows default: 0)
+  - HKCU\System\GameConfigStore\GameDVR_DXGIHonorFSEWindowsCompatible = 1 (Windows default: 0)
+
+### Turn off multiplane overlay
+
+- Page: https://framecalm.krezio.xyz/tweaks/mpo-off/
+- Tier: advanced. Expected difference: Fixes specific problems.
+- What it does: A known fix for flicker, black flashes and stutter on some NVIDIA multi-monitor setups. Leave it alone if you don't have those problems.
+- Trade-off: Slightly higher GPU use for video playback. Takes effect after a restart.
+- Writes:
+  - HKLM\SOFTWARE\Microsoft\Windows\Dwm\OverlayTestMode = 5 (Windows default: not set (the value doesn't exist))
+
+### Block Game DVR everywhere
+
+- Page: https://framecalm.krezio.xyz/tweaks/game-dvr-policy/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Turns off Windows game recording with a policy, so no app or update can switch it back on.
+- Trade-off: Xbox Game Bar can't record clips at all.
+- Writes:
+  - HKLM\SOFTWARE\Policies\Microsoft\Windows\GameDVR\AllowGameDVR = 0 (Windows default: not set (the value doesn't exist))
+
+### Longer GPU timeout
+
+- Page: https://framecalm.krezio.xyz/tweaks/tdr-delay/
+- Tier: advanced. Expected difference: Fixes specific problems.
+- What it does: Gives the graphics driver 10 seconds instead of 2 before Windows decides it has hung and resets it. Fixes "display driver stopped responding" in heavy games and on overclocked cards.
+- Trade-off: A genuinely frozen GPU takes longer to recover. Takes effect after a restart.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\TdrDelay = 10 (Windows default: not set (the value doesn't exist))
+
+### Turn off Fault Tolerant Heap
+
+- Page: https://framecalm.krezio.xyz/tweaks/fth-off/
+- Tier: advanced. Expected difference: Fixes specific problems.
+- What it does: If a game crashes a few times, Windows quietly runs it with a slower, safer memory allocator from then on. This stops that.
+- Trade-off: A game that really is unstable may crash more often instead of running slower.
+- Writes:
+  - HKLM\SOFTWARE\Microsoft\FTH\Enabled = 0 (Windows default: 1)
+
+## Network
+
+Latency and background bandwidth: what else is using your connection while you play.
+
+### Stop sharing updates with other PCs
+
+- Page: https://framecalm.krezio.xyz/tweaks/delivery-opt-off/
+- Tier: safe. Expected difference: Noticeable.
+- What it does: By default Windows can upload update files to other PCs. On a slow upload connection that shows up as ping spikes. Updates still download from Microsoft.
+- Trade-off: None for most people.
+- Writes:
+  - HKLM\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization\DODownloadMode = 0 (Windows default: not set (the value doesn't exist))
+
+### Turn off Remote Assistance
+
+- Page: https://framecalm.krezio.xyz/tweaks/remote-assist-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Stops other people being invited to view or control this PC through Remote Assistance. Fewer open doors.
+- Trade-off: You can't receive help through Remote Assistance until you turn it back on.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance\fAllowToGetHelp = 0 (Windows default: 1)
+
+### Turn off network throttling
+
+- Page: https://framecalm.krezio.xyz/tweaks/network-throttling-off/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Windows limits network processing while media plays so audio doesn't glitch. This removes the limit.
+- Trade-off: On very old CPUs, audio can crackle under heavy network load.
+- Writes:
+  - HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\NetworkThrottlingIndex = 0xFFFFFFFF (Windows default: 10)
+
+### Turn off Nagle's algorithm
+
+- Page: https://framecalm.krezio.xyz/tweaks/nagle-off/
+- Tier: advanced. Expected difference: Fixes specific problems.
+- What it does: Sends small packets right away instead of bundling them. Helps games that use TCP (some MMOs and older titles). Most shooters use UDP and won't change.
+- Trade-off: A little more network overhead. Applies to your active network adapters; takes effect after a restart.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\{each network adapter}\TcpAckFrequency = 1 (Windows default: not set (the value doesn't exist))
+  - HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\{each network adapter}\TCPNoDelay = 1 (Windows default: not set (the value doesn't exist))
+
+### Stop Store apps updating in the background
+
+- Page: https://framecalm.krezio.xyz/tweaks/store-autoupdate-off/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Microsoft Store apps stop downloading updates on their own while you play.
+- Trade-off: You update Store apps yourself from the Store's Library page. Games from the Xbox app are affected too.
+- Writes:
+  - HKLM\SOFTWARE\Policies\Microsoft\WindowsStore\AutoDownload = 2 (Windows default: not set (the value doesn't exist))
+
+### Keep Windows Update away from drivers
+
+- Page: https://framecalm.krezio.xyz/tweaks/wu-drivers-off/
+- Tier: advanced. Expected difference: Fixes specific problems.
+- What it does: Stops Windows Update replacing your graphics driver with an older or generic one.
+- Trade-off: You update drivers yourself, from NVIDIA, AMD or Intel.
+- Writes:
+  - HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\ExcludeWUDriversInQualityUpdate = 1 (Windows default: not set (the value doesn't exist))
+
+### Ask before downloading Windows updates
+
+- Page: https://framecalm.krezio.xyz/tweaks/wu-ask-first/
+- Tier: advanced. Expected difference: Noticeable.
+- What it does: Windows tells you updates are ready instead of downloading and installing them in the middle of a session.
+- Trade-off: Security updates wait for you. Install them regularly.
+- Writes:
+  - HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU\AUOptions = 2 (Windows default: not set (the value doesn't exist))
+  - HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU\NoAutoRebootWithLoggedOnUsers = 1 (Windows default: not set (the value doesn't exist))
+
+### Prefer IPv4 over IPv6
+
+- Page: https://framecalm.krezio.xyz/tweaks/prefer-ipv4/
+- Tier: advanced. Expected difference: Fixes specific problems.
+- What it does: Some games and launchers connect faster or more reliably over IPv4. IPv6 still works when it's the only option.
+- Trade-off: None for most people. Takes effect after a restart.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters\DisabledComponents = 32 (Windows default: not set (the value doesn't exist))
+
+### Faster copies over your home network
+
+- Page: https://framecalm.krezio.xyz/tweaks/smb-throttle-off/
+- Tier: advanced. Expected difference: Fixes specific problems.
+- What it does: Turns off bandwidth throttling for file sharing, so copying from a NAS or another PC isn't held back.
+- Trade-off: None on a home network.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters\DisableBandwidthThrottling = 1 (Windows default: not set (the value doesn't exist))
+
+## Mouse and keyboard
+
+Raw, predictable input with no pop-ups that steal focus mid-game.
+
+### Turn off mouse acceleration
+
+- Page: https://framecalm.krezio.xyz/tweaks/mouse-accel-off/
+- Tier: safe. Expected difference: Big difference.
+- What it does: Turns off Enhance pointer precision, so the same hand movement always moves the same distance. The single biggest change for aim consistency.
+- Trade-off: The desktop pointer feels slower at first. Takes effect after you sign out.
+- Writes:
+  - HKCU\Control Panel\Mouse\MouseSpeed = "0" (Windows default: "1")
+  - HKCU\Control Panel\Mouse\MouseThreshold1 = "0" (Windows default: "6")
+  - HKCU\Control Panel\Mouse\MouseThreshold2 = "0" (Windows default: "10")
+
+### No Sticky Keys pop-up
+
+- Page: https://framecalm.krezio.xyz/tweaks/sticky-keys-off/
+- Tier: safe. Expected difference: Fixes specific problems.
+- What it does: Pressing Shift five times no longer throws you out of the game to ask about Sticky Keys. Same for Filter Keys and Toggle Keys.
+- Trade-off: None. You can still turn these on in Accessibility settings.
+- Writes:
+  - HKCU\Control Panel\Accessibility\StickyKeys\Flags = "506" (Windows default: "510")
+  - HKCU\Control Panel\Accessibility\Keyboard Response\Flags = "122" (Windows default: "126")
+  - HKCU\Control Panel\Accessibility\ToggleKeys\Flags = "58" (Windows default: "62")
+
+### Shortest key repeat delay
+
+- Page: https://framecalm.krezio.xyz/tweaks/key-repeat-fast/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Holding a key starts repeating sooner. Mostly noticeable in menus, chat and text.
+- Trade-off: Easier to type a letter twice by accident. Takes effect after you sign out.
+- Writes:
+  - HKCU\Control Panel\Keyboard\KeyboardDelay = "0" (Windows default: "1")
+
+### No shake to minimize
+
+- Page: https://framecalm.krezio.xyz/tweaks/shake-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Shaking a window while you drag it no longer minimizes everything else.
+- Trade-off: None.
+- Writes:
+  - HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\DisallowShaking = 1 (Windows default: not set (the value doesn't exist))
+
+### No typing insights
+
+- Page: https://framecalm.krezio.xyz/tweaks/typing-insights-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Windows stops collecting statistics about how you type.
+- Trade-off: None.
+- Writes:
+  - HKCU\Software\Microsoft\Input\Settings\InsightsEnabled = 0 (Windows default: not set (the value doesn't exist))
+
+## Background apps
+
+Apps and features that run when you didn't ask them to.
+
+### Stop apps running in the background
+
+- Page: https://framecalm.krezio.xyz/tweaks/background-apps-off/
+- Tier: safe. Expected difference: Noticeable.
+- What it does: Store apps such as Weather, Phone Link and Mail stop running when they're closed.
+- Trade-off: Those apps won't show live notifications until you open them.
+- Writes:
+  - HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications\GlobalUserDisabled = 1 (Windows default: not set (the value doesn't exist))
+
+### Stop Microsoft Edge running in the background
+
+- Page: https://framecalm.krezio.xyz/tweaks/edge-background-off/
+- Tier: safe. Expected difference: Noticeable.
+- What it does: Edge preloads itself at sign-in and keeps running after you close it. This stops both.
+- Trade-off: Edge opens about a second slower.
+- Writes:
+  - HKLM\SOFTWARE\Policies\Microsoft\Edge\StartupBoostEnabled = 0 (Windows default: not set (the value doesn't exist))
+  - HKLM\SOFTWARE\Policies\Microsoft\Edge\BackgroundModeEnabled = 0 (Windows default: not set (the value doesn't exist))
+
+### Turn off Widgets
+
+- Page: https://framecalm.krezio.xyz/tweaks/widgets-off/
+- Tier: safe. Expected difference: Noticeable.
+- What it does: Removes the Widgets board and the news feed process that keeps it filled.
+- Trade-off: No weather or news on the taskbar.
+- Writes:
+  - HKLM\SOFTWARE\Policies\Microsoft\Dsh\AllowNewsAndInterests = 0 (Windows default: not set (the value doesn't exist))
+
+### Turn off Copilot in Windows
+
+- Page: https://framecalm.krezio.xyz/tweaks/copilot-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Removes the Copilot sidebar and its background process.
+- Trade-off: You can still use Copilot in a browser.
+- Writes:
+  - HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot\TurnOffWindowsCopilot = 1 (Windows default: not set (the value doesn't exist))
+
+### No startup delay
+
+- Page: https://framecalm.krezio.xyz/tweaks/startup-delay-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Windows waits about ten seconds after sign-in before starting your startup apps. This removes the wait.
+- Trade-off: If you have many startup apps, they all compete for the first few seconds.
+- Writes:
+  - HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Serialize\StartupDelayInMSec = 0 (Windows default: not set (the value doesn't exist))
+
+### Turn off Recall
+
+- Page: https://framecalm.krezio.xyz/tweaks/recall-off/
+- Tier: safe. Expected difference: Noticeable.
+- What it does: Stops Windows taking snapshots of your screen to make your activity searchable, on PCs that support it.
+- Trade-off: No Recall timeline.
+- Writes:
+  - HKCU\Software\Policies\Microsoft\Windows\WindowsAI\DisableAIDataAnalysis = 1 (Windows default: not set (the value doesn't exist))
+
+### Turn off Cortana
+
+- Page: https://framecalm.krezio.xyz/tweaks/cortana-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Removes Cortana and its background process on Windows versions that still include it.
+- Trade-off: None.
+- Writes:
+  - HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search\AllowCortana = 0 (Windows default: not set (the value doesn't exist))
+
+### No feedback requests
+
+- Page: https://framecalm.krezio.xyz/tweaks/feedback-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Windows stops asking how it's doing.
+- Trade-off: None.
+- Writes:
+  - HKCU\Software\Microsoft\Siuf\Rules\NumberOfSIUFInPeriod = 0 (Windows default: not set (the value doesn't exist))
+
+### Turn off OneDrive
+
+- Page: https://framecalm.krezio.xyz/tweaks/onedrive-off/
+- Tier: advanced. Expected difference: Noticeable.
+- What it does: Stops OneDrive starting and syncing in the background, which can eat disk and upload bandwidth mid-game.
+- Trade-off: Files stop syncing to OneDrive. Files already on this PC stay where they are.
+- Writes:
+  - HKLM\SOFTWARE\Policies\Microsoft\Windows\OneDrive\DisableFileSyncNGSC = 1 (Windows default: not set (the value doesn't exist))
+
+### Turn off automatic maintenance
+
+- Page: https://framecalm.krezio.xyz/tweaks/maintenance-off/
+- Tier: extreme. Expected difference: Noticeable.
+- What it does: Stops Windows' nightly maintenance (disk optimization, scans, update cleanup) starting while the PC is idle, which can spill into a gaming session.
+- Trade-off: SSD TRIM and update cleanup no longer run on their own. Run Optimize Drives yourself every few weeks.
+- Writes:
+  - HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\Maintenance\MaintenanceDisabled = 1 (Windows default: not set (the value doesn't exist))
+
+## Services
+
+Windows services you may not need. Each one is switched to Disabled, never deleted.
+
+### Disable telemetry services
+
+- Page: https://framecalm.krezio.xyz/tweaks/svc-telemetry/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Disables the Connected User Experiences service and the WAP push service that sends diagnostic data to Microsoft.
+- Trade-off: None you'll notice. Takes effect after a restart.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\DiagTrack\Start = 4 (disabled) (Windows default: automatic)
+  - HKLM\SYSTEM\CurrentControlSet\Services\dmwappushservice\Start = 4 (disabled) (Windows default: manual)
+
+### Disable offline maps updates
+
+- Page: https://framecalm.krezio.xyz/tweaks/svc-maps/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Stops the service that downloads map data for the Maps app.
+- Trade-off: Offline maps won't update.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\MapsBroker\Start = 4 (disabled) (Windows default: delayed)
+
+### Disable Fax
+
+- Page: https://framecalm.krezio.xyz/tweaks/svc-fax/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Disables the Fax service.
+- Trade-off: You can't send faxes from this PC.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\Fax\Start = 4 (disabled) (Windows default: manual)
+
+### Disable Windows Insider service
+
+- Page: https://framecalm.krezio.xyz/tweaks/svc-insider/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Disables the service used for Insider preview builds.
+- Trade-off: You can't join the Insider program until it's back on.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\wisvc\Start = 4 (disabled) (Windows default: manual)
+
+### Disable store demo mode
+
+- Page: https://framecalm.krezio.xyz/tweaks/svc-retaildemo/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Disables the service that runs the demo mode shown on PCs in shops.
+- Trade-off: None.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\RetailDemo\Start = 4 (disabled) (Windows default: manual)
+
+### Disable Media Player sharing
+
+- Page: https://framecalm.krezio.xyz/tweaks/svc-wmpshare/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Disables Windows Media Player's network sharing service.
+- Trade-off: Media Player can't share your library on the network.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\WMPNetworkSvc\Start = 4 (disabled) (Windows default: manual)
+
+### Disable parental controls service
+
+- Page: https://framecalm.krezio.xyz/tweaks/svc-parental/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Disables the Family Safety monitoring service.
+- Trade-off: Microsoft Family limits on this PC stop working. Skip this on a child's PC.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\WpcMonSvc\Start = 4 (disabled) (Windows default: manual)
+
+### Disable Payments and NFC
+
+- Page: https://framecalm.krezio.xyz/tweaks/svc-payments/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Disables the secure element service used for tap-to-pay.
+- Trade-off: Tap-to-pay with this PC stops working.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\SEMgrSvc\Start = 4 (disabled) (Windows default: manual)
+
+### Disable diagnostics hub collector
+
+- Page: https://framecalm.krezio.xyz/tweaks/svc-diaghub/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Disables a diagnostics collector used by developer tools.
+- Trade-off: Some Visual Studio profiling tools won't work.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\diagnosticshub.standardcollector.service\Start = 4 (disabled) (Windows default: manual)
+
+### Disable SysMain (Superfetch)
+
+- Page: https://framecalm.krezio.xyz/tweaks/svc-sysmain/
+- Tier: advanced. Expected difference: Fixes specific problems.
+- What it does: SysMain preloads apps into memory based on what you use. On an SSD the gain is small, and on some PCs it causes bursts of disk use.
+- Trade-off: Apps you open often may start a little slower, especially from a hard drive. Takes effect after a restart.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\SysMain\Start = 4 (disabled) (Windows default: automatic)
+
+### Disable Windows Search indexing
+
+- Page: https://framecalm.krezio.xyz/tweaks/svc-search/
+- Tier: advanced. Expected difference: Noticeable.
+- What it does: Stops the indexer reading your drives in the background.
+- Trade-off: Start menu and File Explorer search for files becomes much slower. App search still works.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\WSearch\Start = 4 (disabled) (Windows default: automatic)
+
+### Disable error reporting
+
+- Page: https://framecalm.krezio.xyz/tweaks/svc-wer/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Crashes are no longer collected and uploaded in the background.
+- Trade-off: Microsoft and app makers don't get your crash reports, so fixes for your exact crash may come later.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\WerSvc\Start = 4 (disabled) (Windows default: manual)
+
+### Disable Xbox services
+
+- Page: https://framecalm.krezio.xyz/tweaks/svc-xbox/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Disables Xbox Live sign-in, cloud saves and accessory services.
+- Trade-off: Game Pass, Xbox app games and Xbox controllers' extra features stop working. Skip this if you use any of them.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\XblAuthManager\Start = 4 (disabled) (Windows default: manual)
+  - HKLM\SYSTEM\CurrentControlSet\Services\XblGameSave\Start = 4 (disabled) (Windows default: manual)
+  - HKLM\SYSTEM\CurrentControlSet\Services\XboxNetApiSvc\Start = 4 (disabled) (Windows default: manual)
+  - HKLM\SYSTEM\CurrentControlSet\Services\XboxGipSvc\Start = 4 (disabled) (Windows default: manual)
+
+### Disable location service
+
+- Page: https://framecalm.krezio.xyz/tweaks/svc-geolocation/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Disables the service apps use to find where you are.
+- Trade-off: Maps, weather and Find my device can't use your location.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\lfsvc\Start = 4 (disabled) (Windows default: manual)
+
+### Disable compatibility assistant
+
+- Page: https://framecalm.krezio.xyz/tweaks/svc-pca/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Stops Windows watching programs for compatibility problems and offering to re-run them with fixes.
+- Trade-off: No automatic compatibility prompts for old programs.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\PcaSvc\Start = 4 (disabled) (Windows default: automatic)
+
+### Disable mobile hotspot
+
+- Page: https://framecalm.krezio.xyz/tweaks/svc-hotspot/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Disables the service that shares this PC's connection as a Wi-Fi hotspot.
+- Trade-off: Mobile hotspot in Settings stops working.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\icssvc\Start = 4 (disabled) (Windows default: manual)
+
+### Disable diagnostic policy service
+
+- Page: https://framecalm.krezio.xyz/tweaks/svc-dps/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Disables the service behind Windows troubleshooters and problem detection.
+- Trade-off: Troubleshooters in Settings won't work.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\DPS\Start = 4 (disabled) (Windows default: automatic)
+
+### Disable smart cards
+
+- Page: https://framecalm.krezio.xyz/tweaks/svc-smartcard/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Disables smart card readers.
+- Trade-off: Work or school smart cards stop working on this PC.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\SCardSvr\Start = 4 (disabled) (Windows default: manual)
+
+### Disable printing
+
+- Page: https://framecalm.krezio.xyz/tweaks/svc-print/
+- Tier: extreme. Expected difference: Small gain.
+- What it does: Disables the Print Spooler. Fewer services running, and it closes a part of Windows that has had serious security bugs.
+- Trade-off: You can't print, or print to PDF, until you turn it back on.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Services\Spooler\Start = 4 (disabled) (Windows default: automatic)
+
+## Look and feel
+
+Animations and effects that make the desktop feel slower than it is.
+
+### Turn off transparency
+
+- Page: https://framecalm.krezio.xyz/tweaks/transparency-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Removes the blur behind the taskbar, Start and Settings. Frees a little GPU time on integrated graphics.
+- Trade-off: Windows looks flatter.
+- Writes:
+  - HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize\EnableTransparency = 0 (Windows default: 1)
+
+### Turn off window animations
+
+- Page: https://framecalm.krezio.xyz/tweaks/animations-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Windows open, close and minimize instantly instead of animating.
+- Trade-off: Less polish. Takes effect after you sign out.
+- Writes:
+  - HKCU\Control Panel\Desktop\WindowMetrics\MinAnimate = "0" (Windows default: "1")
+  - HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarAnimations = 0 (Windows default: 1)
+
+### Open menus instantly
+
+- Page: https://framecalm.krezio.xyz/tweaks/menu-delay-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Removes the 400 ms pause before submenus open.
+- Trade-off: Submenus open as soon as you hover, which some people find busy.
+- Writes:
+  - HKCU\Control Panel\Desktop\MenuShowDelay = "0" (Windows default: "400")
+
+### Turn off Peek
+
+- Page: https://framecalm.krezio.xyz/tweaks/aero-peek-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Hovering the corner of the taskbar no longer fades every window to show the desktop.
+- Trade-off: None.
+- Writes:
+  - HKCU\Software\Microsoft\Windows\DWM\EnableAeroPeek = 0 (Windows default: 1)
+
+### No desktop icon shadows
+
+- Page: https://framecalm.krezio.xyz/tweaks/listview-shadow-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Removes the drop shadow under desktop icon labels.
+- Trade-off: Labels can be harder to read on busy wallpapers.
+- Writes:
+  - HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\ListviewShadow = 0 (Windows default: 1)
+
+### No recommendations in Start
+
+- Page: https://framecalm.krezio.xyz/tweaks/start-recs-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Hides recommended files and apps in the Start menu.
+- Trade-off: None.
+- Writes:
+  - HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Start_IrisRecommendations = 0 (Windows default: 1)
+
+### Drag windows as an outline
+
+- Page: https://framecalm.krezio.xyz/tweaks/drag-outline/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Shows just the window frame while you drag it, instead of redrawing the whole window.
+- Trade-off: Dragging looks old-fashioned. Takes effect after you sign out.
+- Writes:
+  - HKCU\Control Panel\Desktop\DragFullWindows = "0" (Windows default: "1")
+
+### Icons instead of thumbnails
+
+- Page: https://framecalm.krezio.xyz/tweaks/thumbs-off/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: File Explorer shows file icons instead of generating thumbnails, which speeds up big photo and video folders.
+- Trade-off: You can't preview images by their thumbnails.
+- Writes:
+  - HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\IconsOnly = 1 (Windows default: 0)
+
+## Privacy
+
+Ads, suggestions and data collection. Small speed effect, big quiet effect.
+
+### Turn off the advertising ID
+
+- Page: https://framecalm.krezio.xyz/tweaks/ad-id-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Apps can no longer use your Windows advertising ID to show you personalized ads.
+- Trade-off: None.
+- Writes:
+  - HKCU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo\Enabled = 0 (Windows default: 1)
+
+### No tips, suggestions or sponsored apps
+
+- Page: https://framecalm.krezio.xyz/tweaks/suggestions-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Stops Start suggestions, Settings promotions, tips notifications and apps that install themselves.
+- Trade-off: None.
+- Writes:
+  - HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SystemPaneSuggestionsEnabled = 0 (Windows default: 1)
+  - HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SubscribedContent-338388Enabled = 0 (Windows default: 1)
+  - HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SubscribedContent-338389Enabled = 0 (Windows default: 1)
+  - HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SilentInstalledAppsEnabled = 0 (Windows default: 1)
+  - HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SoftLandingEnabled = 0 (Windows default: 1)
+
+### No tailored experiences
+
+- Page: https://framecalm.krezio.xyz/tweaks/tailored-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Microsoft stops using your diagnostic data to pick tips and offers for you.
+- Trade-off: None.
+- Writes:
+  - HKCU\Software\Microsoft\Windows\CurrentVersion\Privacy\TailoredExperiencesWithDiagnosticDataEnabled = 0 (Windows default: 1)
+
+### No web results in Start search
+
+- Page: https://framecalm.krezio.xyz/tweaks/web-search-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Start search only looks at your PC, so it stops waiting on Bing and returns results faster.
+- Trade-off: Web searches go through your browser instead. Takes effect after you sign out.
+- Writes:
+  - HKCU\Software\Policies\Microsoft\Windows\Explorer\DisableSearchBoxSuggestions = 1 (Windows default: not set (the value doesn't exist))
+
+### No activity history
+
+- Page: https://framecalm.krezio.xyz/tweaks/activity-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Windows stops recording which apps and files you use.
+- Trade-off: None on current Windows versions.
+- Writes:
+  - HKLM\SOFTWARE\Policies\Microsoft\Windows\System\PublishUserActivities = 0 (Windows default: not set (the value doesn't exist))
+  - HKLM\SOFTWARE\Policies\Microsoft\Windows\System\UploadUserActivities = 0 (Windows default: not set (the value doesn't exist))
+
+### No ads on the lock screen
+
+- Page: https://framecalm.krezio.xyz/tweaks/spotlight-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Turns off the rotating Spotlight pictures and the tips and promotions printed over them.
+- Trade-off: Your lock screen shows a fixed picture.
+- Writes:
+  - HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\RotatingLockScreenEnabled = 0 (Windows default: 1)
+  - HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\RotatingLockScreenOverlayEnabled = 0 (Windows default: 1)
+
+### No app launch tracking
+
+- Page: https://framecalm.krezio.xyz/tweaks/launch-tracking-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Windows stops recording which apps you open to sort Start and search.
+- Trade-off: Most-used apps in Start won't update.
+- Writes:
+  - HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Start_TrackProgs = 0 (Windows default: 1)
+
+### Leave the improvement program
+
+- Page: https://framecalm.krezio.xyz/tweaks/ceip-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Opts this PC out of the Customer Experience Improvement Program.
+- Trade-off: None.
+- Writes:
+  - HKLM\SOFTWARE\Policies\Microsoft\SQMClient\Windows\CEIPEnable = 0 (Windows default: not set (the value doesn't exist))
+
+### No app compatibility telemetry
+
+- Page: https://framecalm.krezio.xyz/tweaks/appcompat-telemetry-off/
+- Tier: safe. Expected difference: Small gain.
+- What it does: Stops the inventory collector that reports installed programs for compatibility analysis.
+- Trade-off: None.
+- Writes:
+  - HKLM\SOFTWARE\Policies\Microsoft\Windows\AppCompat\AITEnable = 0 (Windows default: not set (the value doesn't exist))
+
+### Minimum diagnostic data
+
+- Page: https://framecalm.krezio.xyz/tweaks/telemetry-min/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Sets diagnostic data to the lowest level your edition of Windows allows.
+- Trade-off: On Home editions this is the same as Required. Some Insider features need more.
+- Writes:
+  - HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection\AllowTelemetry = 0 (Windows default: not set (the value doesn't exist))
+
+## System and security
+
+Deep changes to how Windows protects itself. Real gains on some CPUs, real trade-offs on all of them.
+
+### Stop recording file access times
+
+- Page: https://framecalm.krezio.xyz/tweaks/ntfs-last-access/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Windows writes a timestamp every time a file is read. Turning that off cuts small writes during loading screens.
+- Trade-off: Backup and cleanup tools that sort by last opened lose that information.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Control\FileSystem\NtfsDisableLastAccessUpdate = 2147483649 (Windows default: 2147483650)
+
+### Stop creating short file names
+
+- Page: https://framecalm.krezio.xyz/tweaks/no-8dot3/
+- Tier: advanced. Expected difference: Small gain.
+- What it does: Windows creates an old DOS-style short name for every new file. Turning that off saves work in folders with thousands of files.
+- Trade-off: Very old 16-bit programs may not find files. Existing short names stay.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Control\FileSystem\NtfsDisable8dot3NameCreation = 1 (Windows default: 2)
+
+### Turn off Memory Integrity and VBS
+
+- Page: https://framecalm.krezio.xyz/tweaks/vbs-off/
+- Tier: extreme. Expected difference: Noticeable.
+- What it does: Virtualization-based security costs some CPUs 5 to 15% in games. Microsoft itself suggests gamers can turn it off. This does both parts.
+- Trade-off: Removes a layer of protection against kernel-level malware. A few anti-cheats and work devices require it. Takes effect after a restart.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\EnableVirtualizationBasedSecurity = 0 (Windows default: not set (the value doesn't exist))
+  - HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity\Enabled = 0 (Windows default: not set (the value doesn't exist))
+
+### Turn off Spectre and Meltdown protections
+
+- Page: https://framecalm.krezio.xyz/tweaks/mitigations-off/
+- Tier: extreme. Expected difference: Fixes specific problems.
+- What it does: Removes the CPU security patches that slow down older Intel processors, mostly 6th to 9th generation. Newer CPUs fix this in hardware and gain little.
+- Trade-off: Malicious code, including in a web page, could read memory it shouldn't. Only for a PC used for games and nothing sensitive. Takes effect after a restart.
+- Writes:
+  - HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\FeatureSettingsOverride = 3 (Windows default: not set (the value doesn't exist))
+  - HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\FeatureSettingsOverrideMask = 3 (Windows default: not set (the value doesn't exist))
+
+## Left out on purpose
+
+- RAM cleaners: Windows already uses free memory as cache. Emptying it makes the next load slower, not faster.
+- Turning off Windows Defender: Tamper Protection switches it back on, and the scan cost during games is small. Add your game folders as exclusions in Windows Security instead.
+- HPET, dynamic tick and platform clock (bcdedit): On current hardware these make no difference or make frame times worse.
+- TCP window, IRPStackSize and other network packs: Windows tunes these automatically and does it better than a fixed value.
+- Realtime process priority: It can starve the mouse, keyboard and audio drivers and freeze the PC.
+- Deleting services or Windows components: It can't be undone cleanly and breaks updates. Framecalm only switches services to Disabled.
+- Reserved bandwidth (QoS) tweaks: Windows doesn't actually hold back 20% of your bandwidth. Setting the limit to zero changes nothing for games.
+- Disabling paging executive or large system cache: Leftovers from Windows XP. On current Windows they either do nothing or take memory away from games.

@@ -1,0 +1,50 @@
+# Framecalm
+
+> Framecalm is a free, open source (MIT) Windows 10 and 11 optimizer for games and everyday speed. One click builds a tuning plan from the PC's hardware, or the user picks from 87 tweaks. Every change is explained, saved first and can be undone. No account, no ads, no telemetry.
+
+Made by krezio. Current version: 0.5.2. Source code: https://github.com/krezio/framecalm
+
+## Key facts
+- Price: free. License: MIT.
+- Platform: Windows 10 (2004+) and Windows 11, 64-bit.
+- 87 tweaks in nine categories (Power and CPU, Graphics, Network, Mouse and keyboard, Background apps, Services, Look and feel, Privacy, System and security), each marked Safe, Advanced or Extreme, each listing the exact registry value or power setting it writes.
+- Safety: makes a System Restore point before the first admin change, saves every original value, reads each value back after writing, rolls back the whole batch on any mismatch, and lists every change in History for undo.
+- The main app runs without admin; a small helper does elevated writes and refuses any registry key not in the published catalog.
+- Never touches game files, game memory, launch options or anti-cheat.
+- Deliberately left out: RAM cleaners, Turning off Windows Defender, HPET, dynamic tick and platform clock (bcdedit), TCP window, IRPStackSize and other network packs, Realtime process priority, Deleting services or Windows components, Reserved bandwidth (QoS) tweaks, Disabling paging executive or large system cache.
+- Also: PC fixes (screen below its refresh rate, Wi-Fi power saving, Game DVR, power plans), startup apps, game detection (Steam, Epic, Riot, Battle.net, Xbox app, Minecraft, Roblox), settings tuning for Minecraft Java, Fortnite and Rocket League, PresentMon benchmarks, Game Session.
+
+## Pages
+- [Home](https://framecalm.krezio.xyz/): what Framecalm does
+- [Download](https://framecalm.krezio.xyz/download/): installer and portable zip, requirements, SmartScreen
+- [All tweaks](https://framecalm.krezio.xyz/tweaks/): the full catalog
+- [FAQ](https://framecalm.krezio.xyz/faq/): safety, anti-cheat, laptops, undo, uninstall
+- [Guides](https://framecalm.krezio.xyz/guides/): plain-English PC gaming performance guides
+- [Full catalog as text](https://framecalm.krezio.xyz/llms-full.txt): every tweak with its registry values
+
+## Tweak categories
+- [Power and CPU](https://framecalm.krezio.xyz/tweaks/power/): How hard the processor is allowed to work, and what Windows switches off to save energy.
+- [Graphics](https://framecalm.krezio.xyz/tweaks/graphics/): How Windows schedules the GPU and presents frames from games.
+- [Network](https://framecalm.krezio.xyz/tweaks/network/): Latency and background bandwidth: what else is using your connection while you play.
+- [Mouse and keyboard](https://framecalm.krezio.xyz/tweaks/input/): Raw, predictable input with no pop-ups that steal focus mid-game.
+- [Background apps](https://framecalm.krezio.xyz/tweaks/background/): Apps and features that run when you didn't ask them to.
+- [Services](https://framecalm.krezio.xyz/tweaks/services/): Windows services you may not need. Each one is switched to Disabled, never deleted.
+- [Look and feel](https://framecalm.krezio.xyz/tweaks/visual/): Animations and effects that make the desktop feel slower than it is.
+- [Privacy](https://framecalm.krezio.xyz/tweaks/privacy/): Ads, suggestions and data collection. Small speed effect, big quiet effect.
+- [System and security](https://framecalm.krezio.xyz/tweaks/system/): Deep changes to how Windows protects itself. Real gains on some CPUs, real trade-offs on all of them.
+
+## Guides
+- [Minecraft Java: settings for more FPS](https://framecalm.krezio.xyz/guides/minecraft-settings-for-more-fps/): Which Minecraft Java video settings really change your FPS, which barely matter, and the order to lower them in. Works for vanilla 1.20 and 1.21.
+- [Fortnite: best settings for low-end PCs](https://framecalm.krezio.xyz/guides/fortnite-best-settings-low-end-pc/): The Fortnite settings that buy the most FPS on weak GPUs and laptops, in order, plus Performance mode and the frame-rate limit most people get wrong.
+- [Is my game using the wrong GPU?](https://framecalm.krezio.xyz/guides/wrong-gpu-laptop/): Gaming laptops have two graphics chips, and games sometimes start on the slow one. Here's how to check which GPU a game uses and pin it to the fast one.
+- [CPU vs GPU bottleneck explained](https://framecalm.krezio.xyz/guides/cpu-vs-gpu-bottleneck/): Every frame waits on either your processor or your graphics card. How to tell which one limits your game, and why the answer decides which settings are worth lowering.
+- [Does Game Mode help?](https://framecalm.krezio.xyz/guides/does-game-mode-help/): What Windows 11 and 10 Game Mode actually changes, whether it raises FPS, and whether you should leave it on.
+- [How to measure FPS properly](https://framecalm.krezio.xyz/guides/how-to-measure-fps/): Why one glance at an FPS counter isn't proof, and a simple method for before-and-after tests: repeatable scenes, three runs, 1% lows and frame times.
+- [PC optimization myths](https://framecalm.krezio.xyz/guides/pc-optimization-myths/): RAM cleaners, registry packs, HPET and timer tweaks, disabling services, core parking: what popular FPS tweaks really do, and what to do instead.
+- [Rocket League: FPS settings](https://framecalm.krezio.xyz/guides/rocket-league-fps-settings/): Which Rocket League video settings cost the most FPS, which ones pros turn off for clarity, and how to set the frame rate cap correctly.
+- [Stuck at 60 FPS? 6 things to check](https://framecalm.krezio.xyz/guides/fix-60-fps-cap/): If your games never go above 60 FPS on a high refresh rate screen, one of these six settings is usually the cause. How to find it and fix it.
+- [Gaming laptop checklist](https://framecalm.krezio.xyz/guides/laptop-gaming-performance-checklist/): Gaming laptops lose a lot of performance to power limits, heat and the wrong GPU. A practical 10-step checklist to get the FPS your laptop should have.
+- [Best power plan for gaming](https://framecalm.krezio.xyz/guides/best-power-plan-for-gaming/): Which Windows 10 and 11 power plan to use for games on a desktop or a laptop, what High performance and Ultimate Performance actually change, and how to switch.
+- [Hardware-accelerated GPU scheduling: on or off?](https://framecalm.krezio.xyz/guides/hardware-accelerated-gpu-scheduling/): What hardware-accelerated GPU scheduling (HAGS) does in Windows 10 and 11, when it helps, when to leave it off, and how to switch it.
+- [Memory Integrity (VBS) and gaming](https://framecalm.krezio.xyz/guides/memory-integrity-vbs-gaming/): What virtualization-based security and Memory Integrity do in Windows 11, how much they can cost in games, how to check if they're on, and the real trade-off of turning them off.
+- [Debloat Windows 11 safely](https://framecalm.krezio.xyz/guides/debloat-windows-11-safely/): A careful Windows 11 debloat: which apps, startup items and background features are safe to remove or switch off, and which 'debloat scripts' break things you need later.

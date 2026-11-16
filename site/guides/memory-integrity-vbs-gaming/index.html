@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Memory Integrity and VBS: do they slow down games, and should you turn them off?</title>
+  <meta name="description" content="What virtualization-based security and Memory Integrity do in Windows 11, how much they can cost in games, how to check if they're on, and the real trade-off of turning them off.">
+  <link rel="canonical" href="https://framecalm.krezio.xyz/guides/memory-integrity-vbs-gaming/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#100E33">
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" href="../../assets/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Framecalm">
+  <meta property="og:title" content="Memory Integrity and VBS: do they slow down games, and should you turn them off?">
+  <meta property="og:description" content="What virtualization-based security and Memory Integrity do in Windows 11, how much they can cost in games, how to check if they're on, and the real trade-off of turning them off.">
+  <meta property="og:url" content="https://framecalm.krezio.xyz/guides/memory-integrity-vbs-gaming/">
+  <meta property="og:image" content="https://framecalm.krezio.xyz/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css?v=e655bef7aa">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"Memory Integrity and VBS: do they slow down games, and should you turn them off?","description":"What virtualization-based security and Memory Integrity do in Windows 11, how much they can cost in games, how to check if they're on, and the real trade-off of turning them off.","url":"https://framecalm.krezio.xyz/guides/memory-integrity-vbs-gaming/","mainEntityOfPage":"https://framecalm.krezio.xyz/guides/memory-integrity-vbs-gaming/","datePublished":"2026-11-16","dateModified":"2026-11-16","image":"https://framecalm.krezio.xyz/assets/og.png","author":{"@type":"Organization","name":"krezio","url":"https://krezio.xyz"},"publisher":{"@type":"Organization","name":"krezio","logo":{"@type":"ImageObject","url":"https://framecalm.krezio.xyz/assets/icon-512.png"}}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Framecalm","item":"https://framecalm.krezio.xyz/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://framecalm.krezio.xyz/guides/"},{"@type":"ListItem","position":3,"name":"Memory Integrity (VBS) and gaming","item":"https://framecalm.krezio.xyz/guides/memory-integrity-vbs-gaming/"}]}]}</script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top">
+    <nav class="wrap nav" aria-label="Main">
+      <a class="brand" href="../../"><img src="../../assets/logo.svg" alt="" width="28" height="28"><span>framecalm</span></a>
+      <div class="nav-links">
+        <a href="../../#auto">One click</a>
+        <a href="../../tweaks/">Tweaks</a>
+        <a href="../../#app">The app</a>
+        <a href="../../#safety">Safety</a>
+        <a href="../../guides/">Guides</a>
+      </div>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe">Download</a>
+    </nav>
+  </header>
+
+  <main class="article" id="main">
+    <p class="label"><a href="../../" style="color:inherit">Framecalm</a> › <a href="../" style="color:inherit">Guides</a></p>
+    <h1>Memory Integrity and VBS: do they slow down games, and should you turn them off?</h1>
+    <p class="label">Updated November 2026 · 6 min read</p>
+    <div class="tldr"><p class="tldr-h">Short answer</p><p>Virtualization-based security (VBS) and Memory Integrity can cost some CPUs around 5 to 15% in games, and Microsoft itself has said gamers can turn them off. But they protect Windows from a whole class of kernel-level malware, and some work devices and anti-cheats require them. Check whether they're on first, and only turn them off on a personal gaming PC if you accept that trade.</p></div>
+
+<p>Windows 11 runs part of itself inside a small virtual machine to keep the most sensitive parts of the system out of reach of malware. That's <b>virtualization-based security (VBS)</b>. <b>Memory Integrity</b> (also called HVCI) uses it to check every driver before it's allowed to run. Both are on by default on many new PCs.</p>
+
+<h2>Is it on?</h2>
+<ol>
+  <li>Press <kbd>Win</kbd> + <kbd>R</kbd>, type <code>msinfo32</code> and press Enter.</li>
+  <li>On the System Summary page, look for <b>Virtualization-based security</b>. "Running" means it's on.</li>
+  <li>For Memory Integrity specifically: <b>Windows Security › Device security › Core isolation details</b>.</li>
+</ol>
+
+<h2>How much does it cost?</h2>
+<p>It depends a lot on the CPU. Older processors without fast support for the checks it does lose the most; very recent ones lose little. Tests on affected systems have shown roughly 5 to 15% lower FPS in some games. The only way to know for your PC is to measure the same scene with it on and off.</p>
+
+<h2>What you give up</h2>
+<ul>
+  <li>Protection against malware that tries to load a malicious or vulnerable driver into the Windows kernel. That kind of attack is rare on home PCs, but it's serious when it happens.</li>
+  <li>Some <b>work or school devices</b> require it by policy. Don't change it on a PC you don't own.</li>
+  <li>A few <b>anti-cheat systems</b> and security tools expect it on. If a game complains after you turn it off, turn it back on.</li>
+</ul>
+
+<h2>How to turn Memory Integrity off</h2>
+<ol>
+  <li>Open <b>Windows Security › Device security › Core isolation details</b>.</li>
+  <li>Switch <b>Memory integrity</b> off and restart.</li>
+</ol>
+<p>That leaves VBS itself running on some PCs. Turning off both parts takes two registry values, listed exactly on the <a href="../../tweaks/vbs-off/">VBS off tweak page</a> with the commands to undo it.</p>
+
+<h2>A sensible way to decide</h2>
+<ul>
+  <li><b>Personal gaming PC, CPU a few years old, you keep Windows and drivers updated:</b> worth testing with it off.</li>
+  <li><b>Work laptop, shared family PC, or you install a lot of random software:</b> leave it on.</li>
+  <li><b>Very recent CPU:</b> measure first. The gain may be too small to be worth it.</li>
+</ul>
+<p>Framecalm puts this in its <b>Extreme</b> tier: it asks you to confirm, says what you lose, and can switch it back from History.</p>
+
+
+    <aside class="cta-box">
+      <img src="../../assets/logo.svg" alt="" width="48" height="48">
+      <div>
+        <h2>Or let Framecalm do it</h2>
+        <p>One click builds a plan for your PC, or pick from 87 Windows tweaks yourself. PC fixes, per-game settings and measured benchmarks too. Every change can be switched back. Free and open source, for Windows 10 and 11.</p>
+      </div>
+      <a class="btn btn-primary" href="https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe">Download free</a>
+    </aside>
+    <h2>More guides</h2>
+    <ul class="guide-list">
+      <li><a href="../minecraft-settings-for-more-fps/">Minecraft Java: settings for more FPS</a></li>
+      <li><a href="../fortnite-best-settings-low-end-pc/">Fortnite: best settings for low-end PCs</a></li>
+      <li><a href="../wrong-gpu-laptop/">Is my game using the wrong GPU?</a></li>
+      <li><a href="../cpu-vs-gpu-bottleneck/">CPU vs GPU bottleneck explained</a></li>
+    </ul>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-in">
+      <span class="brand brand-sm"><img src="../../assets/logo.svg" alt="" width="20" height="20"><span>framecalm</span></span>
+      <nav aria-label="Footer"><a href="https://github.com/krezio/framecalm">Source code</a><a href="../../download/">Download</a><a href="../../tweaks/">All tweaks</a><a href="../../guides/">Guides</a><a href="../../faq/">FAQ</a><a href="../../changelog/">Changelog</a><a href="../../privacy.html">Privacy</a><a href="https://github.com/krezio/framecalm/issues">Report a problem</a><a href="https://krezio.xyz">Made by krezio</a></nav>
+    </div>
+  </footer>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "22094a4c9ca14cf6838a007582902d9c"}'></script>
+</body>
+</html>

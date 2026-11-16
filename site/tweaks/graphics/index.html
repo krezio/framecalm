@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>11 Graphics tweaks for Windows 10 and 11, explained | Framecalm</title>
+  <meta name="description" content="How Windows schedules the GPU and presents frames from games. Every graphics tweak in Framecalm, with what it does, what it costs and the exact registry value.">
+  <link rel="canonical" href="https://framecalm.krezio.xyz/tweaks/graphics/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#100E33">
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" href="../../assets/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Framecalm">
+  <meta property="og:title" content="11 Graphics tweaks for Windows 10 and 11, explained | Framecalm">
+  <meta property="og:description" content="How Windows schedules the GPU and presents frames from games. Every graphics tweak in Framecalm, with what it does, what it costs and the exact registry value.">
+  <meta property="og:url" content="https://framecalm.krezio.xyz/tweaks/graphics/">
+  <meta property="og:image" content="https://framecalm.krezio.xyz/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css?v=e655bef7aa">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","name":"11 Graphics tweaks for Windows 10 and 11, explained | Framecalm","url":"https://framecalm.krezio.xyz/tweaks/graphics/","description":"How Windows schedules the GPU and presents frames from games. Every graphics tweak in Framecalm, with what it does, what it costs and the exact registry value.","hasPart":[{"@type":"TechArticle","headline":"Hardware-accelerated GPU scheduling","url":"https://framecalm.krezio.xyz/tweaks/hags-on/"},{"@type":"TechArticle","headline":"Turn off Xbox Game Bar","url":"https://framecalm.krezio.xyz/tweaks/game-bar-off/"},{"@type":"TechArticle","headline":"No Game Bar pop-ups","url":"https://framecalm.krezio.xyz/tweaks/game-bar-tips-off/"},{"@type":"TechArticle","headline":"Prioritize games in the multimedia scheduler","url":"https://framecalm.krezio.xyz/tweaks/mmcss-games/"},{"@type":"TechArticle","headline":"Give games more CPU time","url":"https://framecalm.krezio.xyz/tweaks/system-responsiveness/"},{"@type":"TechArticle","headline":"Favor the window you're using","url":"https://framecalm.krezio.xyz/tweaks/win32-priority/"},{"@type":"TechArticle","headline":"Turn off fullscreen optimizations everywhere","url":"https://framecalm.krezio.xyz/tweaks/fso-off/"},{"@type":"TechArticle","headline":"Turn off multiplane overlay","url":"https://framecalm.krezio.xyz/tweaks/mpo-off/"},{"@type":"TechArticle","headline":"Block Game DVR everywhere","url":"https://framecalm.krezio.xyz/tweaks/game-dvr-policy/"},{"@type":"TechArticle","headline":"Longer GPU timeout","url":"https://framecalm.krezio.xyz/tweaks/tdr-delay/"},{"@type":"TechArticle","headline":"Turn off Fault Tolerant Heap","url":"https://framecalm.krezio.xyz/tweaks/fth-off/"}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Framecalm","item":"https://framecalm.krezio.xyz/"},{"@type":"ListItem","position":2,"name":"Tweaks","item":"https://framecalm.krezio.xyz/tweaks/"},{"@type":"ListItem","position":3,"name":"Graphics","item":"https://framecalm.krezio.xyz/tweaks/graphics/"}]}]}</script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top">
+    <nav class="wrap nav" aria-label="Main">
+      <a class="brand" href="../../"><img src="../../assets/logo.svg" alt="" width="28" height="28"><span>framecalm</span></a>
+      <div class="nav-links">
+        <a href="../../#auto">One click</a>
+        <a href="../../tweaks/">Tweaks</a>
+        <a href="../../#app">The app</a>
+        <a href="../../#safety">Safety</a>
+        <a href="../../guides/">Guides</a>
+      </div>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe">Download</a>
+    </nav>
+  </header>
+
+  <main class="article" id="main">
+    <p class="label"><a href="../../">Framecalm</a> › <a href="../">Tweaks</a></p>
+    <h1>Graphics tweaks</h1>
+    <p class="muted">How Windows schedules the GPU and presents frames from games. 11 tweaks: 3 safe, 8 advanced, 0 extreme.</p>
+    <ul class="guide-list" style="margin-top:28px">
+      <li><a href="../hags-on/">Hardware-accelerated GPU scheduling</a><p>Safe · Fixes specific problems. Lets the graphics card manage its own memory and scheduling. Required for DLSS Frame Generation; on other games the effect is small either way.</p></li>
+      <li><a href="../game-bar-off/">Turn off Xbox Game Bar</a><p>Safe · Small gain. Stops the Game Bar overlay and its capture features from hooking into every game you start.</p></li>
+      <li><a href="../game-bar-tips-off/">No Game Bar pop-ups</a><p>Safe · Small gain. Stops the &quot;Press Win+G&quot; tip from showing when a game starts.</p></li>
+      <li><a href="../mmcss-games/">Prioritize games in the multimedia scheduler</a><p>Advanced · Small gain. Windows has a scheduler profile just for games that it barely uses by default. This raises its CPU priority and I/O priority to High.</p></li>
+      <li><a href="../system-responsiveness/">Give games more CPU time</a><p>Advanced · Small gain. Windows reserves 20% of CPU time for background tasks while multimedia apps run. This lowers the reservation to 10%.</p></li>
+      <li><a href="../win32-priority/">Favor the window you're using</a><p>Advanced · Small gain. Gives the app in front shorter, more frequent turns on the CPU, so a game gets scheduled sooner after input.</p></li>
+      <li><a href="../fso-off/">Turn off fullscreen optimizations everywhere</a><p>Advanced · Fixes specific problems. Makes fullscreen games use real exclusive fullscreen instead of a borderless window in disguise. Some older DirectX 11 games feel more responsive this way.</p></li>
+      <li><a href="../mpo-off/">Turn off multiplane overlay</a><p>Advanced · Fixes specific problems. A known fix for flicker, black flashes and stutter on some NVIDIA multi-monitor setups. Leave it alone if you don't have those problems.</p></li>
+      <li><a href="../game-dvr-policy/">Block Game DVR everywhere</a><p>Advanced · Small gain. Turns off Windows game recording with a policy, so no app or update can switch it back on.</p></li>
+      <li><a href="../tdr-delay/">Longer GPU timeout</a><p>Advanced · Fixes specific problems. Gives the graphics driver 10 seconds instead of 2 before Windows decides it has hung and resets it. Fixes &quot;display driver stopped responding&quot; in heavy games and on overclocked cards.</p></li>
+      <li><a href="../fth-off/">Turn off Fault Tolerant Heap</a><p>Advanced · Fixes specific problems. If a game crashes a few times, Windows quietly runs it with a slower, safer memory allocator from then on. This stops that.</p></li>
+    </ul>
+
+    <aside class="cta-box">
+      <img src="../../assets/logo.svg" alt="" width="48" height="48">
+      <div>
+        <h2>Or let Framecalm do it</h2>
+        <p>One click builds a plan for your PC, or pick from 87 Windows tweaks yourself. PC fixes, per-game settings and measured benchmarks too. Every change can be switched back. Free and open source, for Windows 10 and 11.</p>
+      </div>
+      <a class="btn btn-primary" href="https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe">Download free</a>
+    </aside>
+    <h2>Other categories</h2>
+    <ul class="guide-list">
+      <li><a href="../power/">Power and CPU</a><p>How hard the processor is allowed to work, and what Windows switches off to save energy.</p></li>
+      <li><a href="../network/">Network</a><p>Latency and background bandwidth: what else is using your connection while you play.</p></li>
+      <li><a href="../input/">Mouse and keyboard</a><p>Raw, predictable input with no pop-ups that steal focus mid-game.</p></li>
+      <li><a href="../background/">Background apps</a><p>Apps and features that run when you didn't ask them to.</p></li>
+      <li><a href="../services/">Services</a><p>Windows services you may not need. Each one is switched to Disabled, never deleted.</p></li>
+      <li><a href="../visual/">Look and feel</a><p>Animations and effects that make the desktop feel slower than it is.</p></li>
+      <li><a href="../privacy/">Privacy</a><p>Ads, suggestions and data collection. Small speed effect, big quiet effect.</p></li>
+      <li><a href="../system/">System and security</a><p>Deep changes to how Windows protects itself. Real gains on some CPUs, real trade-offs on all of them.</p></li>
+    </ul>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-in">
+      <span class="brand brand-sm"><img src="../../assets/logo.svg" alt="" width="20" height="20"><span>framecalm</span></span>
+      <nav aria-label="Footer"><a href="https://github.com/krezio/framecalm">Source code</a><a href="../../download/">Download</a><a href="../../tweaks/">All tweaks</a><a href="../../guides/">Guides</a><a href="../../faq/">FAQ</a><a href="../../changelog/">Changelog</a><a href="../../privacy.html">Privacy</a><a href="https://github.com/krezio/framecalm/issues">Report a problem</a><a href="https://krezio.xyz">Made by krezio</a></nav>
+    </div>
+  </footer>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "22094a4c9ca14cf6838a007582902d9c"}'></script>
+</body>
+</html>

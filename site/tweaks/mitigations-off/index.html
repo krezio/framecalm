@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Turn off Spectre and Meltdown protections (FeatureSettingsOverride, FeatureSettingsOverrideMask) on Windows 10 and 11 | Framecalm</title>
+  <meta name="description" content="Removes the CPU security patches that slow down older Intel processors, mostly 6th to 9th generation. What it changes in the registry, what it costs you, and how to undo it.">
+  <link rel="canonical" href="https://framecalm.krezio.xyz/tweaks/mitigations-off/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#100E33">
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" href="../../assets/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Framecalm">
+  <meta property="og:title" content="Turn off Spectre and Meltdown protections (FeatureSettingsOverride, FeatureSettingsOverrideMask) on Windows 10 and 11 | Framecalm">
+  <meta property="og:description" content="Removes the CPU security patches that slow down older Intel processors, mostly 6th to 9th generation. What it changes in the registry, what it costs you, and how to undo it.">
+  <meta property="og:url" content="https://framecalm.krezio.xyz/tweaks/mitigations-off/">
+  <meta property="og:image" content="https://framecalm.krezio.xyz/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css?v=e655bef7aa">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Turn off Spectre and Meltdown protections on Windows 10 and 11","description":"Removes the CPU security patches that slow down older Intel processors, mostly 6th to 9th generation. What it changes in the registry, what it costs you, and how to undo it.","url":"https://framecalm.krezio.xyz/tweaks/mitigations-off/","mainEntityOfPage":"https://framecalm.krezio.xyz/tweaks/mitigations-off/","datePublished":"2026-11-16","dateModified":"2026-11-16","image":"https://framecalm.krezio.xyz/assets/og.png","proficiencyLevel":"Expert","about":{"@type":"SoftwareApplication","name":"Microsoft Windows","operatingSystem":"Windows 10, Windows 11"},"author":{"@type":"Organization","name":"krezio","url":"https://krezio.xyz"},"publisher":{"@type":"Organization","name":"krezio","logo":{"@type":"ImageObject","url":"https://framecalm.krezio.xyz/assets/icon-512.png"}}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does \"Turn off Spectre and Meltdown protections\" do?","acceptedAnswer":{"@type":"Answer","text":"Removes the CPU security patches that slow down older Intel processors, mostly 6th to 9th generation. Newer CPUs fix this in hardware and gain little."}},{"@type":"Question","name":"What's the downside?","acceptedAnswer":{"@type":"Answer","text":"Malicious code, including in a web page, could read memory it shouldn't. Only for a PC used for games and nothing sensitive. Takes effect after a restart."}},{"@type":"Question","name":"How do I undo it?","acceptedAnswer":{"@type":"Answer","text":"Set the values back to the Windows default listed on this page, or run the undo commands. In Framecalm, switch the tweak off or undo it from History and the original value comes back."}},{"@type":"Question","name":"Is it safe?","acceptedAnswer":{"@type":"Answer","text":"Extreme: turns off a Windows protection or feature. Only for people who know what they give up."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Framecalm","item":"https://framecalm.krezio.xyz/"},{"@type":"ListItem","position":2,"name":"Tweaks","item":"https://framecalm.krezio.xyz/tweaks/"},{"@type":"ListItem","position":3,"name":"System and security","item":"https://framecalm.krezio.xyz/tweaks/system/"},{"@type":"ListItem","position":4,"name":"Turn off Spectre and Meltdown protections","item":"https://framecalm.krezio.xyz/tweaks/mitigations-off/"}]}]}</script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top">
+    <nav class="wrap nav" aria-label="Main">
+      <a class="brand" href="../../"><img src="../../assets/logo.svg" alt="" width="28" height="28"><span>framecalm</span></a>
+      <div class="nav-links">
+        <a href="../../#auto">One click</a>
+        <a href="../../tweaks/">Tweaks</a>
+        <a href="../../#app">The app</a>
+        <a href="../../#safety">Safety</a>
+        <a href="../../guides/">Guides</a>
+      </div>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe">Download</a>
+    </nav>
+  </header>
+
+  <main class="article" id="main">
+    <p class="label"><a href="../../">Framecalm</a> › <a href="../">Tweaks</a> › <a href="../system/">System and security</a></p>
+    <h1>Turn off Spectre and Meltdown protections</h1>
+    <p class="label tw-meta"><span class="meter t-extreme" aria-hidden="true"><i></i><i></i><i></i></span> Extreme · Fixes specific problems · Windows 10 and 11</p>
+    <div class="tldr"><p class="tldr-h">What it does</p><p>Removes the CPU security patches that slow down older Intel processors, mostly 6th to 9th generation. Newer CPUs fix this in hardware and gain little.</p></div>
+    <table class="facts">
+      <tr><th>Category</th><td><a href="../system/">System and security</a></td></tr>
+      <tr><th>Tier</th><td>Extreme: turns off a Windows protection or feature. Only for people who know what they give up.</td></tr>
+      <tr><th>Expected difference</th><td>Fixes specific problems</td></tr>
+      <tr><th>Needs admin</th><td>Yes</td></tr>
+      <tr><th>Restart</th><td>Needed before it takes effect</td></tr>
+      <tr><th>Framecalm presets</th><td>Not in a preset. Pick it yourself.</td></tr>
+    </table>
+    <h2>The trade-off</h2>
+    <p>Malicious code, including in a web page, could read memory it shouldn't. Only for a PC used for games and nothing sensitive. Takes effect after a restart.</p>
+    <h2>Exactly what it changes</h2>
+    <ul class="changes">
+      <li><code class="where">HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\FeatureSettingsOverride</code><span>Set to <code>3</code> · Windows default: not set (the value doesn't exist)</span></li>
+      <li><code class="where">HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\FeatureSettingsOverrideMask</code><span>Set to <code>3</code> · Windows default: not set (the value doesn't exist)</span></li>
+    </ul>
+    <h2>Do it by hand</h2>
+    <p>Open <b>Command Prompt as administrator</b> and run:</p>
+    <pre><code>reg add &quot;HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management&quot; /v &quot;FeatureSettingsOverride&quot; /t REG_DWORD /d 3 /f
+reg add &quot;HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management&quot; /v &quot;FeatureSettingsOverrideMask&quot; /t REG_DWORD /d 3 /f</code></pre>
+    <p>To undo it:</p>
+    <pre><code>reg delete &quot;HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management&quot; /v &quot;FeatureSettingsOverride&quot; /f
+reg delete &quot;HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management&quot; /v &quot;FeatureSettingsOverrideMask&quot; /f</code></pre>
+    <p>Restart Windows afterwards. Make a restore point first if you're changing several things at once. Framecalm does that for you, keeps the old values, and checks each one after writing it.</p>
+
+    <aside class="cta-box">
+      <img src="../../assets/logo.svg" alt="" width="48" height="48">
+      <div>
+        <h2>Or let Framecalm do it</h2>
+        <p>One click builds a plan for your PC, or pick from 87 Windows tweaks yourself. PC fixes, per-game settings and measured benchmarks too. Every change can be switched back. Free and open source, for Windows 10 and 11.</p>
+      </div>
+      <a class="btn btn-primary" href="https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe">Download free</a>
+    </aside>
+    <h2>More system and security tweaks</h2>
+    <ul class="guide-list">
+      <li><a href="../ntfs-last-access/">Stop recording file access times</a><p>Windows writes a timestamp every time a file is read.</p></li>
+      <li><a href="../no-8dot3/">Stop creating short file names</a><p>Windows creates an old DOS-style short name for every new file.</p></li>
+      <li><a href="../vbs-off/">Turn off Memory Integrity and VBS</a><p>Virtualization-based security costs some CPUs 5 to 15% in games.</p></li>
+    </ul>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-in">
+      <span class="brand brand-sm"><img src="../../assets/logo.svg" alt="" width="20" height="20"><span>framecalm</span></span>
+      <nav aria-label="Footer"><a href="https://github.com/krezio/framecalm">Source code</a><a href="../../download/">Download</a><a href="../../tweaks/">All tweaks</a><a href="../../guides/">Guides</a><a href="../../faq/">FAQ</a><a href="../../changelog/">Changelog</a><a href="../../privacy.html">Privacy</a><a href="https://github.com/krezio/framecalm/issues">Report a problem</a><a href="https://krezio.xyz">Made by krezio</a></nav>
+    </div>
+  </footer>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "22094a4c9ca14cf6838a007582902d9c"}'></script>
+</body>
+</html>

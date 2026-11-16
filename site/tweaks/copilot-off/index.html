@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Turn off Copilot in Windows (TurnOffWindowsCopilot) on Windows 10 and 11 | Framecalm</title>
+  <meta name="description" content="Removes the Copilot sidebar and its background process. What it changes in the registry, what it costs you, and how to undo it.">
+  <link rel="canonical" href="https://framecalm.krezio.xyz/tweaks/copilot-off/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#100E33">
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" href="../../assets/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Framecalm">
+  <meta property="og:title" content="Turn off Copilot in Windows (TurnOffWindowsCopilot) on Windows 10 and 11 | Framecalm">
+  <meta property="og:description" content="Removes the Copilot sidebar and its background process. What it changes in the registry, what it costs you, and how to undo it.">
+  <meta property="og:url" content="https://framecalm.krezio.xyz/tweaks/copilot-off/">
+  <meta property="og:image" content="https://framecalm.krezio.xyz/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css?v=e655bef7aa">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Turn off Copilot in Windows on Windows 10 and 11","description":"Removes the Copilot sidebar and its background process. What it changes in the registry, what it costs you, and how to undo it.","url":"https://framecalm.krezio.xyz/tweaks/copilot-off/","mainEntityOfPage":"https://framecalm.krezio.xyz/tweaks/copilot-off/","datePublished":"2026-11-16","dateModified":"2026-11-16","image":"https://framecalm.krezio.xyz/assets/og.png","proficiencyLevel":"Beginner","about":{"@type":"SoftwareApplication","name":"Microsoft Windows","operatingSystem":"Windows 10, Windows 11"},"author":{"@type":"Organization","name":"krezio","url":"https://krezio.xyz"},"publisher":{"@type":"Organization","name":"krezio","logo":{"@type":"ImageObject","url":"https://framecalm.krezio.xyz/assets/icon-512.png"}}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does \"Turn off Copilot in Windows\" do?","acceptedAnswer":{"@type":"Answer","text":"Removes the Copilot sidebar and its background process."}},{"@type":"Question","name":"What's the downside?","acceptedAnswer":{"@type":"Answer","text":"You can still use Copilot in a browser."}},{"@type":"Question","name":"How do I undo it?","acceptedAnswer":{"@type":"Answer","text":"Set the values back to the Windows default listed on this page, or run the undo commands. In Framecalm, switch the tweak off or undo it from History and the original value comes back."}},{"@type":"Question","name":"Is it safe?","acceptedAnswer":{"@type":"Answer","text":"Safe: a clear benefit and nothing most people would miss."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Framecalm","item":"https://framecalm.krezio.xyz/"},{"@type":"ListItem","position":2,"name":"Tweaks","item":"https://framecalm.krezio.xyz/tweaks/"},{"@type":"ListItem","position":3,"name":"Background apps","item":"https://framecalm.krezio.xyz/tweaks/background/"},{"@type":"ListItem","position":4,"name":"Turn off Copilot in Windows","item":"https://framecalm.krezio.xyz/tweaks/copilot-off/"}]}]}</script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top">
+    <nav class="wrap nav" aria-label="Main">
+      <a class="brand" href="../../"><img src="../../assets/logo.svg" alt="" width="28" height="28"><span>framecalm</span></a>
+      <div class="nav-links">
+        <a href="../../#auto">One click</a>
+        <a href="../../tweaks/">Tweaks</a>
+        <a href="../../#app">The app</a>
+        <a href="../../#safety">Safety</a>
+        <a href="../../guides/">Guides</a>
+      </div>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe">Download</a>
+    </nav>
+  </header>
+
+  <main class="article" id="main">
+    <p class="label"><a href="../../">Framecalm</a> › <a href="../">Tweaks</a> › <a href="../background/">Background apps</a></p>
+    <h1>Turn off Copilot in Windows</h1>
+    <p class="label tw-meta"><span class="meter t-safe" aria-hidden="true"><i></i><i></i><i></i></span> Safe · Small gain · Windows 10 and 11</p>
+    <div class="tldr"><p class="tldr-h">What it does</p><p>Removes the Copilot sidebar and its background process.</p></div>
+    <table class="facts">
+      <tr><th>Category</th><td><a href="../background/">Background apps</a></td></tr>
+      <tr><th>Tier</th><td>Safe: a clear benefit and nothing most people would miss.</td></tr>
+      <tr><th>Expected difference</th><td>Small gain</td></tr>
+      <tr><th>Needs admin</th><td>Yes</td></tr>
+      <tr><th>Restart</th><td>Needed before it takes effect</td></tr>
+      <tr><th>Framecalm presets</th><td>Recommended, Competitive, Extreme</td></tr>
+    </table>
+    <h2>The trade-off</h2>
+    <p>You can still use Copilot in a browser.</p>
+    <h2>Exactly what it changes</h2>
+    <ul class="changes">
+      <li><code class="where">HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot\TurnOffWindowsCopilot</code><span>Set to <code>1</code> · Windows default: not set (the value doesn't exist)</span></li>
+    </ul>
+    <h2>Do it by hand</h2>
+    <p>Open <b>Command Prompt as administrator</b> and run:</p>
+    <pre><code>reg add &quot;HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot&quot; /v &quot;TurnOffWindowsCopilot&quot; /t REG_DWORD /d 1 /f</code></pre>
+    <p>To undo it:</p>
+    <pre><code>reg delete &quot;HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot&quot; /v &quot;TurnOffWindowsCopilot&quot; /f</code></pre>
+    <p>Restart Windows afterwards. Make a restore point first if you're changing several things at once. Framecalm does that for you, keeps the old values, and checks each one after writing it.</p>
+
+    <aside class="cta-box">
+      <img src="../../assets/logo.svg" alt="" width="48" height="48">
+      <div>
+        <h2>Or let Framecalm do it</h2>
+        <p>One click builds a plan for your PC, or pick from 87 Windows tweaks yourself. PC fixes, per-game settings and measured benchmarks too. Every change can be switched back. Free and open source, for Windows 10 and 11.</p>
+      </div>
+      <a class="btn btn-primary" href="https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe">Download free</a>
+    </aside>
+    <h2>More background apps tweaks</h2>
+    <ul class="guide-list">
+      <li><a href="../background-apps-off/">Stop apps running in the background</a><p>Store apps such as Weather, Phone Link and Mail stop running when they're closed.</p></li>
+      <li><a href="../edge-background-off/">Stop Microsoft Edge running in the background</a><p>Edge preloads itself at sign-in and keeps running after you close it.</p></li>
+      <li><a href="../widgets-off/">Turn off Widgets</a><p>Removes the Widgets board and the news feed process that keeps it filled.</p></li>
+      <li><a href="../startup-delay-off/">No startup delay</a><p>Windows waits about ten seconds after sign-in before starting your startup apps.</p></li>
+      <li><a href="../recall-off/">Turn off Recall</a><p>Stops Windows taking snapshots of your screen to make your activity searchable, on PCs that support it.</p></li>
+      <li><a href="../cortana-off/">Turn off Cortana</a><p>Removes Cortana and its background process on Windows versions that still include it.</p></li>
+      <li><a href="../feedback-off/">No feedback requests</a><p>Windows stops asking how it's doing.</p></li>
+      <li><a href="../onedrive-off/">Turn off OneDrive</a><p>Stops OneDrive starting and syncing in the background, which can eat disk and upload bandwidth mid-game.</p></li>
+      <li><a href="../maintenance-off/">Turn off automatic maintenance</a><p>Stops Windows' nightly maintenance (disk optimization, scans, update cleanup) starting while the PC is idle, which can spill into a gaming session.</p></li>
+    </ul>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-in">
+      <span class="brand brand-sm"><img src="../../assets/logo.svg" alt="" width="20" height="20"><span>framecalm</span></span>
+      <nav aria-label="Footer"><a href="https://github.com/krezio/framecalm">Source code</a><a href="../../download/">Download</a><a href="../../tweaks/">All tweaks</a><a href="../../guides/">Guides</a><a href="../../faq/">FAQ</a><a href="../../changelog/">Changelog</a><a href="../../privacy.html">Privacy</a><a href="https://github.com/krezio/framecalm/issues">Report a problem</a><a href="https://krezio.xyz">Made by krezio</a></nav>
+    </div>
+  </footer>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "22094a4c9ca14cf6838a007582902d9c"}'></script>
+</body>
+</html>

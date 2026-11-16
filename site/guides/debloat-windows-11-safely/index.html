@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to debloat Windows 11 safely (what to remove, and what to leave alone)</title>
+  <meta name="description" content="A careful Windows 11 debloat: which apps, startup items and background features are safe to remove or switch off, and which 'debloat scripts' break things you need later.">
+  <link rel="canonical" href="https://framecalm.krezio.xyz/guides/debloat-windows-11-safely/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#100E33">
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" href="../../assets/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Framecalm">
+  <meta property="og:title" content="How to debloat Windows 11 safely (what to remove, and what to leave alone)">
+  <meta property="og:description" content="A careful Windows 11 debloat: which apps, startup items and background features are safe to remove or switch off, and which 'debloat scripts' break things you need later.">
+  <meta property="og:url" content="https://framecalm.krezio.xyz/guides/debloat-windows-11-safely/">
+  <meta property="og:image" content="https://framecalm.krezio.xyz/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css?v=e655bef7aa">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"How to debloat Windows 11 safely (what to remove, and what to leave alone)","description":"A careful Windows 11 debloat: which apps, startup items and background features are safe to remove or switch off, and which 'debloat scripts' break things you need later.","url":"https://framecalm.krezio.xyz/guides/debloat-windows-11-safely/","mainEntityOfPage":"https://framecalm.krezio.xyz/guides/debloat-windows-11-safely/","datePublished":"2026-11-16","dateModified":"2026-11-16","image":"https://framecalm.krezio.xyz/assets/og.png","author":{"@type":"Organization","name":"krezio","url":"https://krezio.xyz"},"publisher":{"@type":"Organization","name":"krezio","logo":{"@type":"ImageObject","url":"https://framecalm.krezio.xyz/assets/icon-512.png"}}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Framecalm","item":"https://framecalm.krezio.xyz/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://framecalm.krezio.xyz/guides/"},{"@type":"ListItem","position":3,"name":"Debloat Windows 11 safely","item":"https://framecalm.krezio.xyz/guides/debloat-windows-11-safely/"}]}]}</script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top">
+    <nav class="wrap nav" aria-label="Main">
+      <a class="brand" href="../../"><img src="../../assets/logo.svg" alt="" width="28" height="28"><span>framecalm</span></a>
+      <div class="nav-links">
+        <a href="../../#auto">One click</a>
+        <a href="../../tweaks/">Tweaks</a>
+        <a href="../../#app">The app</a>
+        <a href="../../#safety">Safety</a>
+        <a href="../../guides/">Guides</a>
+      </div>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe">Download</a>
+    </nav>
+  </header>
+
+  <main class="article" id="main">
+    <p class="label"><a href="../../" style="color:inherit">Framecalm</a> › <a href="../" style="color:inherit">Guides</a></p>
+    <h1>How to debloat Windows 11 safely (what to remove, and what to leave alone)</h1>
+    <p class="label">Updated November 2026 · 7 min read</p>
+    <div class="tldr"><p class="tldr-h">Short answer</p><p>Uninstall apps you don't use from Settings, switch off startup apps you don't need, and turn off background features like widgets, tips and ad tracking. Leave Microsoft Store, Edge WebView2, Windows Update, Windows Security and the Xbox services you use alone. Avoid scripts that delete system components: you can't easily undo them, and updates can break.</p></div>
+
+<p>"Debloating" means removing the extra apps and background features Windows ships with. Done carefully it frees memory, startup time and a bit of background CPU. Done with an aggressive script, it can break the Store, Windows Update or games that rely on Xbox services, and leave no easy way back.</p>
+
+<h2>1. Uninstall apps you don't use</h2>
+<p>Open <b>Settings › Apps › Installed apps</b>, sort by name, and remove what you don't use: preinstalled games, trial apps, news and weather apps, and anything your PC maker added. This is the safest debloat there is, because you can reinstall any of it from the Store.</p>
+
+<h2>2. Turn off startup apps</h2>
+<p><b>Settings › Apps › Startup</b> (or Task Manager › Startup apps). Switch off launchers, updaters and chat apps you don't need the moment Windows starts. Keep your audio driver panel, touchpad driver and security software on.</p>
+
+<h2>3. Switch off background features</h2>
+<p>These cost a little memory and CPU each, and switching them off is fully reversible:</p>
+<ul>
+  <li><a href="../../tweaks/widgets-off/">Widgets</a> and the news feed</li>
+  <li><a href="../../tweaks/background-apps-off/">Background apps</a> that run when you didn't open them</li>
+  <li><a href="../../tweaks/suggestions-off/">Tips and suggestions</a> in Start and Settings</li>
+  <li><a href="../../tweaks/ad-id-off/">The advertising ID</a></li>
+  <li><a href="../../tweaks/web-search-off/">Web results in Start search</a></li>
+  <li><a href="../../tweaks/edge-background-off/">Edge running in the background</a> after you close it</li>
+  <li><a href="../../tweaks/copilot-off/">Copilot</a> and <a href="../../tweaks/recall-off/">Recall</a>, if you don't use them</li>
+</ul>
+
+<h2>What to leave alone</h2>
+<table>
+  <tr><th>Keep</th><th>Why</th></tr>
+  <tr><td>Microsoft Store</td><td>Updates many built-in apps, and you'll want it to reinstall anything you removed.</td></tr>
+  <tr><td>Edge WebView2 Runtime</td><td>Many apps and game launchers use it to draw their windows, even if you never open Edge.</td></tr>
+  <tr><td>Windows Update services</td><td>Security fixes and drivers. Turning them off leaves you exposed and causes trouble later.</td></tr>
+  <tr><td>Windows Security (Defender)</td><td>Tamper Protection turns it back on anyway, and you'd have no protection in between.</td></tr>
+  <tr><td>Xbox app and Xbox services</td><td>Game Pass and many PC games use them for sign-in and saves. Only remove them if you never use either.</td></tr>
+</table>
+
+<h2>Why not just run a debloat script?</h2>
+<p>Many popular scripts remove system packages, delete services or block update servers in one go. Some of that can't be undone without reinstalling Windows, and the next big Windows update may fail or put things back half-working. If you use one, read exactly what it does first, and make a restore point.</p>
+<p>Framecalm's approach is the opposite: every change is a setting, listed with the exact value it writes, and every one can be switched back. Services are set to Disabled, never deleted.</p>
+
+
+    <aside class="cta-box">
+      <img src="../../assets/logo.svg" alt="" width="48" height="48">
+      <div>
+        <h2>Or let Framecalm do it</h2>
+        <p>One click builds a plan for your PC, or pick from 87 Windows tweaks yourself. PC fixes, per-game settings and measured benchmarks too. Every change can be switched back. Free and open source, for Windows 10 and 11.</p>
+      </div>
+      <a class="btn btn-primary" href="https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe">Download free</a>
+    </aside>
+    <h2>More guides</h2>
+    <ul class="guide-list">
+      <li><a href="../minecraft-settings-for-more-fps/">Minecraft Java: settings for more FPS</a></li>
+      <li><a href="../fortnite-best-settings-low-end-pc/">Fortnite: best settings for low-end PCs</a></li>
+      <li><a href="../wrong-gpu-laptop/">Is my game using the wrong GPU?</a></li>
+      <li><a href="../cpu-vs-gpu-bottleneck/">CPU vs GPU bottleneck explained</a></li>
+    </ul>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-in">
+      <span class="brand brand-sm"><img src="../../assets/logo.svg" alt="" width="20" height="20"><span>framecalm</span></span>
+      <nav aria-label="Footer"><a href="https://github.com/krezio/framecalm">Source code</a><a href="../../download/">Download</a><a href="../../tweaks/">All tweaks</a><a href="../../guides/">Guides</a><a href="../../faq/">FAQ</a><a href="../../changelog/">Changelog</a><a href="../../privacy.html">Privacy</a><a href="https://github.com/krezio/framecalm/issues">Report a problem</a><a href="https://krezio.xyz">Made by krezio</a></nav>
+    </div>
+  </footer>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "22094a4c9ca14cf6838a007582902d9c"}'></script>
+</body>
+</html>

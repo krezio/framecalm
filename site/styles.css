@@ -466,3 +466,18 @@ body:has(.article) .top { background: rgba(14, 11, 46, .9); border-bottom-color:
 .star-btn svg { color: var(--amber); flex: none; }
 .star-count { font-weight: 600; padding-left: 9px; margin-left: 1px; border-left: 1px solid var(--rule-2); font-variant-numeric: tabular-nums; }
 @media (max-width: 600px) { .nav-cta .star-btn span { display: none; } }
+
+/* tweak, category, download and FAQ pages */
+.article pre { background: var(--panel); border: 1px solid var(--rule); border-radius: 12px; padding: 16px 18px; overflow-x: auto; margin: 14px 0 22px; }
+.article pre code { font-size: 13.5px; line-height: 1.7; color: var(--paper); white-space: pre; }
+.article .facts th { width: 34%; font-weight: 500; color: var(--muted); }
+.table-scroll { overflow-x: auto; }
+.table-scroll td code { word-break: break-all; }
+.tw-meta .meter { vertical-align: middle; margin-right: 4px; }
+.tw-more { margin-top: 10px; font-size: 14px; }
+.cat-head h3 a { color: inherit; text-decoration: none; }
+.cat-head h3 a:hover { color: var(--amber); }
+.changes { list-style: none; padding: 0 !important; margin: 16px 0; }
+.changes li { border-top: 1px solid var(--rule); padding: 14px 0; margin: 0; display: grid; gap: 6px; }
+.changes .where { word-break: break-all; color: var(--paper); }
+.changes span { font-size: 15px; color: var(--muted); }

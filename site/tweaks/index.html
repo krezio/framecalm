@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300..800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../styles.css?v=ccb5e5e2c3">
+  <link rel="stylesheet" href="../styles.css?v=e655bef7aa">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -92,7 +92,7 @@
         <p><span class="meter t-extreme" aria-hidden="true"><i></i><i></i><i></i></span><b>Extreme</b> Turns off a protection or a feature.</p>
       </div>
       <div class="cat" data-cat="power">
-        <div class="cat-head"><h3>Power and CPU</h3><p>How hard the processor is allowed to work, and what Windows switches off to save energy.</p></div>
+        <div class="cat-head"><h3><a href="/tweaks/power/">Power and CPU</a></h3><p>How hard the processor is allowed to work, and what Windows switches off to save energy.</p></div>
         <ul class="tw-list">
         <li class="tw" data-tier="safe" data-text="keep usb devices awake stops windows putting usb ports to sleep to save power. fixes mice, headsets and controllers that drop out or lag for a moment after sitting idle.">
           <details>
@@ -100,6 +100,7 @@
             <div class="tw-body">
               <p>Stops Windows putting USB ports to sleep to save power. Fixes mice, headsets and controllers that drop out or lag for a moment after sitting idle.</p>
               <p class="tw-trade"><b>Trade-off.</b> Laptops use slightly more battery.</p>
+              <p class="tw-more"><a href="/tweaks/usb-suspend-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>powercfg USB settings / USB selective suspend</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -110,6 +111,7 @@
             <div class="tw-body">
               <p>Fast Startup makes Shut down a half-hibernate, so drivers and Windows never get a clean start. Turning it off means Shut down really shuts down.</p>
               <p class="tw-trade"><b>Trade-off.</b> Cold boots take a few seconds longer.</p>
+              <p class="tw-more"><a href="/tweaks/fast-startup-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Power\HiberbootEnabled</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -120,6 +122,7 @@
             <div class="tw-body">
               <p>Sets the minimum processor state to 100%, so the CPU doesn't have to ramp its clock up when a game suddenly needs it.</p>
               <p class="tw-trade"><b>Trade-off.</b> More heat and power use at idle. On laptops, fans may spin more.</p>
+              <p class="tw-more"><a href="/tweaks/cpu-min-100/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>powercfg SUB_PROCESSOR / PROCTHROTTLEMIN</code><span>set to <code>100</code></span></li></ul>
             </div>
           </details>
@@ -130,6 +133,7 @@
             <div class="tw-body">
               <p>Keeps every CPU core available instead of letting Windows park idle ones. Can smooth out frame times when a game's load jumps between cores.</p>
               <p class="tw-trade"><b>Trade-off.</b> Higher idle power use.</p>
+              <p class="tw-more"><a href="/tweaks/core-parking-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>powercfg SUB_PROCESSOR / CPMINCORES</code><span>set to <code>100</code></span></li></ul>
             </div>
           </details>
@@ -140,6 +144,7 @@
             <div class="tw-body">
               <p>Tells the CPU to use its turbo boost as soon as there's work, rather than waiting to see if the load sticks around.</p>
               <p class="tw-trade"><b>Trade-off.</b> Runs hotter. On thin laptops it can hit thermal limits sooner.</p>
+              <p class="tw-more"><a href="/tweaks/boost-aggressive/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>powercfg SUB_PROCESSOR / PERFBOOSTMODE</code><span>set to <code>2</code></span></li></ul>
             </div>
           </details>
@@ -150,6 +155,7 @@
             <div class="tw-body">
               <p>Stops Windows lowering the power state of the link to your graphics card and NVMe drive between bursts of work.</p>
               <p class="tw-trade"><b>Trade-off.</b> A few watts more at idle.</p>
+              <p class="tw-more"><a href="/tweaks/pcie-aspm-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>powercfg SUB_PCIEXPRESS / ASPM</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -160,6 +166,7 @@
             <div class="tw-body">
               <p>Windows slows down apps it thinks are in the background. This stops it, which helps when a game's launcher, voice chat or capture app gets throttled.</p>
               <p class="tw-trade"><b>Trade-off.</b> Background apps use more power. Takes effect after a restart.</p>
+              <p class="tw-more"><a href="/tweaks/power-throttling-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\Power\PowerThrottling\PowerThrottlingOff</code><span>set to <code>1</code></span></li></ul>
             </div>
           </details>
@@ -170,6 +177,7 @@
             <div class="tw-body">
               <p>Removes the hibernation file, which is often 6 to 25 GB on drive C:. Also turns off Fast Startup.</p>
               <p class="tw-trade"><b>Trade-off.</b> No Hibernate option. Laptops that hibernate on low battery will shut down instead.</p>
+              <p class="tw-more"><a href="/tweaks/hibernate-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\Power\HibernateEnabled</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -180,6 +188,7 @@
             <div class="tw-body">
               <p>Stops Windows powering down drives after a few minutes idle, so a game doesn't hitch while a hard drive spins back up.</p>
               <p class="tw-trade"><b>Trade-off.</b> Hard drives use a little more power and make a little more noise.</p>
+              <p class="tw-more"><a href="/tweaks/disk-idle-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>powercfg SUB_DISK / DISKIDLE</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -190,6 +199,7 @@
             <div class="tw-body">
               <p>Tells the processor to favour speed over saving energy when it decides how fast to run.</p>
               <p class="tw-trade"><b>Trade-off.</b> More heat and power use, especially on laptops.</p>
+              <p class="tw-more"><a href="/tweaks/epp-performance/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>powercfg SUB_PROCESSOR / PERFEPP</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -200,6 +210,7 @@
             <div class="tw-body">
               <p>Keeps every core out of its sleep states. Shaves the wake-up delay some competitive players chase.</p>
               <p class="tw-trade"><b>Trade-off.</b> The CPU runs hot and loud all the time and uses a lot more power. Never on a laptop.</p>
+              <p class="tw-more"><a href="/tweaks/idle-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>powercfg SUB_PROCESSOR / IDLEDISABLE</code><span>set to <code>1</code></span></li></ul>
             </div>
           </details>
@@ -207,7 +218,7 @@
         </ul>
       </div>
       <div class="cat" data-cat="graphics">
-        <div class="cat-head"><h3>Graphics</h3><p>How Windows schedules the GPU and presents frames from games.</p></div>
+        <div class="cat-head"><h3><a href="/tweaks/graphics/">Graphics</a></h3><p>How Windows schedules the GPU and presents frames from games.</p></div>
         <ul class="tw-list">
         <li class="tw" data-tier="safe" data-text="hardware-accelerated gpu scheduling lets the graphics card manage its own memory and scheduling. required for dlss frame generation; on other games the effect is small either way.">
           <details>
@@ -215,6 +226,7 @@
             <div class="tw-body">
               <p>Lets the graphics card manage its own memory and scheduling. Required for DLSS Frame Generation; on other games the effect is small either way.</p>
               <p class="tw-trade"><b>Trade-off.</b> A few older drivers and capture tools behave badly with it. Takes effect after a restart.</p>
+              <p class="tw-more"><a href="/tweaks/hags-on/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\HwSchMode</code><span>set to <code>2</code></span></li></ul>
             </div>
           </details>
@@ -225,6 +237,7 @@
             <div class="tw-body">
               <p>Stops the Game Bar overlay and its capture features from hooking into every game you start.</p>
               <p class="tw-trade"><b>Trade-off.</b> No Win+G overlay, no clips from Game Bar. Your own capture app is unaffected.</p>
+              <p class="tw-more"><a href="/tweaks/game-bar-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR\AppCaptureEnabled</code><span>set to <code>0</code></span></li><li><code>HKCU\System\GameConfigStore\GameDVR_Enabled</code><span>set to <code>0</code></span></li><li><code>HKCU\Software\Microsoft\GameBar\UseNexusForGameBarEnabled</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -235,6 +248,7 @@
             <div class="tw-body">
               <p>Stops the &quot;Press Win+G&quot; tip from showing when a game starts.</p>
               <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <p class="tw-more"><a href="/tweaks/game-bar-tips-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\GameBar\ShowStartupPanel</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -245,6 +259,7 @@
             <div class="tw-body">
               <p>Windows has a scheduler profile just for games that it barely uses by default. This raises its CPU priority and I/O priority to High.</p>
               <p class="tw-trade"><b>Trade-off.</b> Background audio or streaming apps can get less time while a game runs.</p>
+              <p class="tw-more"><a href="/tweaks/mmcss-games/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games\Priority</code><span>set to <code>6</code></span></li><li><code>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games\Scheduling Category</code><span>set to <code>&quot;High&quot;</code></span></li><li><code>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games\SFIO Priority</code><span>set to <code>&quot;High&quot;</code></span></li></ul>
             </div>
           </details>
@@ -255,6 +270,7 @@
             <div class="tw-body">
               <p>Windows reserves 20% of CPU time for background tasks while multimedia apps run. This lowers the reservation to 10%.</p>
               <p class="tw-trade"><b>Trade-off.</b> Background tasks get less time during games.</p>
+              <p class="tw-more"><a href="/tweaks/system-responsiveness/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\SystemResponsiveness</code><span>set to <code>10</code></span></li></ul>
             </div>
           </details>
@@ -265,6 +281,7 @@
             <div class="tw-body">
               <p>Gives the app in front shorter, more frequent turns on the CPU, so a game gets scheduled sooner after input.</p>
               <p class="tw-trade"><b>Trade-off.</b> Background work such as encoding or downloads can run a little slower.</p>
+              <p class="tw-more"><a href="/tweaks/win32-priority/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\PriorityControl\Win32PrioritySeparation</code><span>set to <code>38</code></span></li></ul>
             </div>
           </details>
@@ -275,6 +292,7 @@
             <div class="tw-body">
               <p>Makes fullscreen games use real exclusive fullscreen instead of a borderless window in disguise. Some older DirectX 11 games feel more responsive this way.</p>
               <p class="tw-trade"><b>Trade-off.</b> Alt-Tab is slower and some overlays won't show over the game.</p>
+              <p class="tw-more"><a href="/tweaks/fso-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\System\GameConfigStore\GameDVR_FSEBehaviorMode</code><span>set to <code>2</code></span></li><li><code>HKCU\System\GameConfigStore\GameDVR_HonorUserFSEBehaviorMode</code><span>set to <code>1</code></span></li><li><code>HKCU\System\GameConfigStore\GameDVR_DXGIHonorFSEWindowsCompatible</code><span>set to <code>1</code></span></li></ul>
             </div>
           </details>
@@ -285,6 +303,7 @@
             <div class="tw-body">
               <p>A known fix for flicker, black flashes and stutter on some NVIDIA multi-monitor setups. Leave it alone if you don't have those problems.</p>
               <p class="tw-trade"><b>Trade-off.</b> Slightly higher GPU use for video playback. Takes effect after a restart.</p>
+              <p class="tw-more"><a href="/tweaks/mpo-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Microsoft\Windows\Dwm\OverlayTestMode</code><span>set to <code>5</code></span></li></ul>
             </div>
           </details>
@@ -295,6 +314,7 @@
             <div class="tw-body">
               <p>Turns off Windows game recording with a policy, so no app or update can switch it back on.</p>
               <p class="tw-trade"><b>Trade-off.</b> Xbox Game Bar can't record clips at all.</p>
+              <p class="tw-more"><a href="/tweaks/game-dvr-policy/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\GameDVR\AllowGameDVR</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -305,6 +325,7 @@
             <div class="tw-body">
               <p>Gives the graphics driver 10 seconds instead of 2 before Windows decides it has hung and resets it. Fixes &quot;display driver stopped responding&quot; in heavy games and on overclocked cards.</p>
               <p class="tw-trade"><b>Trade-off.</b> A genuinely frozen GPU takes longer to recover. Takes effect after a restart.</p>
+              <p class="tw-more"><a href="/tweaks/tdr-delay/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\TdrDelay</code><span>set to <code>10</code></span></li></ul>
             </div>
           </details>
@@ -315,6 +336,7 @@
             <div class="tw-body">
               <p>If a game crashes a few times, Windows quietly runs it with a slower, safer memory allocator from then on. This stops that.</p>
               <p class="tw-trade"><b>Trade-off.</b> A game that really is unstable may crash more often instead of running slower.</p>
+              <p class="tw-more"><a href="/tweaks/fth-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Microsoft\FTH\Enabled</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -322,7 +344,7 @@
         </ul>
       </div>
       <div class="cat" data-cat="network">
-        <div class="cat-head"><h3>Network</h3><p>Latency and background bandwidth: what else is using your connection while you play.</p></div>
+        <div class="cat-head"><h3><a href="/tweaks/network/">Network</a></h3><p>Latency and background bandwidth: what else is using your connection while you play.</p></div>
         <ul class="tw-list">
         <li class="tw" data-tier="safe" data-text="stop sharing updates with other pcs by default windows can upload update files to other pcs. on a slow upload connection that shows up as ping spikes. updates still download from microsoft.">
           <details>
@@ -330,6 +352,7 @@
             <div class="tw-body">
               <p>By default Windows can upload update files to other PCs. On a slow upload connection that shows up as ping spikes. Updates still download from Microsoft.</p>
               <p class="tw-trade"><b>Trade-off.</b> None for most people.</p>
+              <p class="tw-more"><a href="/tweaks/delivery-opt-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization\DODownloadMode</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -340,6 +363,7 @@
             <div class="tw-body">
               <p>Stops other people being invited to view or control this PC through Remote Assistance. Fewer open doors.</p>
               <p class="tw-trade"><b>Trade-off.</b> You can't receive help through Remote Assistance until you turn it back on.</p>
+              <p class="tw-more"><a href="/tweaks/remote-assist-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance\fAllowToGetHelp</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -350,6 +374,7 @@
             <div class="tw-body">
               <p>Windows limits network processing while media plays so audio doesn't glitch. This removes the limit.</p>
               <p class="tw-trade"><b>Trade-off.</b> On very old CPUs, audio can crackle under heavy network load.</p>
+              <p class="tw-more"><a href="/tweaks/network-throttling-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\NetworkThrottlingIndex</code><span>set to <code>0xFFFFFFFF</code></span></li></ul>
             </div>
           </details>
@@ -360,6 +385,7 @@
             <div class="tw-body">
               <p>Sends small packets right away instead of bundling them. Helps games that use TCP (some MMOs and older titles). Most shooters use UDP and won't change.</p>
               <p class="tw-trade"><b>Trade-off.</b> A little more network overhead. Applies to your active network adapters; takes effect after a restart.</p>
+              <p class="tw-more"><a href="/tweaks/nagle-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\{each network adapter}\TcpAckFrequency</code><span>set to <code>1</code></span></li><li><code>HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\{each network adapter}\TCPNoDelay</code><span>set to <code>1</code></span></li></ul>
             </div>
           </details>
@@ -370,6 +396,7 @@
             <div class="tw-body">
               <p>Microsoft Store apps stop downloading updates on their own while you play.</p>
               <p class="tw-trade"><b>Trade-off.</b> You update Store apps yourself from the Store's Library page. Games from the Xbox app are affected too.</p>
+              <p class="tw-more"><a href="/tweaks/store-autoupdate-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\WindowsStore\AutoDownload</code><span>set to <code>2</code></span></li></ul>
             </div>
           </details>
@@ -380,6 +407,7 @@
             <div class="tw-body">
               <p>Stops Windows Update replacing your graphics driver with an older or generic one.</p>
               <p class="tw-trade"><b>Trade-off.</b> You update drivers yourself, from NVIDIA, AMD or Intel.</p>
+              <p class="tw-more"><a href="/tweaks/wu-drivers-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\ExcludeWUDriversInQualityUpdate</code><span>set to <code>1</code></span></li></ul>
             </div>
           </details>
@@ -390,6 +418,7 @@
             <div class="tw-body">
               <p>Windows tells you updates are ready instead of downloading and installing them in the middle of a session.</p>
               <p class="tw-trade"><b>Trade-off.</b> Security updates wait for you. Install them regularly.</p>
+              <p class="tw-more"><a href="/tweaks/wu-ask-first/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU\AUOptions</code><span>set to <code>2</code></span></li><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU\NoAutoRebootWithLoggedOnUsers</code><span>set to <code>1</code></span></li></ul>
             </div>
           </details>
@@ -400,6 +429,7 @@
             <div class="tw-body">
               <p>Some games and launchers connect faster or more reliably over IPv4. IPv6 still works when it's the only option.</p>
               <p class="tw-trade"><b>Trade-off.</b> None for most people. Takes effect after a restart.</p>
+              <p class="tw-more"><a href="/tweaks/prefer-ipv4/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters\DisabledComponents</code><span>set to <code>32</code></span></li></ul>
             </div>
           </details>
@@ -410,6 +440,7 @@
             <div class="tw-body">
               <p>Turns off bandwidth throttling for file sharing, so copying from a NAS or another PC isn't held back.</p>
               <p class="tw-trade"><b>Trade-off.</b> None on a home network.</p>
+              <p class="tw-more"><a href="/tweaks/smb-throttle-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters\DisableBandwidthThrottling</code><span>set to <code>1</code></span></li></ul>
             </div>
           </details>
@@ -417,7 +448,7 @@
         </ul>
       </div>
       <div class="cat" data-cat="input">
-        <div class="cat-head"><h3>Mouse and keyboard</h3><p>Raw, predictable input with no pop-ups that steal focus mid-game.</p></div>
+        <div class="cat-head"><h3><a href="/tweaks/input/">Mouse and keyboard</a></h3><p>Raw, predictable input with no pop-ups that steal focus mid-game.</p></div>
         <ul class="tw-list">
         <li class="tw" data-tier="safe" data-text="turn off mouse acceleration turns off enhance pointer precision, so the same hand movement always moves the same distance. the single biggest change for aim consistency.">
           <details>
@@ -425,6 +456,7 @@
             <div class="tw-body">
               <p>Turns off Enhance pointer precision, so the same hand movement always moves the same distance. The single biggest change for aim consistency.</p>
               <p class="tw-trade"><b>Trade-off.</b> The desktop pointer feels slower at first. Takes effect after you sign out.</p>
+              <p class="tw-more"><a href="/tweaks/mouse-accel-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Control Panel\Mouse\MouseSpeed</code><span>set to <code>&quot;0&quot;</code></span></li><li><code>HKCU\Control Panel\Mouse\MouseThreshold1</code><span>set to <code>&quot;0&quot;</code></span></li><li><code>HKCU\Control Panel\Mouse\MouseThreshold2</code><span>set to <code>&quot;0&quot;</code></span></li></ul>
             </div>
           </details>
@@ -435,6 +467,7 @@
             <div class="tw-body">
               <p>Pressing Shift five times no longer throws you out of the game to ask about Sticky Keys. Same for Filter Keys and Toggle Keys.</p>
               <p class="tw-trade"><b>Trade-off.</b> None. You can still turn these on in Accessibility settings.</p>
+              <p class="tw-more"><a href="/tweaks/sticky-keys-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Control Panel\Accessibility\StickyKeys\Flags</code><span>set to <code>&quot;506&quot;</code></span></li><li><code>HKCU\Control Panel\Accessibility\Keyboard Response\Flags</code><span>set to <code>&quot;122&quot;</code></span></li><li><code>HKCU\Control Panel\Accessibility\ToggleKeys\Flags</code><span>set to <code>&quot;58&quot;</code></span></li></ul>
             </div>
           </details>
@@ -445,6 +478,7 @@
             <div class="tw-body">
               <p>Holding a key starts repeating sooner. Mostly noticeable in menus, chat and text.</p>
               <p class="tw-trade"><b>Trade-off.</b> Easier to type a letter twice by accident. Takes effect after you sign out.</p>
+              <p class="tw-more"><a href="/tweaks/key-repeat-fast/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Control Panel\Keyboard\KeyboardDelay</code><span>set to <code>&quot;0&quot;</code></span></li></ul>
             </div>
           </details>
@@ -455,6 +489,7 @@
             <div class="tw-body">
               <p>Shaking a window while you drag it no longer minimizes everything else.</p>
               <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <p class="tw-more"><a href="/tweaks/shake-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\DisallowShaking</code><span>set to <code>1</code></span></li></ul>
             </div>
           </details>
@@ -465,6 +500,7 @@
             <div class="tw-body">
               <p>Windows stops collecting statistics about how you type.</p>
               <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <p class="tw-more"><a href="/tweaks/typing-insights-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Input\Settings\InsightsEnabled</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -472,7 +508,7 @@
         </ul>
       </div>
       <div class="cat" data-cat="background">
-        <div class="cat-head"><h3>Background apps</h3><p>Apps and features that run when you didn't ask them to.</p></div>
+        <div class="cat-head"><h3><a href="/tweaks/background/">Background apps</a></h3><p>Apps and features that run when you didn't ask them to.</p></div>
         <ul class="tw-list">
         <li class="tw" data-tier="safe" data-text="stop apps running in the background store apps such as weather, phone link and mail stop running when they're closed.">
           <details>
@@ -480,6 +516,7 @@
             <div class="tw-body">
               <p>Store apps such as Weather, Phone Link and Mail stop running when they're closed.</p>
               <p class="tw-trade"><b>Trade-off.</b> Those apps won't show live notifications until you open them.</p>
+              <p class="tw-more"><a href="/tweaks/background-apps-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications\GlobalUserDisabled</code><span>set to <code>1</code></span></li></ul>
             </div>
           </details>
@@ -490,6 +527,7 @@
             <div class="tw-body">
               <p>Edge preloads itself at sign-in and keeps running after you close it. This stops both.</p>
               <p class="tw-trade"><b>Trade-off.</b> Edge opens about a second slower.</p>
+              <p class="tw-more"><a href="/tweaks/edge-background-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Edge\StartupBoostEnabled</code><span>set to <code>0</code></span></li><li><code>HKLM\SOFTWARE\Policies\Microsoft\Edge\BackgroundModeEnabled</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -500,6 +538,7 @@
             <div class="tw-body">
               <p>Removes the Widgets board and the news feed process that keeps it filled.</p>
               <p class="tw-trade"><b>Trade-off.</b> No weather or news on the taskbar.</p>
+              <p class="tw-more"><a href="/tweaks/widgets-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Dsh\AllowNewsAndInterests</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -510,6 +549,7 @@
             <div class="tw-body">
               <p>Removes the Copilot sidebar and its background process.</p>
               <p class="tw-trade"><b>Trade-off.</b> You can still use Copilot in a browser.</p>
+              <p class="tw-more"><a href="/tweaks/copilot-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot\TurnOffWindowsCopilot</code><span>set to <code>1</code></span></li></ul>
             </div>
           </details>
@@ -520,6 +560,7 @@
             <div class="tw-body">
               <p>Windows waits about ten seconds after sign-in before starting your startup apps. This removes the wait.</p>
               <p class="tw-trade"><b>Trade-off.</b> If you have many startup apps, they all compete for the first few seconds.</p>
+              <p class="tw-more"><a href="/tweaks/startup-delay-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Serialize\StartupDelayInMSec</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -530,6 +571,7 @@
             <div class="tw-body">
               <p>Stops Windows taking snapshots of your screen to make your activity searchable, on PCs that support it.</p>
               <p class="tw-trade"><b>Trade-off.</b> No Recall timeline.</p>
+              <p class="tw-more"><a href="/tweaks/recall-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Software\Policies\Microsoft\Windows\WindowsAI\DisableAIDataAnalysis</code><span>set to <code>1</code></span></li></ul>
             </div>
           </details>
@@ -540,6 +582,7 @@
             <div class="tw-body">
               <p>Removes Cortana and its background process on Windows versions that still include it.</p>
               <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <p class="tw-more"><a href="/tweaks/cortana-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search\AllowCortana</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -550,6 +593,7 @@
             <div class="tw-body">
               <p>Windows stops asking how it's doing.</p>
               <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <p class="tw-more"><a href="/tweaks/feedback-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Siuf\Rules\NumberOfSIUFInPeriod</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -560,6 +604,7 @@
             <div class="tw-body">
               <p>Stops OneDrive starting and syncing in the background, which can eat disk and upload bandwidth mid-game.</p>
               <p class="tw-trade"><b>Trade-off.</b> Files stop syncing to OneDrive. Files already on this PC stay where they are.</p>
+              <p class="tw-more"><a href="/tweaks/onedrive-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\OneDrive\DisableFileSyncNGSC</code><span>set to <code>1</code></span></li></ul>
             </div>
           </details>
@@ -570,6 +615,7 @@
             <div class="tw-body">
               <p>Stops Windows' nightly maintenance (disk optimization, scans, update cleanup) starting while the PC is idle, which can spill into a gaming session.</p>
               <p class="tw-trade"><b>Trade-off.</b> SSD TRIM and update cleanup no longer run on their own. Run Optimize Drives yourself every few weeks.</p>
+              <p class="tw-more"><a href="/tweaks/maintenance-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\Maintenance\MaintenanceDisabled</code><span>set to <code>1</code></span></li></ul>
             </div>
           </details>
@@ -577,7 +623,7 @@
         </ul>
       </div>
       <div class="cat" data-cat="services">
-        <div class="cat-head"><h3>Services</h3><p>Windows services you may not need. Each one is switched to Disabled, never deleted.</p></div>
+        <div class="cat-head"><h3><a href="/tweaks/services/">Services</a></h3><p>Windows services you may not need. Each one is switched to Disabled, never deleted.</p></div>
         <ul class="tw-list">
         <li class="tw" data-tier="safe" data-text="disable telemetry services disables the connected user experiences service and the wap push service that sends diagnostic data to microsoft.">
           <details>
@@ -585,6 +631,7 @@
             <div class="tw-body">
               <p>Disables the Connected User Experiences service and the WAP push service that sends diagnostic data to Microsoft.</p>
               <p class="tw-trade"><b>Trade-off.</b> None you'll notice. Takes effect after a restart.</p>
+              <p class="tw-more"><a href="/tweaks/svc-telemetry/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\DiagTrack\Start</code><span>set to <code>4 (disabled)</code></span></li><li><code>HKLM\SYSTEM\CurrentControlSet\Services\dmwappushservice\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
             </div>
           </details>
@@ -595,6 +642,7 @@
             <div class="tw-body">
               <p>Stops the service that downloads map data for the Maps app.</p>
               <p class="tw-trade"><b>Trade-off.</b> Offline maps won't update.</p>
+              <p class="tw-more"><a href="/tweaks/svc-maps/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\MapsBroker\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
             </div>
           </details>
@@ -605,6 +653,7 @@
             <div class="tw-body">
               <p>Disables the Fax service.</p>
               <p class="tw-trade"><b>Trade-off.</b> You can't send faxes from this PC.</p>
+              <p class="tw-more"><a href="/tweaks/svc-fax/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\Fax\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
             </div>
           </details>
@@ -615,6 +664,7 @@
             <div class="tw-body">
               <p>Disables the service used for Insider preview builds.</p>
               <p class="tw-trade"><b>Trade-off.</b> You can't join the Insider program until it's back on.</p>
+              <p class="tw-more"><a href="/tweaks/svc-insider/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\wisvc\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
             </div>
           </details>
@@ -625,6 +675,7 @@
             <div class="tw-body">
               <p>Disables the service that runs the demo mode shown on PCs in shops.</p>
               <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <p class="tw-more"><a href="/tweaks/svc-retaildemo/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\RetailDemo\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
             </div>
           </details>
@@ -635,6 +686,7 @@
             <div class="tw-body">
               <p>Disables Windows Media Player's network sharing service.</p>
               <p class="tw-trade"><b>Trade-off.</b> Media Player can't share your library on the network.</p>
+              <p class="tw-more"><a href="/tweaks/svc-wmpshare/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\WMPNetworkSvc\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
             </div>
           </details>
@@ -645,6 +697,7 @@
             <div class="tw-body">
               <p>Disables the Family Safety monitoring service.</p>
               <p class="tw-trade"><b>Trade-off.</b> Microsoft Family limits on this PC stop working. Skip this on a child's PC.</p>
+              <p class="tw-more"><a href="/tweaks/svc-parental/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\WpcMonSvc\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
             </div>
           </details>
@@ -655,6 +708,7 @@
             <div class="tw-body">
               <p>Disables the secure element service used for tap-to-pay.</p>
               <p class="tw-trade"><b>Trade-off.</b> Tap-to-pay with this PC stops working.</p>
+              <p class="tw-more"><a href="/tweaks/svc-payments/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\SEMgrSvc\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
             </div>
           </details>
@@ -665,6 +719,7 @@
             <div class="tw-body">
               <p>Disables a diagnostics collector used by developer tools.</p>
               <p class="tw-trade"><b>Trade-off.</b> Some Visual Studio profiling tools won't work.</p>
+              <p class="tw-more"><a href="/tweaks/svc-diaghub/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\diagnosticshub.standardcollector.service\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
             </div>
           </details>
@@ -675,6 +730,7 @@
             <div class="tw-body">
               <p>SysMain preloads apps into memory based on what you use. On an SSD the gain is small, and on some PCs it causes bursts of disk use.</p>
               <p class="tw-trade"><b>Trade-off.</b> Apps you open often may start a little slower, especially from a hard drive. Takes effect after a restart.</p>
+              <p class="tw-more"><a href="/tweaks/svc-sysmain/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\SysMain\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
             </div>
           </details>
@@ -685,6 +741,7 @@
             <div class="tw-body">
               <p>Stops the indexer reading your drives in the background.</p>
               <p class="tw-trade"><b>Trade-off.</b> Start menu and File Explorer search for files becomes much slower. App search still works.</p>
+              <p class="tw-more"><a href="/tweaks/svc-search/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\WSearch\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
             </div>
           </details>
@@ -695,6 +752,7 @@
             <div class="tw-body">
               <p>Crashes are no longer collected and uploaded in the background.</p>
               <p class="tw-trade"><b>Trade-off.</b> Microsoft and app makers don't get your crash reports, so fixes for your exact crash may come later.</p>
+              <p class="tw-more"><a href="/tweaks/svc-wer/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\WerSvc\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
             </div>
           </details>
@@ -705,6 +763,7 @@
             <div class="tw-body">
               <p>Disables Xbox Live sign-in, cloud saves and accessory services.</p>
               <p class="tw-trade"><b>Trade-off.</b> Game Pass, Xbox app games and Xbox controllers' extra features stop working. Skip this if you use any of them.</p>
+              <p class="tw-more"><a href="/tweaks/svc-xbox/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\XblAuthManager\Start</code><span>set to <code>4 (disabled)</code></span></li><li><code>HKLM\SYSTEM\CurrentControlSet\Services\XblGameSave\Start</code><span>set to <code>4 (disabled)</code></span></li><li><code>HKLM\SYSTEM\CurrentControlSet\Services\XboxNetApiSvc\Start</code><span>set to <code>4 (disabled)</code></span></li><li><code>HKLM\SYSTEM\CurrentControlSet\Services\XboxGipSvc\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
             </div>
           </details>
@@ -715,6 +774,7 @@
             <div class="tw-body">
               <p>Disables the service apps use to find where you are.</p>
               <p class="tw-trade"><b>Trade-off.</b> Maps, weather and Find my device can't use your location.</p>
+              <p class="tw-more"><a href="/tweaks/svc-geolocation/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\lfsvc\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
             </div>
           </details>
@@ -725,6 +785,7 @@
             <div class="tw-body">
               <p>Stops Windows watching programs for compatibility problems and offering to re-run them with fixes.</p>
               <p class="tw-trade"><b>Trade-off.</b> No automatic compatibility prompts for old programs.</p>
+              <p class="tw-more"><a href="/tweaks/svc-pca/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\PcaSvc\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
             </div>
           </details>
@@ -735,6 +796,7 @@
             <div class="tw-body">
               <p>Disables the service that shares this PC's connection as a Wi-Fi hotspot.</p>
               <p class="tw-trade"><b>Trade-off.</b> Mobile hotspot in Settings stops working.</p>
+              <p class="tw-more"><a href="/tweaks/svc-hotspot/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\icssvc\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
             </div>
           </details>
@@ -745,6 +807,7 @@
             <div class="tw-body">
               <p>Disables the service behind Windows troubleshooters and problem detection.</p>
               <p class="tw-trade"><b>Trade-off.</b> Troubleshooters in Settings won't work.</p>
+              <p class="tw-more"><a href="/tweaks/svc-dps/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\DPS\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
             </div>
           </details>
@@ -755,6 +818,7 @@
             <div class="tw-body">
               <p>Disables smart card readers.</p>
               <p class="tw-trade"><b>Trade-off.</b> Work or school smart cards stop working on this PC.</p>
+              <p class="tw-more"><a href="/tweaks/svc-smartcard/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\SCardSvr\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
             </div>
           </details>
@@ -765,6 +829,7 @@
             <div class="tw-body">
               <p>Disables the Print Spooler. Fewer services running, and it closes a part of Windows that has had serious security bugs.</p>
               <p class="tw-trade"><b>Trade-off.</b> You can't print, or print to PDF, until you turn it back on.</p>
+              <p class="tw-more"><a href="/tweaks/svc-print/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Services\Spooler\Start</code><span>set to <code>4 (disabled)</code></span></li></ul>
             </div>
           </details>
@@ -772,7 +837,7 @@
         </ul>
       </div>
       <div class="cat" data-cat="visual">
-        <div class="cat-head"><h3>Look and feel</h3><p>Animations and effects that make the desktop feel slower than it is.</p></div>
+        <div class="cat-head"><h3><a href="/tweaks/visual/">Look and feel</a></h3><p>Animations and effects that make the desktop feel slower than it is.</p></div>
         <ul class="tw-list">
         <li class="tw" data-tier="safe" data-text="turn off transparency removes the blur behind the taskbar, start and settings. frees a little gpu time on integrated graphics.">
           <details>
@@ -780,6 +845,7 @@
             <div class="tw-body">
               <p>Removes the blur behind the taskbar, Start and Settings. Frees a little GPU time on integrated graphics.</p>
               <p class="tw-trade"><b>Trade-off.</b> Windows looks flatter.</p>
+              <p class="tw-more"><a href="/tweaks/transparency-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize\EnableTransparency</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -790,6 +856,7 @@
             <div class="tw-body">
               <p>Windows open, close and minimize instantly instead of animating.</p>
               <p class="tw-trade"><b>Trade-off.</b> Less polish. Takes effect after you sign out.</p>
+              <p class="tw-more"><a href="/tweaks/animations-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Control Panel\Desktop\WindowMetrics\MinAnimate</code><span>set to <code>&quot;0&quot;</code></span></li><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarAnimations</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -800,6 +867,7 @@
             <div class="tw-body">
               <p>Removes the 400 ms pause before submenus open.</p>
               <p class="tw-trade"><b>Trade-off.</b> Submenus open as soon as you hover, which some people find busy.</p>
+              <p class="tw-more"><a href="/tweaks/menu-delay-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Control Panel\Desktop\MenuShowDelay</code><span>set to <code>&quot;0&quot;</code></span></li></ul>
             </div>
           </details>
@@ -810,6 +878,7 @@
             <div class="tw-body">
               <p>Hovering the corner of the taskbar no longer fades every window to show the desktop.</p>
               <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <p class="tw-more"><a href="/tweaks/aero-peek-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\DWM\EnableAeroPeek</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -820,6 +889,7 @@
             <div class="tw-body">
               <p>Removes the drop shadow under desktop icon labels.</p>
               <p class="tw-trade"><b>Trade-off.</b> Labels can be harder to read on busy wallpapers.</p>
+              <p class="tw-more"><a href="/tweaks/listview-shadow-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\ListviewShadow</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -830,6 +900,7 @@
             <div class="tw-body">
               <p>Hides recommended files and apps in the Start menu.</p>
               <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <p class="tw-more"><a href="/tweaks/start-recs-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Start_IrisRecommendations</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -840,6 +911,7 @@
             <div class="tw-body">
               <p>Shows just the window frame while you drag it, instead of redrawing the whole window.</p>
               <p class="tw-trade"><b>Trade-off.</b> Dragging looks old-fashioned. Takes effect after you sign out.</p>
+              <p class="tw-more"><a href="/tweaks/drag-outline/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Control Panel\Desktop\DragFullWindows</code><span>set to <code>&quot;0&quot;</code></span></li></ul>
             </div>
           </details>
@@ -850,6 +922,7 @@
             <div class="tw-body">
               <p>File Explorer shows file icons instead of generating thumbnails, which speeds up big photo and video folders.</p>
               <p class="tw-trade"><b>Trade-off.</b> You can't preview images by their thumbnails.</p>
+              <p class="tw-more"><a href="/tweaks/thumbs-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\IconsOnly</code><span>set to <code>1</code></span></li></ul>
             </div>
           </details>
@@ -857,7 +930,7 @@
         </ul>
       </div>
       <div class="cat" data-cat="privacy">
-        <div class="cat-head"><h3>Privacy</h3><p>Ads, suggestions and data collection. Small speed effect, big quiet effect.</p></div>
+        <div class="cat-head"><h3><a href="/tweaks/privacy/">Privacy</a></h3><p>Ads, suggestions and data collection. Small speed effect, big quiet effect.</p></div>
         <ul class="tw-list">
         <li class="tw" data-tier="safe" data-text="turn off the advertising id apps can no longer use your windows advertising id to show you personalized ads.">
           <details>
@@ -865,6 +938,7 @@
             <div class="tw-body">
               <p>Apps can no longer use your Windows advertising ID to show you personalized ads.</p>
               <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <p class="tw-more"><a href="/tweaks/ad-id-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo\Enabled</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -875,6 +949,7 @@
             <div class="tw-body">
               <p>Stops Start suggestions, Settings promotions, tips notifications and apps that install themselves.</p>
               <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <p class="tw-more"><a href="/tweaks/suggestions-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SystemPaneSuggestionsEnabled</code><span>set to <code>0</code></span></li><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SubscribedContent-338388Enabled</code><span>set to <code>0</code></span></li><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SubscribedContent-338389Enabled</code><span>set to <code>0</code></span></li><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SilentInstalledAppsEnabled</code><span>set to <code>0</code></span></li><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SoftLandingEnabled</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -885,6 +960,7 @@
             <div class="tw-body">
               <p>Microsoft stops using your diagnostic data to pick tips and offers for you.</p>
               <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <p class="tw-more"><a href="/tweaks/tailored-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\Privacy\TailoredExperiencesWithDiagnosticDataEnabled</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -895,6 +971,7 @@
             <div class="tw-body">
               <p>Start search only looks at your PC, so it stops waiting on Bing and returns results faster.</p>
               <p class="tw-trade"><b>Trade-off.</b> Web searches go through your browser instead. Takes effect after you sign out.</p>
+              <p class="tw-more"><a href="/tweaks/web-search-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Software\Policies\Microsoft\Windows\Explorer\DisableSearchBoxSuggestions</code><span>set to <code>1</code></span></li></ul>
             </div>
           </details>
@@ -905,6 +982,7 @@
             <div class="tw-body">
               <p>Windows stops recording which apps and files you use.</p>
               <p class="tw-trade"><b>Trade-off.</b> None on current Windows versions.</p>
+              <p class="tw-more"><a href="/tweaks/activity-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\System\PublishUserActivities</code><span>set to <code>0</code></span></li><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\System\UploadUserActivities</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -915,6 +993,7 @@
             <div class="tw-body">
               <p>Turns off the rotating Spotlight pictures and the tips and promotions printed over them.</p>
               <p class="tw-trade"><b>Trade-off.</b> Your lock screen shows a fixed picture.</p>
+              <p class="tw-more"><a href="/tweaks/spotlight-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\RotatingLockScreenEnabled</code><span>set to <code>0</code></span></li><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\RotatingLockScreenOverlayEnabled</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -925,6 +1004,7 @@
             <div class="tw-body">
               <p>Windows stops recording which apps you open to sort Start and search.</p>
               <p class="tw-trade"><b>Trade-off.</b> Most-used apps in Start won't update.</p>
+              <p class="tw-more"><a href="/tweaks/launch-tracking-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Start_TrackProgs</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -935,6 +1015,7 @@
             <div class="tw-body">
               <p>Opts this PC out of the Customer Experience Improvement Program.</p>
               <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <p class="tw-more"><a href="/tweaks/ceip-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\SQMClient\Windows\CEIPEnable</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -945,6 +1026,7 @@
             <div class="tw-body">
               <p>Stops the inventory collector that reports installed programs for compatibility analysis.</p>
               <p class="tw-trade"><b>Trade-off.</b> None.</p>
+              <p class="tw-more"><a href="/tweaks/appcompat-telemetry-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\AppCompat\AITEnable</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -955,6 +1037,7 @@
             <div class="tw-body">
               <p>Sets diagnostic data to the lowest level your edition of Windows allows.</p>
               <p class="tw-trade"><b>Trade-off.</b> On Home editions this is the same as Required. Some Insider features need more.</p>
+              <p class="tw-more"><a href="/tweaks/telemetry-min/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection\AllowTelemetry</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -962,7 +1045,7 @@
         </ul>
       </div>
       <div class="cat" data-cat="system">
-        <div class="cat-head"><h3>System and security</h3><p>Deep changes to how Windows protects itself. Real gains on some CPUs, real trade-offs on all of them.</p></div>
+        <div class="cat-head"><h3><a href="/tweaks/system/">System and security</a></h3><p>Deep changes to how Windows protects itself. Real gains on some CPUs, real trade-offs on all of them.</p></div>
         <ul class="tw-list">
         <li class="tw" data-tier="advanced" data-text="stop recording file access times windows writes a timestamp every time a file is read. turning that off cuts small writes during loading screens.">
           <details>
@@ -970,6 +1053,7 @@
             <div class="tw-body">
               <p>Windows writes a timestamp every time a file is read. Turning that off cuts small writes during loading screens.</p>
               <p class="tw-trade"><b>Trade-off.</b> Backup and cleanup tools that sort by last opened lose that information.</p>
+              <p class="tw-more"><a href="/tweaks/ntfs-last-access/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\FileSystem\NtfsDisableLastAccessUpdate</code><span>set to <code>2147483649</code></span></li></ul>
             </div>
           </details>
@@ -980,6 +1064,7 @@
             <div class="tw-body">
               <p>Windows creates an old DOS-style short name for every new file. Turning that off saves work in folders with thousands of files.</p>
               <p class="tw-trade"><b>Trade-off.</b> Very old 16-bit programs may not find files. Existing short names stay.</p>
+              <p class="tw-more"><a href="/tweaks/no-8dot3/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\FileSystem\NtfsDisable8dot3NameCreation</code><span>set to <code>1</code></span></li></ul>
             </div>
           </details>
@@ -990,6 +1075,7 @@
             <div class="tw-body">
               <p>Virtualization-based security costs some CPUs 5 to 15% in games. Microsoft itself suggests gamers can turn it off. This does both parts.</p>
               <p class="tw-trade"><b>Trade-off.</b> Removes a layer of protection against kernel-level malware. A few anti-cheats and work devices require it. Takes effect after a restart.</p>
+              <p class="tw-more"><a href="/tweaks/vbs-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\EnableVirtualizationBasedSecurity</code><span>set to <code>0</code></span></li><li><code>HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity\Enabled</code><span>set to <code>0</code></span></li></ul>
             </div>
           </details>
@@ -1000,6 +1086,7 @@
             <div class="tw-body">
               <p>Removes the CPU security patches that slow down older Intel processors, mostly 6th to 9th generation. Newer CPUs fix this in hardware and gain little.</p>
               <p class="tw-trade"><b>Trade-off.</b> Malicious code, including in a web page, could read memory it shouldn't. Only for a PC used for games and nothing sensitive. Takes effect after a restart.</p>
+              <p class="tw-more"><a href="/tweaks/mitigations-off/">How to do it by hand, and undo it</a></p>
               <ul class="tw-keys"><li><code>HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\FeatureSettingsOverride</code><span>set to <code>3</code></span></li><li><code>HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\FeatureSettingsOverrideMask</code><span>set to <code>3</code></span></li></ul>
             </div>
           </details>
@@ -1028,7 +1115,7 @@
   <footer class="footer">
     <div class="wrap footer-in">
       <span class="brand brand-sm"><img src="../assets/logo.svg" alt="" width="20" height="20"><span>framecalm</span></span>
-      <nav aria-label="Footer"><a href="https://github.com/krezio/framecalm">Source code</a><a href="../guides/">Guides</a><a href="../privacy.html">Privacy</a><a href="https://github.com/krezio/framecalm/issues">Report a problem</a><a href="https://krezio.xyz">Made by krezio</a></nav>
+      <nav aria-label="Footer"><a href="https://github.com/krezio/framecalm">Source code</a><a href="../download/">Download</a><a href="../tweaks/">All tweaks</a><a href="../guides/">Guides</a><a href="../faq/">FAQ</a><a href="../changelog/">Changelog</a><a href="../privacy.html">Privacy</a><a href="https://github.com/krezio/framecalm/issues">Report a problem</a><a href="https://krezio.xyz">Made by krezio</a></nav>
     </div>
   </footer>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "22094a4c9ca14cf6838a007582902d9c"}'></script>
