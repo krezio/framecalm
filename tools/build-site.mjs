@@ -66,7 +66,7 @@ function foot(root) {
   <footer class="footer">
     <div class="wrap footer-in">
       <span class="brand brand-sm"><img src="${root}assets/logo.svg" alt="" width="20" height="20"><span>framecalm</span></span>
-      <nav aria-label="Footer"><a href="https://github.com/krezio/framecalm">Source code</a><a href="${root}download/">Download</a><a href="${root}tweaks/">All tweaks</a><a href="${root}guides/">Guides</a><a href="${root}faq/">FAQ</a><a href="${root}changelog/">Changelog</a><a href="${root}privacy.html">Privacy</a><a href="https://github.com/krezio/framecalm/issues">Report a problem</a><a href="https://krezio.xyz">Made by krezio</a></nav>
+      <nav aria-label="Footer"><a href="https://github.com/krezio/framecalm">Source code</a><a href="${root}download/">Download</a><a href="${root}tweaks/">All tweaks</a><a href="${root}guides/">Guides</a><a href="${root}faq/">FAQ</a><a href="${root}changelog/">Changelog</a><a href="${root}press/">Press</a><a href="${root}privacy.html">Privacy</a><a href="https://github.com/krezio/framecalm/issues">Report a problem</a><a href="https://krezio.xyz">Made by krezio</a></nav>
     </div>
   </footer>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${CF_TOKEN}"}'></script>
@@ -664,6 +664,48 @@ ${changes.map((r) => `    <h2>${r.v}</h2>\n    <p class="label">${r.d}</p>\n    
     <p style="margin-top:28px"><a class="btn btn-primary" href="../download/">Download the latest version</a></p>
   </main>
 ` + foot("../"));
+
+  // ---- press kit ----
+  const shots = [["dashboard", "Home: one button builds a plan for this PC"], ["auto", "The plan, with a reason on every line"], ["optimize", "Tweaks: each one shows the exact value it writes"], ["this-pc", "PC fixes Windows gets wrong on its own"], ["games", "Game settings tuned for the hardware"], ["benchmarks", "Before and after benchmarks"], ["history", "History: every change, with undo"]];
+  write("press/index.html", head({
+    title: "Framecalm press kit: facts, logos and screenshots | Framecalm",
+    description: "Everything for writing about Framecalm, the free and open source Windows optimizer: a short description, key facts, logos and screenshots.",
+    url: `${BASE}/press/`, root: "../",
+  }) + `
+  <main class="article" id="main">
+    <p class="label"><a href="../">Framecalm</a> › Press</p>
+    <h1>Press kit</h1>
+    <div class="tldr"><p class="tldr-h">In one sentence</p><p>Framecalm is a free, open source Windows optimizer: one click builds a plan for your PC, or pick from ${count} tweaks, each explained and undoable.</p></div>
+    <h2>Key facts</h2>
+    <table class="facts">
+      <tr><th>Made by</th><td>krezio, an independent developer</td></tr>
+      <tr><th>Price</th><td>Free. No ads, no account, no telemetry.</td></tr>
+      <tr><th>License</th><td>MIT. <a href="https://github.com/krezio/framecalm">Source on GitHub</a></td></tr>
+      <tr><th>Platform</th><td>Windows 10 (2004 or newer) and Windows 11, 64-bit</td></tr>
+      <tr><th>Current version</th><td>${VERSION}</td></tr>
+      <tr><th>Tweaks</th><td>${count} in nine categories, each marked Safe, Advanced or Extreme</td></tr>
+      <tr><th>Download</th><td><a href="../download/">framecalm.krezio.xyz/download</a></td></tr>
+    </table>
+    <h2>What makes it different</h2>
+    <ul>
+      <li><b>Shows its work.</b> Every tweak lists the exact registry value or power setting it writes, on the <a href="../tweaks/">public tweak list</a> and in the app.</li>
+      <li><b>Everything can be undone.</b> A restore point first, every original value saved and read back, and a History screen that puts any change back.</li>
+      <li><b>Leaves out the placebo.</b> No RAM cleaners, no "network packs", no turning off Defender. The site explains why.</li>
+      <li><b>Hardware-aware.</b> The one-click plan checks laptop or desktop, GPU and what's already set. Laptops skip tweaks that cost battery and heat.</li>
+      <li><b>Safe by design.</b> The main app never runs as admin. A small helper does the elevated writes and refuses any key that isn't in the published catalog.</li>
+    </ul>
+    <h2>Logos</h2>
+    <p><a href="../assets/icon-512.png">App icon, 512 px PNG</a> · <a href="../assets/logo.svg">Logo, SVG</a> · <a href="../assets/og.png">Social image, 1200×630</a></p>
+    <h2>Screenshots</h2>
+    <p class="muted">Taken on Framecalm's demo mode, which simulates a gaming laptop. Free to use in coverage of Framecalm.</p>
+    <ul class="guide-list">
+${shots.map(([f, c]) => `      <li><a href="../assets/shots/${f}.webp">${c}</a></li>`).join("\n")}
+    </ul>
+    <h2>Contact</h2>
+    <p>Questions, review builds or interviews: <a href="https://github.com/krezio/framecalm/issues">open an issue on GitHub</a>, or reach krezio at <a href="https://krezio.xyz">krezio.xyz</a>.</p>
+  </main>
+` + foot("../"));
+  out.push({ loc: `${BASE}/press/`, priority: "0.4" });
 
   // ---- llms.txt and llms-full.txt: a plain summary for AI assistants and AI search ----
   writeFileSync(join(SITE, "llms.txt"), `# Framecalm
