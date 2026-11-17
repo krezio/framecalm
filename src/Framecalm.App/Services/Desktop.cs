@@ -1,3 +1,4 @@
+using System.IO;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text.Json;
@@ -45,7 +46,7 @@ public static class Packaged
 /// just a request for the release list, with a generic user agent.</summary>
 public static class UpdateCheck
 {
-    public sealed record Result(bool Newer, string Latest, string Url);
+    public sealed record Result(bool Newer, string Latest, string Url, string? Sha256 = null, long Size = 0);
 
     public static Version Current => typeof(UpdateCheck).Assembly.GetName().Version ?? new Version(0, 0, 0);
 
@@ -59,13 +60,71 @@ public static class UpdateCheck
             var json = await http.GetStringAsync("https://api.github.com/repos/krezio/framecalm/releases/latest");
             using var doc = JsonDocument.Parse(json);
             var tag = doc.RootElement.GetProperty("tag_name").GetString() ?? "";
-            var url = doc.RootElement.GetProperty("html_url").GetString() ?? "https://framecalm.krezio.xyz";
+            // the installer itself, so "Get it" starts the download instead of opening the release page
+            var url = "https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe";
+            string? sha = null;
+            long size = 0;
+            if (doc.RootElement.TryGetProperty("assets", out var assets))
+                foreach (var a in assets.EnumerateArray())
+                    if (a.GetProperty("name").GetString() == "Framecalm-Setup.exe" && a.GetProperty("browser_download_url").GetString() is { } dl)
+                    {
+                        url = dl;
+                        if (a.TryGetProperty("size", out var sz)) size = sz.GetInt64();
+                        if (a.TryGetProperty("digest", out var dg) && dg.GetString() is { } d && d.StartsWith("sha256:")) sha = d[7..];
+                    }
             if (!Version.TryParse(tag.TrimStart('v', 'V'), out var latest)) return null;
             var cur = new Version(Current.Major, Current.Minor, Math.Max(0, Current.Build));
-            return new Result(latest > cur, tag, url);
+            return new Result(latest > cur, tag, url, sha, size);
         }
         catch { return null; }
     }
+}
+
+/// <summary>Downloads the new installer, checks it, and runs it silently. The installer closes this copy,
+/// replaces the files and opens the new version. Only for the installed app; the portable zip and the
+/// Store version update another way.</summary>
+public static class Updater
+{
+    public static bool CanInstall =>
+        !Packaged.IsPackaged && Environment.ProcessPath is { } p &&
+        p.StartsWith(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Programs", "Framecalm"), StringComparison.OrdinalIgnoreCase);
+
+    public static async Task<string> DownloadAsync(UpdateCheck.Result r, IProgress<double> progress)
+    {
+        var file = Path.Combine(Path.GetTempPath(), $"Framecalm-Setup-{r.Latest}.exe");
+        using var http = new HttpClient { Timeout = TimeSpan.FromMinutes(10) };
+        http.DefaultRequestHeaders.UserAgent.ParseAdd("Framecalm-updater");
+        using var resp = await http.GetAsync(r.Url, HttpCompletionOption.ResponseHeadersRead);
+        resp.EnsureSuccessStatusCode();
+        var total = resp.Content.Headers.ContentLength ?? r.Size;
+        using (var src = await resp.Content.ReadAsStreamAsync())
+        using (var dst = File.Create(file))
+        {
+            var buf = new byte[81920];
+            long done = 0;
+            int n;
+            while ((n = await src.ReadAsync(buf)) > 0)
+            {
+                await dst.WriteAsync(buf.AsMemory(0, n));
+                done += n;
+                if (total > 0) progress.Report((double)done / total);
+            }
+        }
+
+        // checked before anything runs: a Windows program, the expected size, and GitHub's SHA-256 when it publishes one
+        var bytes = await File.ReadAllBytesAsync(file);
+        if (bytes.Length < 1_000_000 || bytes[0] != (byte)'M' || bytes[1] != (byte)'Z') { File.Delete(file); throw new InvalidDataException("The download isn't a valid installer."); }
+        if (r.Size > 0 && bytes.Length != r.Size) { File.Delete(file); throw new InvalidDataException("The download is incomplete."); }
+        if (r.Sha256 is { } want)
+        {
+            var got = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(bytes));
+            if (!got.Equals(want, StringComparison.OrdinalIgnoreCase)) { File.Delete(file); throw new InvalidDataException("The download doesn't match the published checksum."); }
+        }
+        return file;
+    }
+
+    public static void RunInstaller(string file) =>
+        Process.Start(new ProcessStartInfo(file, "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /CLOSEAPPLICATIONS /relaunch=1") { UseShellExecute = true });
 }
 
 /// <summary>The tray icon: double-click to open, right-click for a short menu.</summary>

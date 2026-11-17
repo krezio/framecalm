@@ -70,16 +70,47 @@ public sealed class MainVM : Observable
 
     // ---------- updates ----------
     string? _update, _updateUrl;
+    Framecalm.App.Services.UpdateCheck.Result? _updateInfo;
+    bool _installing;
     public string? UpdateText { get => _update; private set { Set(ref _update, value); Raise(nameof(HasUpdate)); } }
     public bool HasUpdate => _update != null;
-    public System.Windows.Input.ICommand GetUpdateCmd => new Cmd(() => OpenUri(_updateUrl));
+    public string UpdateAction => _installing ? "" : "  Get it";
+    public System.Windows.Input.ICommand GetUpdateCmd => new Cmd(() => _ = GetUpdateAsync());
+
+    /// <summary>Installed copies download and install the update in place; the portable zip opens the download.</summary>
+    async Task GetUpdateAsync()
+    {
+        if (_installing || _updateInfo is null) return;
+        if (!Framecalm.App.Services.Updater.CanInstall) { OpenUri(_updateUrl); return; }
+        _installing = true;
+        Raise(nameof(UpdateAction));
+        var latest = _updateInfo.Latest;
+        try
+        {
+            UpdateText = "Downloading update";
+            var progress = new Progress<double>(f => UpdateText = $"Downloading update {f * 100:0}%");
+            var file = await Framecalm.App.Services.Updater.DownloadAsync(_updateInfo, progress);
+            UpdateText = "Installing update";
+            await Task.Delay(400);
+            Framecalm.App.Services.Updater.RunInstaller(file);
+            (System.Windows.Application.Current.MainWindow as MainWindow)?.QuitForUpdate();
+        }
+        catch (Exception ex)
+        {
+            _installing = false;
+            Raise(nameof(UpdateAction));
+            UpdateText = $"{latest} is out";
+            ShowToast("Couldn't install the update automatically, so the download page is opening instead. " + ex.Message, bad: true);
+            OpenUri(_updateUrl);
+        }
+    }
 
     /// <summary>Asks GitHub for the newest release. Quiet unless there is one, or unless asked from Settings.</summary>
     public async Task CheckForUpdateAsync(bool manual = false)
     {
         if (IsDemo) { if (manual) ShowToast("Demo mode: no update check."); return; }
         var r = await Framecalm.App.Services.UpdateCheck.RunAsync();
-        if (r is { Newer: true }) { _updateUrl = r.Url; UpdateText = $"{r.Latest} is out"; if (manual) ShowToast($"Framecalm {r.Latest} is out. Use Get it in the sidebar."); }
+        if (r is { Newer: true }) { _updateUrl = r.Url; _updateInfo = r; UpdateText = $"{r.Latest} is out"; if (manual) ShowToast($"Framecalm {r.Latest} is out. Press Get it at the top to install it."); }
         else if (manual) ShowToast(r is null ? "Couldn't reach GitHub. Check your connection and try again." : "You're on the newest version.", r is null);
     }
 

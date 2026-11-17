@@ -39,7 +39,15 @@ Name: "{autodesktop}\Framecalm"; Filename: "{app}\Framecalm.exe"; Tasks: desktop
 
 [Run]
 Filename: "{app}\Framecalm.exe"; Description: "Launch Framecalm"; Flags: nowait postinstall skipifsilent
+; after an in-app update (a silent install started by Framecalm itself), open the new version
+Filename: "{app}\Framecalm.exe"; Flags: nowait; Check: IsAppUpdate
 
 [UninstallRun]
 ; puts every change Framecalm made back before it's removed
 Filename: "{app}\Framecalm.exe"; Parameters: "--undo-all-quiet"; Flags: runhidden waituntilterminated skipifdoesntexist; RunOnceId: "UndoAll"
+
+[Code]
+function IsAppUpdate: Boolean;
+begin
+  Result := ExpandConstant('{param:relaunch|0}') = '1';
+end;

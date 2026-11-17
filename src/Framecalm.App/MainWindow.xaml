@@ -118,9 +118,9 @@
 
             <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Height="64">
                 <Button Style="{StaticResource Plain}" Command="{Binding GetUpdateCmd}" Visibility="{Binding HasUpdate, Converter={StaticResource VisIf}}" VerticalAlignment="Center" Margin="0,0,18,0"
-                        WindowChrome.IsHitTestVisibleInChrome="True" Cursor="Hand" ToolTip="A newer Framecalm is ready">
+                        WindowChrome.IsHitTestVisibleInChrome="True" Cursor="Hand" ToolTip="Download and install the new version">
                     <Border Background="#2B2773" BorderBrush="{StaticResource Accent}" BorderThickness="1" CornerRadius="10" Padding="12,6">
-                        <TextBlock FontSize="12.5" FontWeight="Medium"><Run Text="{Binding UpdateText, Mode=OneWay}" /><Run Text="  Get it" Foreground="{StaticResource Accent}" /></TextBlock>
+                        <TextBlock FontSize="12.5" FontWeight="Medium" Foreground="White"><Run Text="{Binding UpdateText, Mode=OneWay}" /><Run Text="{Binding UpdateAction, Mode=OneWay}" FontWeight="SemiBold" /></TextBlock>
                     </Border>
                 </Button>
                 <Border Visibility="{Binding IsDemo, Converter={StaticResource VisIf}}" BorderBrush="{StaticResource Warn}" BorderThickness="1" CornerRadius="8" Padding="10,4" VerticalAlignment="Center" Margin="0,0,18,0"

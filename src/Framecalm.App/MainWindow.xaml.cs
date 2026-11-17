@@ -90,6 +90,9 @@ public partial class MainWindow : Window
         });
     }
 
+    /// <summary>Closes for real (not to the tray) so the update installer can replace the files.</summary>
+    public void QuitForUpdate() => Quit();
+
     void Quit()
     {
         _quitting = true;
