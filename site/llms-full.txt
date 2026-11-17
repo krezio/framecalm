@@ -1,6 +1,6 @@
 # Framecalm: every tweak
 
-Framecalm 0.5.2, free and open source (MIT) Windows optimizer. https://framecalm.krezio.xyz/
+Framecalm 0.5.3, free and open source (MIT) Windows optimizer. https://framecalm.krezio.xyz/
 Each tweak below lists what it does, its trade-off, its tier and the exact values it writes.
 
 ## Power and CPU

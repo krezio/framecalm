@@ -2,7 +2,7 @@
 
 > Framecalm is a free, open source (MIT) Windows 10 and 11 optimizer for games and everyday speed. One click builds a tuning plan from the PC's hardware, or the user picks from 87 tweaks. Every change is explained, saved first and can be undone. No account, no ads, no telemetry.
 
-Made by krezio. Current version: 0.5.2. Source code: https://github.com/krezio/framecalm
+Made by krezio. Current version: 0.5.3. Source code: https://github.com/krezio/framecalm
 
 ## Key facts
 - Price: free. License: MIT.
