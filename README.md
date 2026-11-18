@@ -117,6 +117,8 @@ Bug reports and ideas are welcome in [Issues](https://github.com/krezio/framecal
 
 Tweaks are data: each one is an entry in [`tweaks.json`](src/Framecalm.Windows/Data/tweaks.json) with its registry values or power settings, tier, trade-off and default. The elevated helper only accepts keys listed there, and the tests check every entry. A new tweak needs a clear, measurable reason to exist.
 
+**Also from krezio:** [Roomy](https://github.com/krezio/roomy), a free Windows disk cleaner that shows what's filling your C: drive and safely clears the junk.
+
 ## Credits
 
 The app and website use [Onest](https://github.com/simpletype-co/Onest) (SIL Open Font License, see `src/Framecalm.App/Assets/Fonts/OFL.txt`). Frame capture uses [PresentMon](https://github.com/GameTechDev/PresentMon) by Intel (MIT).

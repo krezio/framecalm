@@ -66,7 +66,7 @@ function foot(root) {
   <footer class="footer">
     <div class="wrap footer-in">
       <span class="brand brand-sm"><img src="${root}assets/logo.svg" alt="" width="20" height="20"><span>framecalm</span></span>
-      <nav aria-label="Footer"><a href="https://github.com/krezio/framecalm">Source code</a><a href="${root}download/">Download</a><a href="${root}tweaks/">All tweaks</a><a href="${root}guides/">Guides</a><a href="${root}faq/">FAQ</a><a href="${root}changelog/">Changelog</a><a href="${root}press/">Press</a><a href="${root}privacy.html">Privacy</a><a href="https://github.com/krezio/framecalm/issues">Report a problem</a><a href="https://krezio.xyz">Made by krezio</a></nav>
+      <nav aria-label="Footer"><a href="https://github.com/krezio/framecalm">Source code</a><a href="${root}download/">Download</a><a href="${root}tweaks/">All tweaks</a><a href="${root}guides/">Guides</a><a href="${root}faq/">FAQ</a><a href="${root}changelog/">Changelog</a><a href="${root}press/">Press</a><a href="${root}privacy.html">Privacy</a><a href="https://github.com/krezio/framecalm/issues">Report a problem</a><a href="https://roomy.krezio.xyz">Roomy</a><a href="https://krezio.xyz">Made by krezio</a></nav>
     </div>
   </footer>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${CF_TOKEN}"}'></script>

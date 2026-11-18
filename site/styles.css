@@ -63,6 +63,8 @@ h1, h2, h3 { margin: 0; color: var(--paper); font-weight: 500; }
 h3 { font-size: 22px; line-height: 1.2; letter-spacing: -.02em; }
 p { margin: 0 0 1em; }
 .fine { font-size: 13.5px; color: var(--faint); margin: 0; line-height: 1.45; }
+.fine.also { margin-top: 22px; }
+.fine.also a { color: var(--muted); text-underline-offset: 3px; }
 .sub { color: var(--muted); font-size: 19px; max-width: 40em; margin: -12px 0 40px; }
 
 /* line-by-line reveal: each .line clips its inner span, which rises into view */
