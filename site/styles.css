@@ -488,3 +488,5 @@ body:has(.article) .top { background: rgba(14, 11, 46, .9); border-bottom-color:
 .ms-badge { display: inline-flex; align-items: center; line-height: 0; border-radius: 8px; transition: transform .2s, filter .2s; }
 .ms-badge:hover { transform: translateY(-2px); filter: brightness(1.12); }
 .ms-badge img { height: 52px; width: auto; display: block; }
+.hero-foot .cta-row { max-width: 520px; gap: 16px 18px; }
+.hero-foot .cta-row .fine { flex-basis: 100%; }
