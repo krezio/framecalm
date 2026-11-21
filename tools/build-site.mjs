@@ -10,6 +10,7 @@ const SITE = join(dirname(fileURLToPath(import.meta.url)), "..", "site");
 const BASE = "https://framecalm.krezio.xyz";
 const UPDATED = "2026-11-16";
 const DOWNLOAD = "https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe";
+const STORE = "https://apps.microsoft.com/detail/9P0ZH5T16R81";
 const PORTABLE = "https://github.com/krezio/framecalm/releases/latest/download/Framecalm-portable.zip";
 const CF_TOKEN = "22094a4c9ca14cf6838a007582902d9c";
 const TOOLS = dirname(fileURLToPath(import.meta.url));
@@ -579,7 +580,7 @@ ${CATALOG.categories.filter((o) => o.id !== c.id).map((o) => `      <li><a href=
     { q: "Does it work on laptops?", a: "Yes. The one-click plan checks whether it's running on a laptop and skips tweaks that cost battery life or add heat. It can also pin games to the dedicated graphics card when a laptop keeps using the integrated one." },
     { q: "What's the difference between Safe, Advanced and Extreme?", a: `${tierText.safe} ${tierText.advanced} ${tierText.extreme}` },
     { q: "Which games does it support?", a: "It finds games from Steam, Epic, Riot, Battle.net, the Xbox app, Minecraft and Roblox. It tunes the settings files of Minecraft Java, Fortnite and Rocket League for your hardware, and gives exact in-game steps for games with strict anti-cheat. The Windows tweaks help every game." },
-    { q: "Windows SmartScreen warned me. Is it safe?", a: "SmartScreen warns about new programs that aren't code-signed yet or haven't been downloaded much. Framecalm is open source, so you can read the code or build it yourself. Click More info, then Run anyway." },
+    { q: "Windows SmartScreen warned me. Is it safe?", a: "SmartScreen warns about new programs that aren't code-signed yet or haven't been downloaded much. Framecalm is open source, so you can read the code or build it yourself. Click More info, then Run anyway, or install it from the Microsoft Store, which never shows the warning." },
     { q: "Does it need the internet?", a: "No. It works offline. It can download game cover images and check for a newer version, and both can be switched off in Settings." },
     { q: "Where does it keep backups?", a: "In %LOCALAPPDATA%\\Framecalm on your PC: the original value of everything it changed, the history and its settings. Nothing is uploaded." },
     { q: "How do I uninstall it?", a: "First open History and choose Undo everything if you want Windows exactly as it was. Then uninstall Framecalm from Settings, Apps, Installed apps. The portable version is just a folder you can delete." },
@@ -619,9 +620,11 @@ ${cta("../")}
     <h1>Download Framecalm</h1>
     <p class="muted">Version ${VERSION}. Free and open source. No account, no ads, no telemetry.</p>
     <p style="margin-top:28px"><a class="btn btn-primary" href="${DOWNLOAD}">Download installer (.exe)</a> <a class="btn" href="${PORTABLE}">Portable zip</a></p>
+    <p><a class="ms-badge" href="${STORE}" target="_blank" rel="noopener" aria-label="Get Framecalm from the Microsoft Store"><img src="../assets/ms-store-badge.svg" alt="Get it from Microsoft" width="161" height="44"></a></p>
     <h2>Which one?</h2>
     <ul>
       <li><b>Installer:</b> installs for your account only, so it doesn't need admin to install. Adds a Start menu entry and an uninstaller.</li>
+      <li><b>Microsoft Store:</b> installs and updates through the Store, with no Windows SmartScreen warning. The Store version leaves updates and starting with Windows to the Store.</li>
       <li><b>Portable:</b> unzip anywhere and run <code>Framecalm.exe</code>. Nothing is installed. Delete the folder to remove it.</li>
     </ul>
     <h2>System requirements</h2>
@@ -632,7 +635,7 @@ ${cta("../")}
       <tr><th>Admin rights</th><td>Not needed to install. Windows asks once per batch when you apply machine-wide settings.</td></tr>
     </table>
     <h2>"Windows protected your PC"</h2>
-    <p>Windows SmartScreen shows this for new programs that aren't code-signed yet or haven't been downloaded many times. Click <b>More info</b>, then <b>Run anyway</b>. If you'd rather check first, the <a href="https://github.com/krezio/framecalm">full source code is on GitHub</a> and you can build it yourself.</p>
+    <p>Windows SmartScreen shows this for new programs that aren't code-signed yet or haven't been downloaded many times. Click <b>More info</b>, then <b>Run anyway</b>, or get Framecalm from the <a href="${STORE}">Microsoft Store</a> instead, which never shows this warning. If you'd rather check first, the <a href="https://github.com/krezio/framecalm">full source code is on GitHub</a> and you can build it yourself.</p>
     <h2>Code signing</h2>
     <p>Framecalm's Windows releases are built automatically by GitHub Actions from the public source code. We've applied to the <a href="https://signpath.org">SignPath Foundation</a>'s free code signing program for open source projects. Once approved, releases will be signed with a certificate issued by SignPath Foundation, so Windows shows a verified publisher instead of "Unknown publisher".</p>
     <h2>After installing</h2>
@@ -719,7 +722,7 @@ Made by krezio. Current version: ${VERSION}. Source code: https://github.com/kre
 
 ## Key facts
 - Price: free. License: MIT.
-- Platform: Windows 10 (2004+) and Windows 11, 64-bit.
+- Platform: Windows 10 (2004+) and Windows 11, 64-bit. Available as an installer, a portable zip, and on the Microsoft Store (${STORE}).
 - ${count} tweaks in nine categories (${CATALOG.categories.map((c) => c.name).join(", ")}), each marked Safe, Advanced or Extreme, each listing the exact registry value or power setting it writes.
 - Safety: makes a System Restore point before the first admin change, saves every original value, reads each value back after writing, rolls back the whole batch on any mismatch, and lists every change in History for undo.
 - The main app runs without admin; a small helper does elevated writes and refuses any registry key not in the published catalog.
@@ -730,6 +733,7 @@ Made by krezio. Current version: ${VERSION}. Source code: https://github.com/kre
 ## Pages
 - [Home](${BASE}/): what Framecalm does
 - [Download](${BASE}/download/): installer and portable zip, requirements, SmartScreen
+- [Microsoft Store](${STORE}): the Store version
 - [All tweaks](${BASE}/tweaks/): the full catalog
 - [FAQ](${BASE}/faq/): safety, anti-cheat, laptops, undo, uninstall
 - [Guides](${BASE}/guides/): plain-English PC gaming performance guides

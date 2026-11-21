@@ -6,7 +6,7 @@ Made by krezio. Current version: 0.5.3. Source code: https://github.com/krezio/f
 
 ## Key facts
 - Price: free. License: MIT.
-- Platform: Windows 10 (2004+) and Windows 11, 64-bit.
+- Platform: Windows 10 (2004+) and Windows 11, 64-bit. Available as an installer, a portable zip, and on the Microsoft Store (https://apps.microsoft.com/detail/9P0ZH5T16R81).
 - 87 tweaks in nine categories (Power and CPU, Graphics, Network, Mouse and keyboard, Background apps, Services, Look and feel, Privacy, System and security), each marked Safe, Advanced or Extreme, each listing the exact registry value or power setting it writes.
 - Safety: makes a System Restore point before the first admin change, saves every original value, reads each value back after writing, rolls back the whole batch on any mismatch, and lists every change in History for undo.
 - The main app runs without admin; a small helper does elevated writes and refuses any registry key not in the published catalog.
@@ -17,6 +17,7 @@ Made by krezio. Current version: 0.5.3. Source code: https://github.com/krezio/f
 ## Pages
 - [Home](https://framecalm.krezio.xyz/): what Framecalm does
 - [Download](https://framecalm.krezio.xyz/download/): installer and portable zip, requirements, SmartScreen
+- [Microsoft Store](https://apps.microsoft.com/detail/9P0ZH5T16R81): the Store version
 - [All tweaks](https://framecalm.krezio.xyz/tweaks/): the full catalog
 - [FAQ](https://framecalm.krezio.xyz/faq/): safety, anti-cheat, laptops, undo, uninstall
 - [Guides](https://framecalm.krezio.xyz/guides/): plain-English PC gaming performance guides

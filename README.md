@@ -22,6 +22,7 @@
 
 <p align="center">
   <a href="https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe"><b>Download for Windows</b></a> &nbsp;&middot;&nbsp;
+  <a href="https://apps.microsoft.com/detail/9P0ZH5T16R81">Microsoft Store</a> &nbsp;&middot;&nbsp;
   <a href="https://framecalm.krezio.xyz">Website</a> &nbsp;&middot;&nbsp;
   <a href="https://framecalm.krezio.xyz/tweaks/">All 87 tweaks</a>
 </p>
@@ -68,7 +69,7 @@ Cover art belongs to each game's publisher. It is fetched to your PC for display
 
 ## Install
 
-Grab **Framecalm-Setup.exe** (per-user, no admin needed to install) or the portable zip from [Releases](https://github.com/krezio/framecalm/releases/latest). A Microsoft Store version is on the way.
+Grab **Framecalm-Setup.exe** (per-user, no admin needed to install) or the portable zip from [Releases](https://github.com/krezio/framecalm/releases/latest). Or get it from the [Microsoft Store](https://apps.microsoft.com/detail/9P0ZH5T16R81), which installs and updates without the SmartScreen warning.
 
 ## Build it yourself
 

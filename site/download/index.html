@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300..800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../styles.css?v=fad94e9959">
+  <link rel="stylesheet" href="../styles.css?v=a2fdfb9bc8">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Framecalm","softwareVersion":"0.5.3","operatingSystem":"Windows 10, Windows 11","applicationCategory":"UtilitiesApplication","downloadUrl":"https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe","installUrl":"https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe","license":"https://opensource.org/licenses/MIT","isAccessibleForFree":true,"url":"https://framecalm.krezio.xyz/download/","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"krezio","url":"https://krezio.xyz"}}</script>
 </head>
 <body>
@@ -45,9 +45,11 @@
     <h1>Download Framecalm</h1>
     <p class="muted">Version 0.5.3. Free and open source. No account, no ads, no telemetry.</p>
     <p style="margin-top:28px"><a class="btn btn-primary" href="https://github.com/krezio/framecalm/releases/latest/download/Framecalm-Setup.exe">Download installer (.exe)</a> <a class="btn" href="https://github.com/krezio/framecalm/releases/latest/download/Framecalm-portable.zip">Portable zip</a></p>
+    <p><a class="ms-badge" href="https://apps.microsoft.com/detail/9P0ZH5T16R81" target="_blank" rel="noopener" aria-label="Get Framecalm from the Microsoft Store"><img src="../assets/ms-store-badge.svg" alt="Get it from Microsoft" width="161" height="44"></a></p>
     <h2>Which one?</h2>
     <ul>
       <li><b>Installer:</b> installs for your account only, so it doesn't need admin to install. Adds a Start menu entry and an uninstaller.</li>
+      <li><b>Microsoft Store:</b> installs and updates through the Store, with no Windows SmartScreen warning. The Store version leaves updates and starting with Windows to the Store.</li>
       <li><b>Portable:</b> unzip anywhere and run <code>Framecalm.exe</code>. Nothing is installed. Delete the folder to remove it.</li>
     </ul>
     <h2>System requirements</h2>
@@ -58,7 +60,7 @@
       <tr><th>Admin rights</th><td>Not needed to install. Windows asks once per batch when you apply machine-wide settings.</td></tr>
     </table>
     <h2>"Windows protected your PC"</h2>
-    <p>Windows SmartScreen shows this for new programs that aren't code-signed yet or haven't been downloaded many times. Click <b>More info</b>, then <b>Run anyway</b>. If you'd rather check first, the <a href="https://github.com/krezio/framecalm">full source code is on GitHub</a> and you can build it yourself.</p>
+    <p>Windows SmartScreen shows this for new programs that aren't code-signed yet or haven't been downloaded many times. Click <b>More info</b>, then <b>Run anyway</b>, or get Framecalm from the <a href="https://apps.microsoft.com/detail/9P0ZH5T16R81">Microsoft Store</a> instead, which never shows this warning. If you'd rather check first, the <a href="https://github.com/krezio/framecalm">full source code is on GitHub</a> and you can build it yourself.</p>
     <h2>Code signing</h2>
     <p>Framecalm's Windows releases are built automatically by GitHub Actions from the public source code. We've applied to the <a href="https://signpath.org">SignPath Foundation</a>'s free code signing program for open source projects. Once approved, releases will be signed with a certificate issued by SignPath Foundation, so Windows shows a verified publisher instead of "Unknown publisher".</p>
     <h2>After installing</h2>
