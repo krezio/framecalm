@@ -652,6 +652,7 @@ ${cta("../")}
 
   // ---- changelog ----
   const changes = [
+    { v: "0.6.0", d: "2026-11-22", items: ["Framecalm is now available in Russian. Settings has a language switch, and Automatic follows the Windows display language.", "The whole app is translated, including all 87 tweaks, plan reasons and game notes, with proper Russian plural forms and dates.", "The built-in font now includes Cyrillic."] },
     { v: "0.5.3", d: "2026-11-17", items: ["Updates install from inside the app: Get it downloads the new version, checks it against GitHub's checksum, installs it and reopens Framecalm.", "The update notice at the top is easier to read."] },
     { v: "0.5.2", d: "2026-11-15", items: ["The update check and download links now point to the main open source repository.", "The Microsoft Store build leaves updates and starting with Windows to the Store."] },
     { v: "0.5.1", d: "2026-11-15", items: ["Framecalm is now open source under the MIT license. Settings links to the code."] },
