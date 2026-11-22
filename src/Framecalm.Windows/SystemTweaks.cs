@@ -59,7 +59,7 @@ public sealed class DisplayTarget : IChangeTarget
             if (!EnumDisplaySettings(null, -1, ref dm)) throw new InvalidOperationException("Couldn't read the display mode.");
             dm.dmDisplayFrequency = int.Parse(v!);
             dm.dmFields = 0x400000 /*DM_DISPLAYFREQUENCY*/ | 0x80000 /*PELSWIDTH*/ | 0x100000 /*PELSHEIGHT*/;
-            if (ChangeDisplaySettingsEx(null, ref dm, IntPtr.Zero, 2 /*CDS_TEST*/, IntPtr.Zero) != 0) throw new InvalidOperationException($"This screen doesn't accept {v} Hz at the current resolution.");
+            if (ChangeDisplaySettingsEx(null, ref dm, IntPtr.Zero, 2 /*CDS_TEST*/, IntPtr.Zero) != 0) throw new InvalidOperationException(L.F("This screen doesn't accept {0} Hz at the current resolution.", v));
             if (ChangeDisplaySettingsEx(null, ref dm, IntPtr.Zero, 1 /*CDS_UPDATEREGISTRY*/, IntPtr.Zero) != 0) throw new InvalidOperationException("Windows refused the refresh rate change.");
         }
     }
@@ -185,8 +185,8 @@ public static class SystemFixes
         var list = new List<SystemFix>();
 
         if (int.TryParse(s.Display.Read("refresh"), out var hz) && s.MaxRefreshHz >= hz + 10)
-            list.Add(new("refresh", "Screen refresh rate", $"{hz} Hz", $"{s.MaxRefreshHz} Hz",
-                $"Your screen can show {s.MaxRefreshHz} frames a second but Windows is driving it at {hz}. Every game is limited to what the screen shows, so this is the biggest free upgrade on the list.",
+            list.Add(new("refresh", "Screen refresh rate", L.F("{0} Hz", hz), L.F("{0} Hz", s.MaxRefreshHz),
+                L.F("Your screen can show {0} frames a second but Windows is driving it at {1}. Every game is limited to what the screen shows, so this is the biggest free upgrade on the list.", s.MaxRefreshHz, hz),
                 "None. A laptop on battery uses slightly more power.", true, s.Display, "refresh", hz.ToString(), s.MaxRefreshHz.ToString()));
 
         if (s.Registry.Read(RecordingKey) == "dword:1")

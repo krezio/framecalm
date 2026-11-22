@@ -1,3 +1,4 @@
+using Framecalm.Core;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -37,7 +38,7 @@ public sealed class AsyncCmd(Func<object?, Task> run, Func<object?, bool>? can =
         _busy = true;
         CommandManager.InvalidateRequerySuggested();
         try { await run(p); }
-        catch (Exception ex) { MainVM.Current?.ShowToast("Something went wrong: " + ex.Message, bad: true); }
+        catch (Exception ex) { MainVM.Current?.ShowToast(L.T("Something went wrong:") + " " + L.T(ex.Message), bad: true); }
         finally { _busy = false; CommandManager.InvalidateRequerySuggested(); }
     }
 }

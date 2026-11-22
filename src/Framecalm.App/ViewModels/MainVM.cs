@@ -87,10 +87,10 @@ public sealed class MainVM : Observable
         var latest = _updateInfo.Latest;
         try
         {
-            UpdateText = "Downloading update";
-            var progress = new Progress<double>(f => UpdateText = $"Downloading update {f * 100:0}%");
+            UpdateText = L.T("Downloading update");
+            var progress = new Progress<double>(f => UpdateText = L.F("Downloading update {0:0}%", f * 100));
             var file = await Framecalm.App.Services.Updater.DownloadAsync(_updateInfo, progress);
-            UpdateText = "Installing update";
+            UpdateText = L.T("Installing update");
             await Task.Delay(400);
             Framecalm.App.Services.Updater.RunInstaller(file);
             (System.Windows.Application.Current.MainWindow as MainWindow)?.QuitForUpdate();
@@ -99,8 +99,8 @@ public sealed class MainVM : Observable
         {
             _installing = false;
             Raise(nameof(UpdateAction));
-            UpdateText = $"{latest} is out";
-            ShowToast("Couldn't install the update automatically, so the download page is opening instead. " + ex.Message, bad: true);
+            UpdateText = L.F("{0} is out", latest);
+            ShowToast(L.T("Couldn't install the update automatically, so the download page is opening instead.") + " " + L.T(ex.Message), bad: true);
             OpenUri(_updateUrl);
         }
     }
@@ -110,7 +110,7 @@ public sealed class MainVM : Observable
     {
         if (IsDemo) { if (manual) ShowToast("Demo mode: no update check."); return; }
         var r = await Framecalm.App.Services.UpdateCheck.RunAsync();
-        if (r is { Newer: true }) { _updateUrl = r.Url; _updateInfo = r; UpdateText = $"{r.Latest} is out"; if (manual) ShowToast($"Framecalm {r.Latest} is out. Press Get it at the top to install it."); }
+        if (r is { Newer: true }) { _updateUrl = r.Url; _updateInfo = r; UpdateText = L.F("{0} is out", r.Latest); if (manual) ShowToast(L.F("Framecalm {0} is out. Press Get it at the top to install it.", r.Latest)); }
         else if (manual) ShowToast(r is null ? "Couldn't reach GitHub. Check your connection and try again." : "You're on the newest version.", r is null);
     }
 
@@ -175,7 +175,7 @@ public sealed class MainVM : Observable
     public void ShowToast(string text, bool bad = false)
     {
         ToastBad = bad;
-        Toast = text;
+        Toast = L.T(text);
         _toastTimer?.Stop();
         _toastTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(bad ? 7 : 4.5) };
         _toastTimer.Tick += (_, _) => { Toast = null; _toastTimer!.Stop(); };
@@ -217,7 +217,7 @@ public sealed class MainVM : Observable
         if (S.Settings.CheckUpdates) _ = CheckForUpdateAsync();
         if (Page is DashboardVM d) d.Refresh();
         RaiseAll();
-        if (notes.Count > 0) ShowToast(string.Join(" ", notes));
+        if (notes.Count > 0) ShowToast(string.Join(" ", notes.Select(L.T)));
     }
 
     public GameVM? Find(string id) => Games.FirstOrDefault(g => g.Id == id);
@@ -267,8 +267,8 @@ public sealed class FirstRunVM(MainVM m) : Observable
         var auto = m.Games.Count(g => g.G.Support == SupportLevel.Automatic);
         List<SystemFix> fixes = [];
         try { fixes = SystemFixes.Find(m.S.PcState(m.Hw)); } catch { }
-        Found = "Your plan is ready.";
-        FoundDetail = $"{fixes.Count} PC fix{(fixes.Count == 1 ? "" : "es")} and {m.Games.Count} game{(m.Games.Count == 1 ? "" : "s")} found. Opening it now.";
+        Found = L.T("Your plan is ready.");
+        FoundDetail = L.F("{0} PC {0|fix|fixes} and {1} {1|game|games} found. Opening it now.", fixes.Count, m.Games.Count);
         Raise(nameof(Found)); Raise(nameof(FoundDetail));
         Stage = "found";
         m.S.Settings.SeenIntro = true;
@@ -295,23 +295,23 @@ public sealed class LibraryVM(MainVM m) : Observable, IRefresh
 
     public IEnumerable<GameVM> Shown => m.Games.Where(g => _filter == "all" || (_filter == "auto" ? g.G.Support == SupportLevel.Automatic : g.G.Support != SupportLevel.Automatic));
     public int Count => m.Games.Count;
-    public string CountText => m.Games.Count == 1 ? "1 game" : $"{m.Games.Count} games";
-    public string Sources => string.Join(", ", m.Games.Select(g => g.LauncherName).Distinct());
+    public string CountText => L.F("{0} {0|game|games}", m.Games.Count);
+    public string Sources => string.Join(", ", m.Games.Select(g => L.T(g.LauncherName)).Distinct());
     public List<GameVM> WrongGpu => m.Games.Where(g => g.GpuWrong).ToList();
     public string WrongGpuText => WrongGpu.Count switch
     {
         0 => "",
-        1 => $"{WrongGpu[0].Name} isn't pinned to your {m.Hw.Dedicated?.ShortName}. Windows may start it on the {m.Hw.Integrated?.ShortName}, which is far slower.",
-        var n => $"{n} games aren't pinned to your {m.Hw.Dedicated?.ShortName}. Windows may start them on the {m.Hw.Integrated?.ShortName}, which is far slower.",
+        1 => L.F("{0} isn't pinned to your {1}. Windows may start it on the {2}, which is far slower.", WrongGpu[0].Name, m.Hw.Dedicated?.ShortName, m.Hw.Integrated?.ShortName),
+        var n => L.F("{0} games aren't pinned to your {1}. Windows may start them on the {2}, which is far slower.", n, m.Hw.Dedicated?.ShortName, m.Hw.Integrated?.ShortName),
     };
     public ICommand FixAllGpuCmd => new AsyncCmd(async () => { foreach (var g in WrongGpu) await g.FixGpu(quiet: true); m.ShowToast("Done. Those games now ask for your dedicated GPU. Undo any time in History."); Refresh(); });
 
     public string CpuText => m.Hw.CpuShort;
-    public string GpuText => m.Hw.Primary?.ShortName ?? "Unknown";
-    public string VramText => m.Hw.Primary is { VramBytes: > 0 } g ? $"{g.VramBytes / (double)(1L << 30):0} GB" : "";
-    public string RamText => $"{m.Hw.RamBytes / (double)(1L << 30):0} GB";
-    public string ScreenText => $"{m.Hw.RefreshHz} Hz";
-    public string FormText => m.Hw.IsLaptop ? "Laptop" : "Desktop";
+    public string GpuText => m.Hw.Primary?.ShortName ?? L.T("Unknown");
+    public string VramText => m.Hw.Primary is { VramBytes: > 0 } g ? L.F("{0:0} GB", g.VramBytes / (double)(1L << 30)) : "";
+    public string RamText => L.F("{0:0} GB", m.Hw.RamBytes / (double)(1L << 30));
+    public string ScreenText => L.F("{0} Hz", m.Hw.RefreshHz);
+    public string FormText => L.T(m.Hw.IsLaptop ? "Laptop" : "Desktop");
 
     public void Refresh() { foreach (var g in m.Games) g.Refresh(); RaiseAll(); }
 }
@@ -350,9 +350,9 @@ public sealed class GameVM : Observable, IRefresh
     public bool IsAuto => G.Support == SupportLevel.Automatic;
     public bool IsGuided => G.Support == SupportLevel.Guided;
     public bool IsBasic => G.Support == SupportLevel.Basic;
-    public string SupportLabel => IsAuto && CanTune ? "Automatic" : IsAuto ? "In-game steps" : IsGuided ? "In-game steps" : "GPU and Session";
+    public string SupportLabel => L.T(IsAuto && CanTune ? "Automatic" : IsAuto ? "In-game steps" : IsGuided ? "In-game steps" : "GPU and Session");
     public string? AntiCheat => G.Definition?.AntiCheat;
-    public string? Notes => G.Definition?.Notes;
+    public string? Notes => G.Definition?.Notes is { } n ? L.T(n) : null;
     public bool Strict => G.Definition?.StrictAntiCheat == true;
     public ObservableCollection<GuidedStepVM> Steps { get; }
 
@@ -360,7 +360,7 @@ public sealed class GameVM : Observable, IRefresh
     public ConfigCheck? Check { get; private set; }
     public bool CanTune => IsAuto && Check?.Ok == true;
     public bool ShowSteps => Steps.Count > 0 && !CanTune;
-    public string CheckText => Check is null ? "" : Check.Ok ? $"{Path.GetFileName(G.ConfigPath)} checked{(Check.Version is { } v ? $" (format {v})" : "")}" : Check.Reason;
+    public string CheckText => Check is null ? "" : Check.Ok ? (Check.Version is { } v ? L.F("{0} checked (format {1})", Path.GetFileName(G.ConfigPath), v) : L.F("{0} checked", Path.GetFileName(G.ConfigPath))) : L.T(Check.Reason);
 
     // ---- GPU ----
     public bool Hybrid => M.Hw.IsHybrid && G.ExePath != null;
@@ -379,7 +379,7 @@ public sealed class GameVM : Observable, IRefresh
             OldLabel = GpuPreferenceTarget.Describe(now), NewLabel = M.Hw.Dedicated?.ShortName ?? "High performance GPU",
         };
         var r = await Task.Run(() => M.S.Tx.Apply(M.S.GpuPrefs, [rec]));
-        if (!quiet) M.ShowToast(r.Ok ? $"{Name} will now use your {M.Hw.Dedicated?.ShortName}. Restart the game if it's open." : r.Message, !r.Ok);
+        if (!quiet) M.ShowToast(r.Ok ? L.F("{0} will now use your {1}. Restart the game if it's open.", Name, M.Hw.Dedicated?.ShortName) : L.T(r.Message), !r.Ok);
         Refresh();
     }
 
@@ -399,6 +399,7 @@ public sealed class GameVM : Observable, IRefresh
     public string TargetLabel => $"{M.Hw.RefreshHz} FPS";
     public bool DemoData => Last?.Source == CaptureSource.Demo;
     public int AppliedCount { get; private set; }
+    public string ActiveText => L.F("{0} Framecalm {0|change is|changes are} active for this game.", AppliedCount);
 
     public string Status { get; private set; } = "";
     public string StatusKind { get; private set; } = "muted";
@@ -411,10 +412,10 @@ public sealed class GameVM : Observable, IRefresh
             var pref = M.S.GpuPrefs.Read(G.ExePath!);
             GpuWrong = pref?.Contains("GpuPreference=2") != true;
             GpuText = GpuWrong
-                ? $"Not pinned. Windows may run it on the {M.Hw.Integrated!.ShortName}."
-                : $"Runs on {M.Hw.Dedicated!.ShortName}";
+                ? L.F("Not pinned. Windows may run it on the {0}.", M.Hw.Integrated!.ShortName)
+                : L.F("Runs on {0}", M.Hw.Dedicated!.ShortName);
         }
-        else GpuText = M.Hw.Primary is { } p ? $"Runs on {p.ShortName}" : "";
+        else GpuText = M.Hw.Primary is { } p ? L.F("Runs on {0}", p.ShortName) : "";
 
         var runs = M.S.Captures(Id);
         Last = runs.LastOrDefault();
@@ -427,28 +428,28 @@ public sealed class GameVM : Observable, IRefresh
             var b = runs.Where(r => r.Label.StartsWith("before")).TakeLast(3).Average(r => r.AvgFps);
             var a = runs.Where(r => r.Label.StartsWith("after")).TakeLast(3).Average(r => r.AvgFps);
             GainFps = a - b;
-            HeroCaption = $"AVG FPS · WAS {b:0}";
+            HeroCaption = L.F("AVG FPS · WAS {0:0}", b);
         }
         else if (runs.LastOrDefault(r => r.Label == "round-0") is { } r0 && runs.LastOrDefault(r => r.Label.StartsWith("round-") && r.Label != "round-0" && r.Taken > r0.Taken) is { } rn)
         {
             GainFps = rn.AvgFps - r0.AvgFps;
             BeforeTrace = r0.Trace;
-            HeroCaption = $"AVG FPS · WAS {r0.AvgFps:0} · AUTO-TUNE";
+            HeroCaption = L.F("AVG FPS · WAS {0:0} · AUTO-TUNE", r0.AvgFps);
         }
-        else { GainFps = 0; HeroCaption = Last is null ? "" : "AVG FPS · LAST RUN"; }
+        else { GainFps = 0; HeroCaption = Last is null ? "" : L.T("AVG FPS · LAST RUN"); }
         if (Last != null && Last.GpuMs > 0)
             Bottleneck = BottleneckAnalyzer.Analyze(Enumerable.Repeat(new FrameSample(Last.FrameMs, Last.GpuMs, 0), 40).ToList(), M.Hw.RefreshHz);
 
         AppliedCount = M.S.Tx.History().Count(c => c.Scope == Id && c.Status == ChangeStatus.Applied);
         (Status, StatusKind) = this switch
         {
-            { GpuWrong: true } => ("Wrong GPU risk", "warn"),
-            { HasGain: true } => ($"+{GainFps:0} FPS {(DemoData ? "· demo" : "measured")}", "accent"),
-            { AppliedCount: > 0 } => ($"{AppliedCount} changes applied", "good"),
-            { IsAuto: true, CanTune: true } => ("Ready to tune", "muted"),
-            { IsAuto: true } => ("In-game steps", "muted"),
-            { IsGuided: true } => (Strict ? "In-game steps, strict anti-cheat" : "In-game steps", "muted"),
-            _ => ("GPU fix and Session", "muted"),
+            { GpuWrong: true } => (L.T("Wrong GPU risk"), "warn"),
+            { HasGain: true } => (L.F(DemoData ? "+{0:0} FPS · demo" : "+{0:0} FPS measured", GainFps), "accent"),
+            { AppliedCount: > 0 } => (L.F("{0} {0|change|changes} applied", AppliedCount), "good"),
+            { IsAuto: true, CanTune: true } => (L.T("Ready to tune"), "muted"),
+            { IsAuto: true } => (L.T("In-game steps"), "muted"),
+            { IsGuided: true } => (L.T(Strict ? "In-game steps, strict anti-cheat" : "In-game steps"), "muted"),
+            _ => (L.T("GPU fix and Session"), "muted"),
         };
         RaiseAll();
     }
@@ -460,7 +461,7 @@ public sealed class GameVM : Observable, IRefresh
     public ICommand UndoGameCmd => new AsyncCmd(async () =>
     {
         var ids = M.S.Tx.History().Where(c => c.Scope == Id && c.Status == ChangeStatus.Applied).Select(c => c.Id).ToList();
-        await M.HistoryPage.UndoAsync(ids, $"everything Framecalm changed for {Name}");
+        await M.HistoryPage.UndoAsync(ids, L.F("everything Framecalm changed for {0}", Name));
         Refresh();
     }, () => AppliedCount > 0);
 }
@@ -469,8 +470,8 @@ public sealed class GuidedStepVM(int n, GuidedStep s)
 {
     public string Index => n.ToString("00");
     public string Where => s.Where;
-    public string Set => s.Set;
-    public string Why => s.Why;
+    public string Set => L.T(s.Set);
+    public string Why => L.T(s.Why);
     public string LoadText => s.Load switch { Load.Cpu => "CPU", Load.Gpu => "GPU", _ => "CPU + GPU" };
 }
 

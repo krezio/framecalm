@@ -1,3 +1,4 @@
+using Framecalm.Core;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Framecalm.Windows;
@@ -40,20 +41,21 @@ public sealed class AutoOptimizeVM : Observable, IRefresh
     public bool HasTweaks => Tweaks.Count > 0;
     public bool HasSkipped => Skipped.Count > 0;
 
-    public string Machine => $"{(m.Hw.IsLaptop ? "laptop" : "desktop")} with {m.Hw.Dedicated?.ShortName ?? m.Hw.Primary?.ShortName ?? "its graphics"}";
-    public string Lede => $"Picked for this {Machine}. Every line says why. Untick anything you don't want; nothing changes until you apply.";
+    string Gfx => m.Hw.Dedicated?.ShortName ?? m.Hw.Primary?.ShortName ?? L.T("its graphics");
+    public string Lede => L.F(m.Hw.IsLaptop ? "Picked for this laptop with {0}. Every line says why. Untick anything you don't want; nothing changes until you apply."
+                                             : "Picked for this desktop with {0}. Every line says why. Untick anything you don't want; nothing changes until you apply.", Gfx);
     public int Count => Fixes.Count(r => r.Include) + Tweaks.Count(r => r.Include);
-    public string CountText => Count == 0 ? "Nothing left to do at this level" : Count == 1 ? "1 change" : $"{Count} changes";
+    public string CountText => Count == 0 ? L.T("Nothing left to do at this level") : L.F("{0} {0|change|changes}", Count);
     public string Note
     {
         get
         {
-            var notes = new List<string> { "Restore point first, everything undoable." };
-            if (Tweaks.Any(r => r.Include && r.Tweak?.Restart == true)) notes.Add("Some need a restart.");
+            var notes = new List<string> { L.T("Restore point first, everything undoable.") };
+            if (Tweaks.Any(r => r.Include && r.Tweak?.Restart == true)) notes.Add(L.T("Some need a restart."));
             return string.Join(" ", notes);
         }
     }
-    public string ApplyText => Count == 1 ? "Apply 1 change" : $"Apply {Count} changes";
+    public string ApplyText => L.F("Apply {0} {0|change|changes}", Count);
 
     bool _busy;
     public bool Busy { get => _busy; private set => Set(ref _busy, value); }
@@ -72,7 +74,7 @@ public sealed class AutoOptimizeVM : Observable, IRefresh
     {
         Fixes.Clear(); Tweaks.Clear(); Skipped.Clear();
         foreach (var f in m.HealthPage.Fixes)
-            Fixes.Add(new PlanRowVM(this, f.Title, $"{f.Now} → {f.After}. {f.Why}", null, f));
+            Fixes.Add(new PlanRowVM(this, L.T(f.Title), $"{L.T(f.Now)} → {L.T(f.After)}. {L.T(f.Why)}", null, f));
 
         var laptop = m.Hw.IsLaptop;
         var dgpu = m.Hw.Dedicated != null;
@@ -82,13 +84,15 @@ public sealed class AutoOptimizeVM : Observable, IRefresh
             string? skip = null;
             if (laptop && LaptopSkip.Contains(t.Id)) skip = "Laptop: it would cost battery life and heat for a small gain.";
             else if (t.Id == "hags-on" && !dgpu) skip = "Only helps with a dedicated graphics card.";
-            if (skip != null) { Skipped.Add(new PlanRowVM(this, t.Name, skip, t, null) { Include = false }); continue; }
-            Tweaks.Add(new PlanRowVM(this, t.Name, Reason(t, laptop), t, null));
+            if (skip != null) { Skipped.Add(new PlanRowVM(this, L.T(t.Name), L.T(skip), t, null) { Include = false }); continue; }
+            Tweaks.Add(new PlanRowVM(this, L.T(t.Name), Reason(t, laptop), t, null));
         }
         RaiseAll();
     }
 
-    static string Reason(Tweak t, bool laptop) => t.Id switch
+    static string First(string s) => L.T(s).Split(". ")[0].TrimEnd('.');
+
+    static string Reason(Tweak t, bool laptop) => L.T(t.Id switch
     {
         "usb-suspend-off" when laptop => "Laptop: stops USB mice and headsets dropping out after idle.",
         "cpu-min-100" or "core-parking-off" or "boost-aggressive" or "epp-performance" or "pcie-aspm-off" => "Desktop: power use isn't a concern, so the CPU and GPU link stay at full speed.",
@@ -97,11 +101,11 @@ public sealed class AutoOptimizeVM : Observable, IRefresh
         "hags-on" => "You have a dedicated GPU; needed for DLSS Frame Generation.",
         _ => t.Tier switch
         {
-            TweakTier.Safe => $"Safe on any PC. {t.What.Split(". ")[0].TrimEnd('.')}.",
-            TweakTier.Advanced => $"{t.What.Split(". ")[0].TrimEnd('.')}. Trade-off: {t.Tradeoff.Split(". ")[0].TrimEnd('.')}.",
-            _ => $"Extreme. {t.Tradeoff.Split(". ")[0].TrimEnd('.')}.",
+            TweakTier.Safe => L.F("Safe on any PC. {0}.", (object)First(t.What)),
+            TweakTier.Advanced => L.F("{0}. Trade-off: {1}.", First(t.What), First(t.Tradeoff)),
+            _ => L.F("Extreme. {0}.", (object)First(t.Tradeoff)),
         },
-    };
+    });
 
     internal void Changed() { Raise(nameof(Count)); Raise(nameof(CountText)); Raise(nameof(ApplyText)); Raise(nameof(Note)); }
 
@@ -111,7 +115,7 @@ public sealed class AutoOptimizeVM : Observable, IRefresh
         if (extreme.Count == 0) return Apply();
         m.Dialog = new ConfirmVM("This plan includes Extreme changes",
             "They switch off protections or features. Every one can be undone from History.",
-            extreme.Select(r => $"{r.Name}: {r.Tweak!.Tradeoff}").ToList(),
+            extreme.Select(r => $"{r.Name}: {L.T(r.Tweak!.Tradeoff)}").ToList(),
             "Apply anyway", async () => { m.Dialog = null; await Apply(); });
         return Task.CompletedTask;
     }
@@ -136,7 +140,7 @@ public sealed class AutoOptimizeVM : Observable, IRefresh
         if (m.Page is not DashboardVM) m.Go("dashboard"); else m.DashboardPage.Refresh();
         m.RaiseNav();
         if (!failed)
-            m.ShowToast($"Done: {n} change{(n == 1 ? "" : "s")} applied and verified.{(Tweaks.Any(r => r.Include && r.Tweak!.Restart) ? " Restart Windows to finish." : "")} Undo any of it in History.");
+            m.ShowToast(L.F("Done: {0} {0|change|changes} applied and verified.", n) + (Tweaks.Any(r => r.Include && r.Tweak!.Restart) ? " " + L.T("Restart Windows to finish.") : "") + " " + L.T("Undo any of it in History."));
     }
 }
 

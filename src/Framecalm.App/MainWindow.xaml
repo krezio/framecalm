@@ -109,7 +109,7 @@
                 <RadioButton Style="{StaticResource TopNav}" IsChecked="{Binding GroupOptimize}" AutomationProperties.Name="Optimize: tweaks, PC fixes and startup apps">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Optimize" />
-                        <TextBlock Text="{Binding OptimizeCount}" FontSize="12.5" FontWeight="Normal" Foreground="{StaticResource Faint}" Margin="8,1,0,0" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding OptimizeCount, Converter={StaticResource Tr}}" FontSize="12.5" FontWeight="Normal" Foreground="{StaticResource Faint}" Margin="8,1,0,0" VerticalAlignment="Center" />
                     </StackPanel>
                 </RadioButton>
                 <RadioButton Style="{StaticResource TopNav}" Content="Games" IsChecked="{Binding GroupGames}" AutomationProperties.Name="Games: library, Game Session and benchmarks" />
@@ -120,7 +120,7 @@
                 <Button Style="{StaticResource Plain}" Command="{Binding GetUpdateCmd}" Visibility="{Binding HasUpdate, Converter={StaticResource VisIf}}" VerticalAlignment="Center" Margin="0,0,18,0"
                         WindowChrome.IsHitTestVisibleInChrome="True" Cursor="Hand" ToolTip="Download and install the new version">
                     <Border Background="#2B2773" BorderBrush="{StaticResource Accent}" BorderThickness="1" CornerRadius="10" Padding="12,6">
-                        <TextBlock FontSize="12.5" FontWeight="Medium" Foreground="White"><Run Text="{Binding UpdateText, Mode=OneWay}" /><Run Text="{Binding UpdateAction, Mode=OneWay}" FontWeight="SemiBold" /></TextBlock>
+                        <TextBlock FontSize="12.5" FontWeight="Medium" Foreground="White"><Run Text="{Binding UpdateText, Mode=OneWay, Converter={StaticResource Tr}}" /><Run Text="{Binding UpdateAction, Mode=OneWay, Converter={StaticResource Tr}}" FontWeight="SemiBold" /></TextBlock>
                     </Border>
                 </Button>
                 <Border Visibility="{Binding IsDemo, Converter={StaticResource VisIf}}" BorderBrush="{StaticResource Warn}" BorderThickness="1" CornerRadius="8" Padding="10,4" VerticalAlignment="Center" Margin="0,0,18,0"
@@ -150,13 +150,13 @@
                 <RadioButton Style="{StaticResource SubTab}" GroupName="games" Content="Game Session" IsChecked="{Binding TabSession}" />
                 <RadioButton Style="{StaticResource SubTab}" GroupName="games" Content="Benchmarks" IsChecked="{Binding TabProof}" />
             </StackPanel>
-            <ContentControl x:Name="PageHost" Grid.Row="1" Content="{Binding Page}" Focusable="False" IsTabStop="False">
+            <ContentControl x:Name="PageHost" Grid.Row="1" Content="{Binding Page, Converter={StaticResource Tr}}" Focusable="False" IsTabStop="False">
                 <ContentControl.RenderTransform><TranslateTransform /></ContentControl.RenderTransform>
             </ContentControl>
         </Grid>
 
         <!-- the welcome screen fills the whole window, under the window buttons -->
-        <ContentControl Grid.RowSpan="2" Content="{Binding Page}" Focusable="False" IsTabStop="False" Visibility="{Binding ShowNav, Converter={StaticResource VisIfNot}}" />
+        <ContentControl Grid.RowSpan="2" Content="{Binding Page, Converter={StaticResource Tr}}" Focusable="False" IsTabStop="False" Visibility="{Binding ShowNav, Converter={StaticResource VisIfNot}}" />
 
         <!-- ===== toast ===== -->
         <Border x:Name="ToastBox" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,104" MaxWidth="660" Panel.ZIndex="20"
@@ -172,14 +172,14 @@
                         </Style>
                     </Rectangle.Style>
                 </Rectangle>
-                <TextBlock Text="{Binding Toast}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" MaxWidth="610" AutomationProperties.LiveSetting="Polite" />
+                <TextBlock Text="{Binding Toast, Converter={StaticResource Tr}}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" MaxWidth="610" AutomationProperties.LiveSetting="Polite" />
             </StackPanel>
         </Border>
 
         <!-- ===== dialog ===== -->
         <Grid Grid.RowSpan="2" Panel.ZIndex="30" Visibility="{Binding Dialog, Converter={StaticResource VisIf}}">
             <Rectangle Fill="#D90A0824" />
-            <ContentControl Content="{Binding Dialog}" HorizontalAlignment="Center" VerticalAlignment="Center" Focusable="False" />
+            <ContentControl Content="{Binding Dialog, Converter={StaticResource Tr}}" HorizontalAlignment="Center" VerticalAlignment="Center" Focusable="False" />
         </Grid>
 
         <!-- ===== scripted cursor (recordings only) ===== -->

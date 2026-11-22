@@ -64,7 +64,7 @@ public sealed class GameSession(string stateFile) : ISessionHost
             if (best is { } b && now != b.Id)
             {
                 s.PreviousPlan = now;
-                if (PowerPlans.Set(b.Id)) { s.SessionPlan = b.Id; log.Add($"Power plan: {b.Name}"); }
+                if (PowerPlans.Set(b.Id)) { s.SessionPlan = b.Id; log.Add(L.F("Power plan: {0}", b.Name)); }
             }
             else if (best is null) log.Add("Power plan: this PC only has Balanced. Set Power mode to Best performance in Settings.");
             else log.Add("Power plan: already on the fastest plan.");
@@ -94,7 +94,7 @@ public sealed class GameSession(string stateFile) : ISessionHost
         foreach (var app in o.CloseApps)
         {
             var n = Processes.CloseGracefully(app);
-            if (n > 0) { s.Closed.Add(app); log.Add($"Asked {app} to close"); }
+            if (n > 0) { s.Closed.Add(app); log.Add(L.F("Asked {0} to close", app)); }
         }
         Save();
         return log;
@@ -119,7 +119,7 @@ public sealed class GameSession(string stateFile) : ISessionHost
             }
             catch { /* game already closed: nothing to restore */ }
         }
-        if (s.Closed.Count > 0) log.Add($"Closed apps ({string.Join(", ", s.Closed)}) can be reopened any time; we don't restart apps for you.");
+        if (s.Closed.Count > 0) log.Add(L.F("Closed apps ({0}) can be reopened any time; we don't restart apps for you.", (object)string.Join(", ", s.Closed)));
         Active = null;
         Save();
         return log;
@@ -158,13 +158,13 @@ public static class Health
             var months = (DateTime.Now - d).TotalDays / 30.4;
             var link = gpu.Vendor switch { "NVIDIA" => "https://www.nvidia.com/Download/index.aspx", "AMD" => "https://www.amd.com/en/support/download/drivers.html", "Intel" => "https://www.intel.com/content/www/us/en/download-center/home.html", _ => null };
             list.Add(months > 6
-                ? new("driver", "Graphics driver", HealthState.Attention, $"Your {gpu.ShortName} driver is from {d:MMM yyyy}, about {months:0} months old. New games often get fixes in newer drivers.", "Get it from " + gpu.Vendor, link)
-                : new("driver", "Graphics driver", HealthState.Good, $"{gpu.ShortName} driver from {d:MMM yyyy}. Recent enough.", null, null));
+                ? new("driver", "Graphics driver", HealthState.Attention, L.F("Your {0} driver is from {1:MMM yyyy}, about {2:0} {2|month|months} old. New games often get fixes in newer drivers.", gpu.ShortName, d, months), L.F("Get it from {0}", gpu.Vendor), link)
+                : new("driver", "Graphics driver", HealthState.Good, L.F("{0} driver from {1:MMM yyyy}. Recent enough.", gpu.ShortName, d), null, null));
         }
 
         if (hw.IsHybrid)
             list.Add(new("hybrid", "Two graphics chips", HealthState.Info,
-                $"This PC has {hw.Integrated!.ShortName} and {hw.Dedicated!.ShortName}. Games sometimes start on the weaker one. Check each game's page: Framecalm can pin it to {hw.Dedicated.ShortName}.", null, null));
+                L.F("This PC has {0} and {1}. Games sometimes start on the weaker one. Check each game's page: Framecalm can pin it to {1}.", hw.Integrated!.ShortName, hw.Dedicated!.ShortName), null, null));
 
         var sys = new DriveInfo(Path.GetPathRoot(Environment.SystemDirectory)!);
         var free = (double)sys.AvailableFreeSpace / sys.TotalSize;
@@ -188,8 +188,8 @@ public static class Health
             var wifi = net.NetworkInterfaceType == NetworkInterfaceType.Wireless80211;
             var mbps = net.Speed > 0 ? net.Speed / 1_000_000 : 0;
             list.Add(wifi
-                ? new("network", "Network", HealthState.Info, $"Connected over Wi-Fi{(mbps > 0 ? $" at {mbps} Mbps" : "")}. A wired connection has steadier latency; worth trying for competitive games.", null, null)
-                : new("network", "Network", HealthState.Good, $"Connected by cable{(mbps > 0 ? $" at {mbps} Mbps" : "")}. The steadiest option for online games.", null, null));
+                ? new("network", "Network", HealthState.Info, mbps > 0 ? L.F("Connected over Wi-Fi at {0} Mbps. A wired connection has steadier latency; worth trying for competitive games.", mbps) : L.T("Connected over Wi-Fi. A wired connection has steadier latency; worth trying for competitive games."), null, null)
+                : new("network", "Network", HealthState.Good, mbps > 0 ? L.F("Connected by cable at {0} Mbps. The steadiest option for online games.", mbps) : L.T("Connected by cable. The steadiest option for online games."), null, null));
         }
         return list;
     }

@@ -113,7 +113,7 @@ public sealed class AppServices
         if (Demo != null) text = Demo.Configs.TryGetValue(g.Id, out var m) ? m.Text : null;
         else
         {
-            if (g.ConfigPath is null || !File.Exists(g.ConfigPath)) return (ConfigCheck.Fail($"Settings file not found. Start {g.Name} once so it creates it."), null);
+            if (g.ConfigPath is null || !File.Exists(g.ConfigPath)) return (ConfigCheck.Fail(L.F("Settings file not found. Start {0} once so it creates it.", g.Name)), null);
             try { text = File.ReadAllText(g.ConfigPath); }
             catch (Exception ex) { return (ConfigCheck.Fail("Couldn't read the settings file: " + ex.Message), null); }
         }
@@ -137,8 +137,8 @@ public sealed class AppServices
     static List<HealthCheck> DemoHealth(HardwareInfo hw) =>
     [
         new("thermal", "Heat", HealthState.Attention, "In your last Fortnite capture the GPU clock fell 18% after four minutes while it reached 87°C. That's thermal throttling: clear the vents and raise the back of the laptop.", null, null),
-        new("hybrid", "Two graphics chips", HealthState.Info, $"This PC has {hw.Integrated!.ShortName} and {hw.Dedicated!.ShortName}. Games sometimes start on the weaker one. Two of your games do right now.", null, null),
-        new("driver", "Graphics driver", HealthState.Attention, $"Your {hw.Dedicated.ShortName} driver is about 9 months old. New games often get fixes in newer drivers.", "Get it from NVIDIA", "https://www.nvidia.com/Download/index.aspx"),
+        new("hybrid", "Two graphics chips", HealthState.Info, L.F("This PC has {0} and {1}. Games sometimes start on the weaker one. Two of your games do right now.", hw.Integrated!.ShortName, hw.Dedicated!.ShortName), null, null),
+        new("driver", "Graphics driver", HealthState.Attention, L.F("Your {0} driver is about 9 months old. New games often get fixes in newer drivers.", hw.Dedicated.ShortName), "Get it from NVIDIA", "https://www.nvidia.com/Download/index.aspx"),
         new("recording", "Background recording", HealthState.Attention, "Windows is recording the last few minutes of every game. That costs some GPU time and disk writes.", "Open Captures settings", "ms-settings:gaming-gamedvr"),
         new("gamemode", "Game Mode", HealthState.Good, "On. It mostly stops background updates and notifications during play; don't expect extra FPS from it.", null, null),
         new("hags", "Hardware-accelerated GPU scheduling", HealthState.Info, "On. Needed for DLSS Frame Generation; otherwise the effect on FPS is small either way.", "Open Graphics settings", "ms-settings:display-advancedgraphics"),
@@ -163,13 +163,13 @@ public sealed class AppServices
     {
         if (Demo != null)
             return DemoPc.StartupApps.Select(a => new StartupRow("run:" + a.Name, a.Name, a.Publisher, Demo.Startup.Read("run:" + a.Name) != "disabled",
-                $"Uses {a.CpuAtBoot:0.0}% CPU and {a.MemMb} MB right now")).ToList();
+                L.F("Uses {0:0.0}% CPU and {1} MB right now", a.CpuAtBoot, a.MemMb))).ToList();
         var running = System.Diagnostics.Process.GetProcesses().GroupBy(p => p.ProcessName, StringComparer.OrdinalIgnoreCase)
             .ToDictionary(g => g.Key, g => g.Sum(p => { try { return p.WorkingSet64; } catch { return 0; } }), StringComparer.OrdinalIgnoreCase);
         return StartupTarget.List().Select(i =>
         {
             var exe = i.Exe is null ? null : Path.GetFileNameWithoutExtension(i.Exe);
-            var impact = exe != null && running.TryGetValue(exe, out var mem) ? $"Running now, {mem / 1e6:0} MB of memory" : "Not running right now";
+            var impact = exe != null && running.TryGetValue(exe, out var mem) ? L.F("Running now, {0:0} MB of memory", mem / 1e6) : L.T("Not running right now");
             return new StartupRow((i.FromFolder ? "folder:" : "run:") + i.Name, i.Name, i.Command, i.Enabled, impact);
         }).ToList();
     }
@@ -231,6 +231,8 @@ public sealed class Settings
     public bool SeenIntro { get; set; }
     public bool DownloadCovers { get; set; } = true;
     public int TargetFps { get; set; }
+    /// <summary>"auto" (follow Windows), "en" or "ru". Applied when Framecalm starts.</summary>
+    public string Language { get; set; } = "auto";
     public SessionOptions Session { get; set; } = new();
 
     public static Settings Load(IStateStore s)
@@ -251,7 +253,7 @@ sealed class DemoSession : ISessionHost
         Active = new SessionState { GameId = game.Id, Process = game.ProcessName ?? "" };
         var log = new List<string> { "Power plan: High performance" };
         if (o.HighPriority) log.Add("Priority: High");
-        foreach (var a in o.CloseApps) log.Add($"Asked {a} to close");
+        foreach (var a in o.CloseApps) log.Add(L.F("Asked {0} to close", a));
         return log;
     }
     public List<string> Stop() { Active = null; return ["Power plan restored", "Priority restored"]; }

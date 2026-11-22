@@ -39,7 +39,7 @@ public sealed class PresentMonRunner : IBenchmarkRunner
             progress?.Report(Math.Min(0.99, sw.Elapsed.TotalSeconds / seconds));
             await Task.Delay(200, ct);
         }
-        if (p.ExitCode != 0 || !File.Exists(csv)) throw new InvalidOperationException($"Capture didn't finish (code {p.ExitCode}). Is {processName} running?");
+        if (p.ExitCode != 0 || !File.Exists(csv)) throw new InvalidOperationException(L.F("Capture didn't finish (code {0}). Is {1} running?", p.ExitCode, processName));
         progress?.Report(1);
         return new Capture { Frames = Parse(File.ReadAllLines(csv)), Source = CaptureSource.Measured, Process = processName };
     }

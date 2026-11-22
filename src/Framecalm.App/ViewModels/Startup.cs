@@ -1,3 +1,4 @@
+using Framecalm.Core;
 using System.Collections.ObjectModel;
 using Framecalm.App.Services;
 
@@ -9,8 +10,8 @@ public sealed class StartupVM(MainVM m) : Observable, IRefresh
     public ObservableCollection<StartupRowVM> Apps => m.HealthPage.Startup;
     public int OnCount => Apps.Count(a => a.Enabled);
     public string Summary => Apps.Count == 0
-        ? "No startup apps for your account. Apps installed for all users can be managed in Task Manager."
-        : $"{OnCount} of {Apps.Count} start with Windows. Fewer means a faster sign-in and less running in the background while you play.";
+        ? L.T("No startup apps for your account. Apps installed for all users can be managed in Task Manager.")
+        : L.F("{0} of {1} start with Windows. Fewer means a faster sign-in and less running in the background while you play.", OnCount, Apps.Count);
     public bool HasApps => Apps.Count > 0;
 
     bool _demoLaunch;

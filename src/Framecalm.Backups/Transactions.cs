@@ -118,7 +118,7 @@ public sealed class ConfigFileTarget(string path, IConfigAdapter adapter, GameDe
         var enc = utf16 ? Encoding.Unicode : new UTF8Encoding(bom);
         var text = enc.GetString(raw, utf16 ? 2 : bom ? 3 : 0, raw.Length - (utf16 ? 2 : bom ? 3 : 0));
         var check = adapter.Check(text, def);
-        if (!check.Ok) throw new InvalidOperationException($"Config changed into an unknown format ({check.Reason}). Nothing was written.");
+        if (!check.Ok) throw new InvalidOperationException(L.F("Config changed into an unknown format ({0}). Nothing was written.", check.Reason));
         foreach (var (k, v) in values) text = adapter.Set(text, Def(k), v ?? throw new InvalidOperationException("Config values can't be removed."));
         var body = enc.GetBytes(text);
         var pre = enc.GetPreamble();
@@ -200,7 +200,7 @@ public sealed class TransactionManager(IStateStore store, Func<Journal, IChangeT
             {
                 var now = target.Read(c.Key);
                 if (!Same(now, c.Old))
-                    return new(false, $"{c.Label} changed since we looked ({c.OldLabel} → now {now ?? "missing"}). Nothing was changed; review again.", []);
+                    return new(false, L.F("{0} changed since we looked ({1} → now {2}). Nothing was changed; review again.", c.Label, c.OldLabel, now ?? "missing"), []);
             }
             SaveJournal(j);
 
@@ -212,7 +212,7 @@ public sealed class TransactionManager(IStateStore store, Func<Journal, IChangeT
             catch (Exception ex)
             {
                 Rollback(j, target);
-                return new(false, $"Couldn't write the changes ({ex.Message}). Your original is back in place.", []);
+                return new(false, L.F("Couldn't write the changes ({0}). Your original is back in place.", ex.Message), []);
             }
 
             progress?.Report(ApplyStep.Verifying);
@@ -220,7 +220,7 @@ public sealed class TransactionManager(IStateStore store, Func<Journal, IChangeT
             if (bad.Count > 0)
             {
                 Rollback(j, target);
-                return new(false, $"{bad[0].Label} didn't read back as {bad[0].NewLabel}, so everything was put back the way it was.", []);
+                return new(false, L.F("{0} didn't read back as {1}, so everything was put back the way it was.", bad[0].Label, bad[0].NewLabel), []);
             }
 
             if (target.IsFile) j.WrittenHash = AtomicFile.HashFile(target.Path);
@@ -230,7 +230,7 @@ public sealed class TransactionManager(IStateStore store, Func<Journal, IChangeT
             h.AddRange(changes);
             SaveHistory(h);
             progress?.Report(ApplyStep.Done);
-            return new(true, $"{changes.Count} change{(changes.Count == 1 ? "" : "s")} applied and verified.", changes);
+            return new(true, L.F("{0} {0|change|changes} applied and verified.", changes.Count), changes);
         }
     }
 
@@ -259,7 +259,7 @@ public sealed class TransactionManager(IStateStore store, Func<Journal, IChangeT
                 catch { continue; }
                 if (j is null || j.State != "pending") continue;
                 var target = resolve(j);
-                if (target is null) { notes.Add($"Couldn't recover {j.Target}: its game is no longer installed."); continue; }
+                if (target is null) { notes.Add(L.F("Couldn't recover {0}: its game is no longer installed.", j.Target)); continue; }
                 if (target.IsFile && j.BackupName != null)
                 {
                     var now = AtomicFile.HashFile(target.Path);
@@ -271,7 +271,7 @@ public sealed class TransactionManager(IStateStore store, Func<Journal, IChangeT
                 }
                 j.State = "rolledback";
                 SaveJournal(j);
-                notes.Add($"An unfinished change to {Path.GetFileName(j.Target)} was rolled back.");
+                notes.Add(L.F("An unfinished change to {0} was rolled back.", Path.GetFileName(j.Target)));
             }
         }
         return notes;
@@ -293,14 +293,14 @@ public sealed class TransactionManager(IStateStore store, Func<Journal, IChangeT
             {
                 var any = group.First();
                 var target = resolve(new Journal { Kind = any.Kind, Target = any.Target, Changes = group.ToList() });
-                if (target is null) { errors.Add($"{any.ScopeName}: target not found any more."); continue; }
+                if (target is null) { errors.Add(L.F("{0}: target not found any more.", any.ScopeName)); continue; }
                 var writes = new List<ChangeRecord>();
                 foreach (var c in group)
                 {
                     if (keep?.Contains(c.Id) == true) { c.Status = ChangeStatus.Kept; continue; }
                     string? now;
                     try { now = target.Read(c.Key); }
-                    catch (Exception ex) { errors.Add($"{c.Label}: {ex.Message}"); continue; }
+                    catch (Exception ex) { errors.Add($"{L.T(c.Label)}: {L.T(ex.Message)}"); continue; }
                     if (Same(now, c.Old)) { c.Status = ChangeStatus.Undone; c.UndoneAt = DateTime.Now; undone++; continue; }
                     if (Same(now, c.New) || force?.Contains(c.Id) == true) writes.Add(c);
                     else conflicts.Add(new Conflict(c, now));

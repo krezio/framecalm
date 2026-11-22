@@ -38,7 +38,7 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="ListBoxItem">
                                 <Border x:Name="b" BorderBrush="{StaticResource Line2}" BorderThickness="1" CornerRadius="14" Padding="14,7" Background="Transparent">
-                                    <TextBlock x:Name="t" Text="{Binding Name}" FontSize="13" Foreground="{StaticResource Muted}" />
+                                    <TextBlock x:Name="t" Text="{Binding Name, Converter={StaticResource Tr}}" FontSize="13" Foreground="{StaticResource Muted}" />
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="b" Property="Background" Value="{StaticResource Hover}" /></Trigger>
@@ -60,14 +60,14 @@
         <Grid Margin="0,0,0,14">
             <Grid.ColumnDefinitions><ColumnDefinition Width="34" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
             <Border x:Name="dot" Width="22" Height="22" CornerRadius="14" BorderThickness="1.5" BorderBrush="{StaticResource Line2}" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <TextBlock x:Name="g" Text="{Binding Glyph}" Style="{StaticResource Icon}" FontSize="11" HorizontalAlignment="Center" Foreground="{StaticResource Ink}" />
+                <TextBlock x:Name="g" Text="{Binding Glyph, Converter={StaticResource Tr}}" Style="{StaticResource Icon}" FontSize="11" HorizontalAlignment="Center" Foreground="{StaticResource Ink}" />
             </Border>
             <StackPanel Grid.Column="1">
-                <TextBlock x:Name="title" Text="{Binding Title}" Style="{StaticResource Strong}" Foreground="{StaticResource Faint}" />
-                <TextBlock Text="{Binding Detail}" Style="{StaticResource Body}" FontSize="12.5" Visibility="{Binding Detail, Converter={StaticResource VisIf}}" />
+                <TextBlock x:Name="title" Text="{Binding Title, Converter={StaticResource Tr}}" Style="{StaticResource Strong}" Foreground="{StaticResource Faint}" />
+                <TextBlock Text="{Binding Detail, Converter={StaticResource Tr}}" Style="{StaticResource Body}" FontSize="12.5" Visibility="{Binding Detail, Converter={StaticResource VisIf}}" />
                 <ProgressBar Style="{StaticResource Bar}" Value="{Binding Progress}" Margin="0,8,0,0" Width="260" HorizontalAlignment="Left" x:Name="pb" Visibility="Collapsed" />
             </StackPanel>
-            <TextBlock Grid.Column="2" Text="{Binding StateText}" Style="{StaticResource Label}" x:Name="st" VerticalAlignment="Top" Margin="0,3,0,0" />
+            <TextBlock Grid.Column="2" Text="{Binding StateText, Converter={StaticResource Tr}}" Style="{StaticResource Label}" x:Name="st" VerticalAlignment="Top" Margin="0,3,0,0" />
         </Grid>
         <DataTemplate.Triggers>
             <DataTrigger Binding="{Binding State}" Value="run">
@@ -102,10 +102,10 @@
         <Border BorderBrush="{StaticResource Accent}" BorderThickness="0" CornerRadius="14" Background="{StaticResource Surface}" Padding="24,20" Margin="0,0,0,24">
             <StackPanel>
                 <TextBlock Text="Waiting for you" Style="{StaticResource LabelAccent}" />
-                <TextBlock Text="{Binding PromptTitle}" Style="{StaticResource H2}" Margin="0,6,0,6" />
-                <TextBlock Text="{Binding PromptBody}" Style="{StaticResource Body}" MaxWidth="560" HorizontalAlignment="Left" />
+                <TextBlock Text="{Binding PromptTitle, Converter={StaticResource Tr}}" Style="{StaticResource H2}" Margin="0,6,0,6" />
+                <TextBlock Text="{Binding PromptBody, Converter={StaticResource Tr}}" Style="{StaticResource Body}" MaxWidth="560" HorizontalAlignment="Left" />
                 <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
-                    <Button Style="{StaticResource Primary}" Content="{Binding PromptButton}" Command="{Binding ContinueCmd}" />
+                    <Button Style="{StaticResource Primary}" Content="{Binding PromptButton, Converter={StaticResource Tr}}" Command="{Binding ContinueCmd}" />
                     <Button Style="{StaticResource Ghost}" Content="Stop" Command="{Binding CancelCmd}" Margin="10,0,0,0" />
                 </StackPanel>
             </StackPanel>
@@ -165,8 +165,8 @@
 
                 <!-- found -->
                 <StackPanel Margin="0,22,0,0" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=found}">
-                    <TextBlock Text="{Binding Found}" FontFamily="{StaticResource UiDisplay}" FontSize="26" Foreground="{StaticResource Accent}" TextAlignment="Center" />
-                    <TextBlock Text="{Binding FoundDetail}" Style="{StaticResource Body}" FontSize="15" TextAlignment="Center" Margin="0,8,0,0" />
+                    <TextBlock Text="{Binding Found, Converter={StaticResource Tr}}" FontFamily="{StaticResource UiDisplay}" FontSize="26" Foreground="{StaticResource Accent}" TextAlignment="Center" />
+                    <TextBlock Text="{Binding FoundDetail, Converter={StaticResource Tr}}" Style="{StaticResource Body}" FontSize="15" TextAlignment="Center" Margin="0,8,0,0" />
                 </StackPanel>
             </StackPanel>
         </Grid>
@@ -174,7 +174,7 @@
 
     <!-- ===================== LIBRARY ===================== -->
     <DataTemplate x:Key="Tile" DataType="{x:Type vm:GameVM}">
-        <Button Style="{StaticResource Plain}" Command="{Binding OpenCmd}" Margin="0,0,16,26" AutomationProperties.Name="{Binding Name}" ToolTip="{Binding Status}" RenderTransformOrigin="0.5,0.5" x:Name="tile">
+        <Button Style="{StaticResource Plain}" Command="{Binding OpenCmd}" Margin="0,0,16,26" AutomationProperties.Name="{Binding Name}" ToolTip="{Binding Status, Converter={StaticResource Tr}}" RenderTransformOrigin="0.5,0.5" x:Name="tile">
             <Button.RenderTransform><ScaleTransform /></Button.RenderTransform>
             <StackPanel Width="184">
                 <Grid Height="276">
@@ -183,8 +183,8 @@
                     </Border>
                     <Border CornerRadius="14" x:Name="ring" BorderBrush="{StaticResource Accent}" BorderThickness="0" />
                 </Grid>
-                <TextBlock Text="{Binding Name}" Style="{StaticResource Strong}" Margin="0,11,0,2" TextTrimming="CharacterEllipsis" />
-                <TextBlock Text="{Binding Status}" x:Name="status" Style="{StaticResource Body}" FontSize="12.5" LineHeight="17" Foreground="{StaticResource Faint}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+                <TextBlock Text="{Binding Name, Converter={StaticResource Tr}}" Style="{StaticResource Strong}" Margin="0,11,0,2" TextTrimming="CharacterEllipsis" />
+                <TextBlock Text="{Binding Status, Converter={StaticResource Tr}}" x:Name="status" Style="{StaticResource Body}" FontSize="12.5" LineHeight="17" Foreground="{StaticResource Faint}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
             </StackPanel>
         </Button>
         <DataTemplate.Triggers>
@@ -215,16 +215,16 @@
                 <Grid>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="{Binding CountText}" Style="{StaticResource Big}" FontSize="44" Margin="0,2,0,2" />
-                        <TextBlock Style="{StaticResource Body}" Visibility="{Binding Count, Converter={StaticResource VisIf}}"><Run Text="From " /><Run Text="{Binding Sources, Mode=OneWay}" /><Run Text="." /></TextBlock>
+                        <TextBlock Text="{Binding CountText, Converter={StaticResource Tr}}" Style="{StaticResource Big}" FontSize="44" Margin="0,2,0,2" />
+                        <TextBlock Style="{StaticResource Body}" Visibility="{Binding Count, Converter={StaticResource VisIf}}"><Run Text="From " /><Run Text="{Binding Sources, Mode=OneWay, Converter={StaticResource Tr}}" /><Run Text="." /></TextBlock>
                     </StackPanel>
                     <!-- spec readout -->
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,0,0,4">
-                        <StackPanel Margin="0,0,30,0"><TextBlock Text="Graphics" Style="{StaticResource Label}" /><TextBlock Text="{Binding GpuText}" Style="{StaticResource Mid}" /></StackPanel>
-                        <StackPanel Margin="0,0,30,0"><TextBlock Text="Video memory" Style="{StaticResource Label}" /><TextBlock Text="{Binding VramText}" Style="{StaticResource Mid}" /></StackPanel>
-                        <StackPanel Margin="0,0,30,0"><TextBlock Text="Processor" Style="{StaticResource Label}" /><TextBlock Text="{Binding CpuText}" Style="{StaticResource Mid}" /></StackPanel>
-                        <StackPanel Margin="0,0,30,0"><TextBlock Text="Memory" Style="{StaticResource Label}" /><TextBlock Text="{Binding RamText}" Style="{StaticResource Mid}" /></StackPanel>
-                        <StackPanel><TextBlock Text="Screen" Style="{StaticResource Label}" /><TextBlock Text="{Binding ScreenText}" Style="{StaticResource Mid}" /></StackPanel>
+                        <StackPanel Margin="0,0,30,0"><TextBlock Text="Graphics" Style="{StaticResource Label}" /><TextBlock Text="{Binding GpuText, Converter={StaticResource Tr}}" Style="{StaticResource Mid}" /></StackPanel>
+                        <StackPanel Margin="0,0,30,0"><TextBlock Text="Video memory" Style="{StaticResource Label}" /><TextBlock Text="{Binding VramText, Converter={StaticResource Tr}}" Style="{StaticResource Mid}" /></StackPanel>
+                        <StackPanel Margin="0,0,30,0"><TextBlock Text="Processor" Style="{StaticResource Label}" /><TextBlock Text="{Binding CpuText, Converter={StaticResource Tr}}" Style="{StaticResource Mid}" /></StackPanel>
+                        <StackPanel Margin="0,0,30,0"><TextBlock Text="Memory" Style="{StaticResource Label}" /><TextBlock Text="{Binding RamText, Converter={StaticResource Tr}}" Style="{StaticResource Mid}" /></StackPanel>
+                        <StackPanel><TextBlock Text="Screen" Style="{StaticResource Label}" /><TextBlock Text="{Binding ScreenText, Converter={StaticResource Tr}}" Style="{StaticResource Mid}" /></StackPanel>
                     </StackPanel>
                 </Grid>
 
@@ -235,10 +235,10 @@
                         <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
                         <StackPanel VerticalAlignment="Center">
                             <TextBlock Text="Wrong GPU risk" Style="{StaticResource Label}" Foreground="{StaticResource Warn}" />
-                            <TextBlock Text="{Binding WrongGpuText}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" Margin="0,3,24,0" />
+                            <TextBlock Text="{Binding WrongGpuText, Converter={StaticResource Tr}}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" Margin="0,3,24,0" />
                         </StackPanel>
                         <Button Grid.Column="1" Style="{StaticResource Primary}" Command="{Binding FixAllGpuCmd}" VerticalAlignment="Center">
-                            <TextBlock><Run Text="Pin to " /><Run Text="{Binding GpuText, Mode=OneWay}" /></TextBlock>
+                            <TextBlock><Run Text="Pin to " /><Run Text="{Binding GpuText, Mode=OneWay, Converter={StaticResource Tr}}" /></TextBlock>
                         </Button>
                     </Grid>
                 </Border>
@@ -294,15 +294,15 @@
                         <Border.Background><ImageBrush ImageSource="{Binding Art}" Stretch="UniformToFill" AlignmentY="Top" /></Border.Background>
                     </Border>
                     <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,12,0,0">
-                    <TextBlock Text="{Binding Name}" Style="{StaticResource H1}" Margin="0,0,0,4" />
+                    <TextBlock Text="{Binding Name, Converter={StaticResource Tr}}" Style="{StaticResource H1}" Margin="0,0,0,4" />
                     <TextBlock Style="{StaticResource Label}">
-                        <Run Text="{Binding SupportLabel, Mode=OneWay}" Foreground="{StaticResource Accent}" /><Run Text="   ·   " /><Run Text="{Binding LauncherName, Mode=OneWay}" /><Run Text="   ·   " /><Run Text="{Binding GpuText, Mode=OneWay}" />
+                        <Run Text="{Binding SupportLabel, Mode=OneWay, Converter={StaticResource Tr}}" Foreground="{StaticResource Accent}" /><Run Text="   ·   " /><Run Text="{Binding LauncherName, Mode=OneWay, Converter={StaticResource Tr}}" /><Run Text="   ·   " /><Run Text="{Binding GpuText, Mode=OneWay, Converter={StaticResource Tr}}" />
                     </TextBlock>
 
                     <StackPanel Orientation="Horizontal" Margin="0,14,0,0" Visibility="{Binding HasRuns, Converter={StaticResource VisIf}}">
                         <c:CountUp Value="{Binding HeroFps}" Style="{StaticResource Mega}" Margin="-4,0,0,0" />
                         <StackPanel VerticalAlignment="Bottom" Margin="14,0,0,16">
-                            <TextBlock Text="{Binding HeroCaption}" Style="{StaticResource Label}" Foreground="{StaticResource Muted}" />
+                            <TextBlock Text="{Binding HeroCaption, Converter={StaticResource Tr}}" Style="{StaticResource Label}" Foreground="{StaticResource Muted}" />
                             <TextBlock Style="{StaticResource Big}" Foreground="{StaticResource Accent}" Visibility="{Binding HasGain, Converter={StaticResource VisIf}}">
                                 <Run Text="+" /><Run Text="{Binding GainFps, Mode=OneWay, StringFormat=0}" />
                             </TextBlock>
@@ -346,11 +346,11 @@
                             <TextBlock Style="{StaticResource Body}" MaxWidth="560" HorizontalAlignment="Left" Text="Pick how far to push it, or name an FPS and let auto-tune find the cheapest way there. Nothing gets heavier, and your resolution, sensitivity, keybinds and audio are left alone." />
                             <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
                                 <Button Style="{StaticResource Primary}" Command="{Binding AutoTuneCmd}">
-                                    <TextBlock><Run Text="Auto-tune to " /><Run Text="{Binding M.Hw.RefreshHz, Mode=OneWay}" /><Run Text=" FPS" /></TextBlock>
+                                    <TextBlock><Run Text="Auto-tune to " /><Run Text="{Binding M.Hw.RefreshHz, Mode=OneWay, Converter={StaticResource Tr}}" /><Run Text=" FPS" /></TextBlock>
                                 </Button>
                                 <Button Style="{StaticResource Ghost}" Content="Choose a profile" Command="{Binding TuneCmd}" Margin="10,0,0,0" />
                             </StackPanel>
-                            <TextBlock Text="{Binding CheckText}" Style="{StaticResource Label}" Margin="0,12,0,0" />
+                            <TextBlock Text="{Binding CheckText, Converter={StaticResource Tr}}" Style="{StaticResource Label}" Margin="0,12,0,0" />
                         </StackPanel>
 
                         <!-- automatic game whose file we can't safely read: fail closed -->
@@ -359,7 +359,7 @@
                                     Visibility="{Binding CanTune, Converter={StaticResource VisIfNot}}">
                                 <StackPanel>
                                     <TextBlock Text="In-game steps" Style="{StaticResource Label}" Foreground="{StaticResource Warn}" />
-                                    <TextBlock Style="{StaticResource Body}" Foreground="{StaticResource Text}"><Run Text="{Binding CheckText, Mode=OneWay}" /><Run Text=" Framecalm only edits settings files it has been tested against, so it won't touch this one. The biggest levers are below; change them in the game." /></TextBlock>
+                                    <TextBlock Style="{StaticResource Body}" Foreground="{StaticResource Text}"><Run Text="{Binding CheckText, Mode=OneWay, Converter={StaticResource Tr}}" /><Run Text=" Framecalm only edits settings files it has been tested against, so it won't touch this one. The biggest levers are below; change them in the game." /></TextBlock>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
@@ -370,20 +370,20 @@
                                 <Style TargetType="StackPanel"><Style.Triggers><DataTrigger Binding="{Binding CanTune}" Value="True"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style>
                             </StackPanel.Style>
                             <TextBlock Text="Exact steps in the game" Style="{StaticResource Label}" />
-                            <TextBlock Style="{StaticResource Body}" Margin="0,4,0,12" MaxWidth="600" HorizontalAlignment="Left" Text="{Binding Notes}" Visibility="{Binding Notes, Converter={StaticResource VisIf}}" />
+                            <TextBlock Style="{StaticResource Body}" Margin="0,4,0,12" MaxWidth="600" HorizontalAlignment="Left" Text="{Binding Notes, Converter={StaticResource Tr}}" Visibility="{Binding Notes, Converter={StaticResource VisIf}}" />
                             <ItemsControl ItemsSource="{Binding Steps}" Focusable="False">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Grid Margin="0,0,0,0">
                                             <Grid.ColumnDefinitions><ColumnDefinition Width="40" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
                                             <Border Grid.ColumnSpan="3" Style="{StaticResource Rule}" VerticalAlignment="Top" />
-                                            <TextBlock Text="{Binding Index}" Style="{StaticResource Label}" Margin="0,14,0,0" />
+                                            <TextBlock Text="{Binding Index, Converter={StaticResource Tr}}" Style="{StaticResource Label}" Margin="0,14,0,0" />
                                             <StackPanel Grid.Column="1" Margin="0,12,16,12">
-                                                <TextBlock Text="{Binding Where}" Style="{StaticResource Strong}" TextWrapping="Wrap" />
-                                                <TextBlock Style="{StaticResource Value}" Margin="0,3,0,3" Foreground="{StaticResource Accent}" TextWrapping="Wrap"><Run Text="→ " /><Run Text="{Binding Set, Mode=OneWay}" /></TextBlock>
-                                                <TextBlock Text="{Binding Why}" Style="{StaticResource Body}" FontSize="12.5" />
+                                                <TextBlock Text="{Binding Where, Converter={StaticResource Tr}}" Style="{StaticResource Strong}" TextWrapping="Wrap" />
+                                                <TextBlock Style="{StaticResource Value}" Margin="0,3,0,3" Foreground="{StaticResource Accent}" TextWrapping="Wrap"><Run Text="→ " /><Run Text="{Binding Set, Mode=OneWay, Converter={StaticResource Tr}}" /></TextBlock>
+                                                <TextBlock Text="{Binding Why, Converter={StaticResource Tr}}" Style="{StaticResource Body}" FontSize="12.5" />
                                             </StackPanel>
-                                            <TextBlock Grid.Column="2" Text="{Binding LoadText}" Style="{StaticResource Label}" Margin="0,14,0,0" />
+                                            <TextBlock Grid.Column="2" Text="{Binding LoadText, Converter={StaticResource Tr}}" Style="{StaticResource Label}" Margin="0,14,0,0" />
                                         </Grid>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
@@ -403,7 +403,7 @@
                             <Border Grid.ColumnSpan="2" Style="{StaticResource Rule}" VerticalAlignment="Top" />
                             <StackPanel Margin="0,16,0,0">
                                 <TextBlock Text="Graphics chip" Style="{StaticResource Label}" />
-                                <TextBlock Text="{Binding GpuText}" Style="{StaticResource Strong}" Margin="0,4,0,2" x:Name="gpuText" />
+                                <TextBlock Text="{Binding GpuText, Converter={StaticResource Tr}}" Style="{StaticResource Strong}" Margin="0,4,0,2" x:Name="gpuText" />
                                 <TextBlock Style="{StaticResource Body}" FontSize="12.5" Text="Uses the same per-game setting as Settings > Display > Graphics. Undo any time." />
                             </StackPanel>
                             <Button Grid.Column="1" Style="{StaticResource Primary}" Content="Pin to fast GPU" Command="{Binding FixGpuCmd}" VerticalAlignment="Center" Margin="0,16,0,0"
@@ -414,7 +414,7 @@
                         <Grid Margin="0,22,0,0" Visibility="{Binding AppliedCount, Converter={StaticResource VisIf}}">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
                             <Border Grid.ColumnSpan="2" Style="{StaticResource Rule}" VerticalAlignment="Top" />
-                            <TextBlock Style="{StaticResource Body}" Margin="0,16,0,0" Foreground="{StaticResource Text}"><Run Text="{Binding AppliedCount, Mode=OneWay}" /><Run Text=" Framecalm changes are active for this game." /></TextBlock>
+                            <TextBlock Style="{StaticResource Body}" Margin="0,16,0,0" Foreground="{StaticResource Text}"><Run Text="{Binding ActiveText, Mode=OneWay}" /></TextBlock>
                             <Button Grid.Column="1" Style="{StaticResource Link}" Content="Undo all for this game" Command="{Binding UndoGameCmd}" Margin="0,16,0,0" />
                         </Grid>
                     </StackPanel>
@@ -425,13 +425,13 @@
                     <StackPanel Margin="28,22,32,20">
                         <TextBlock Text="What limits this game" Style="{StaticResource Label}" />
                         <StackPanel Visibility="{Binding Bottleneck, Converter={StaticResource VisIf}}" Margin="0,8,0,0">
-                            <TextBlock Text="{Binding Bottleneck.Headline}" Style="{StaticResource Strong}" FontSize="16" />
+                            <TextBlock Text="{Binding Bottleneck.Headline, Converter={StaticResource Tr}}" Style="{StaticResource Strong}" FontSize="16" />
                             <c:SplitBar FrameMs="{Binding Bottleneck.FrameMs}" GpuMs="{Binding Bottleneck.GpuMs}" Height="10" Margin="0,12,0,6" AutomationProperties.Name="GPU busy share of each frame" />
                             <Grid>
                                 <TextBlock Style="{StaticResource Label}"><Run Text="GPU BUSY " /><Run Text="{Binding Bottleneck.GpuBusyShare, Mode=OneWay, StringFormat=P0}" Foreground="{StaticResource Accent}" /></TextBlock>
                                 <TextBlock Style="{StaticResource Label}" HorizontalAlignment="Right" Text="HATCHED = WAITING ON CPU" />
                             </Grid>
-                            <TextBlock Text="{Binding Bottleneck.Detail}" Style="{StaticResource Body}" Margin="0,10,0,0" />
+                            <TextBlock Text="{Binding Bottleneck.Detail, Converter={StaticResource Tr}}" Style="{StaticResource Body}" Margin="0,10,0,0" />
                         </StackPanel>
                         <StackPanel Visibility="{Binding Bottleneck, Converter={StaticResource VisIfNot}}" Margin="0,8,0,0">
                             <TextBlock Style="{StaticResource Body}" Text="Measure once and Framecalm tells you whether your processor or graphics card is the limit here, and which settings actually matter for you." />
@@ -445,7 +445,7 @@
                         <StackPanel Visibility="{Binding AntiCheat, Converter={StaticResource VisIf}}">
                             <Border Style="{StaticResource Rule}" Margin="0,18,0,16" />
                             <TextBlock Text="Anti-cheat" Style="{StaticResource Label}" />
-                            <TextBlock Style="{StaticResource Body}" Margin="0,4,0,0"><Run Text="{Binding AntiCheat, Mode=OneWay}" /><Run Text=". Framecalm never touches the game's files, memory, launch options or anti-cheat. At most it edits the settings file the game itself writes." /></TextBlock>
+                            <TextBlock Style="{StaticResource Body}" Margin="0,4,0,0"><Run Text="{Binding AntiCheat, Mode=OneWay, Converter={StaticResource Tr}}" /><Run Text=". Framecalm never touches the game's files, memory, launch options or anti-cheat. At most it edits the settings file the game itself writes." /></TextBlock>
                         </StackPanel>
                     </StackPanel>
                 </Border>
@@ -459,10 +459,10 @@
             <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
             <StackPanel>
                 <Button Style="{StaticResource Link}" Command="{Binding DataContext.BackCmd, RelativeSource={RelativeSource AncestorType=Window}}" HorizontalAlignment="Left">
-                    <TextBlock Style="{StaticResource Label}" Foreground="{StaticResource Muted}"><Run Text="←  " /><Run Text="{Binding Game.Name, Mode=OneWay}" /></TextBlock>
+                    <TextBlock Style="{StaticResource Label}" Foreground="{StaticResource Muted}"><Run Text="←  " /><Run Text="{Binding Game.Name, Mode=OneWay, Converter={StaticResource Tr}}" /></TextBlock>
                 </Button>
                 <Grid Margin="0,10,0,0">
-                    <StackPanel Orientation="Horizontal"><Border Width="40" Height="60" CornerRadius="14" Margin="0,0,16,0" VerticalAlignment="Center"><Border.Background><ImageBrush ImageSource="{Binding Game.Art}" Stretch="UniformToFill" /></Border.Background></Border><TextBlock Style="{StaticResource H1}" VerticalAlignment="Center"><Run Text="Tune " /><Run Text="{Binding Game.Name, Mode=OneWay}" /></TextBlock></StackPanel>
+                    <StackPanel Orientation="Horizontal"><Border Width="40" Height="60" CornerRadius="14" Margin="0,0,16,0" VerticalAlignment="Center"><Border.Background><ImageBrush ImageSource="{Binding Game.Art}" Stretch="UniformToFill" /></Border.Background></Border><TextBlock Style="{StaticResource H1}" VerticalAlignment="Center"><Run Text="Tune " /><Run Text="{Binding Game.Name, Mode=OneWay, Converter={StaticResource Tr}}" /></TextBlock></StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Height="34" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=pick}">
                         <RadioButton Style="{StaticResource Nav}" Content="To a target FPS" IsChecked="{Binding ModeTarget}" />
                         <RadioButton Style="{StaticResource Nav}" Content="By profile" IsChecked="{Binding ModeProfile}" Margin="0" />
@@ -491,21 +491,21 @@
                                         <Rectangle Width="16" Height="5" Margin="0,0,3,0"><Rectangle.Style><Style TargetType="Rectangle"><Setter Property="Fill" Value="{StaticResource Line2}" /><Style.Triggers><DataTrigger Binding="{Binding L3}" Value="True"><Setter Property="Fill" Value="{StaticResource Accent}" /></DataTrigger></Style.Triggers></Style></Rectangle.Style></Rectangle>
                                         <Rectangle Width="16" Height="5"><Rectangle.Style><Style TargetType="Rectangle"><Setter Property="Fill" Value="{StaticResource Line2}" /><Style.Triggers><DataTrigger Binding="{Binding L4}" Value="True"><Setter Property="Fill" Value="{StaticResource Accent}" /></DataTrigger></Style.Triggers></Style></Rectangle.Style></Rectangle>
                                     </StackPanel>
-                                    <TextBlock Text="{Binding Name}" Style="{StaticResource Mid}" FontSize="26" />
-                                    <TextBlock Text="{Binding Blurb}" Style="{StaticResource Body}" FontSize="13" Margin="0,6,0,0" Height="58" />
+                                    <TextBlock Text="{Binding Name, Converter={StaticResource Tr}}" Style="{StaticResource Mid}" FontSize="26" />
+                                    <TextBlock Text="{Binding Blurb, Converter={StaticResource Tr}}" Style="{StaticResource Body}" FontSize="13" Margin="0,6,0,0" Height="58" />
                                     <Border Style="{StaticResource Rule}" Margin="0,8,0,10" />
-                                    <TextBlock Text="{Binding CountText}" Style="{StaticResource Strong}" FontSize="13" TextWrapping="Wrap" Margin="0,0,0,8" />
+                                    <TextBlock Text="{Binding CountText, Converter={StaticResource Tr}}" Style="{StaticResource Strong}" FontSize="13" TextWrapping="Wrap" Margin="0,0,0,8" />
                                     <ItemsControl ItemsSource="{Binding Preview}" Focusable="False">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel Margin="0,0,0,7">
-                                                    <TextBlock Text="{Binding Label}" Style="{StaticResource Body}" FontSize="12.5" Foreground="{StaticResource Text}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
-                                                    <TextBlock FontFamily="{StaticResource Tech}" FontSize="12.5" TextTrimming="CharacterEllipsis"><Run Text="{Binding Old, Mode=OneWay}" Foreground="{StaticResource Faint}" /><Run Text="  →  " Foreground="{StaticResource Faint}" /><Run Text="{Binding New, Mode=OneWay}" Foreground="{StaticResource Accent}" /></TextBlock>
+                                                    <TextBlock Text="{Binding Label, Converter={StaticResource Tr}}" Style="{StaticResource Body}" FontSize="12.5" Foreground="{StaticResource Text}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
+                                                    <TextBlock FontFamily="{StaticResource Tech}" FontSize="12.5" TextTrimming="CharacterEllipsis"><Run Text="{Binding Old, Mode=OneWay, Converter={StaticResource Tr}}" Foreground="{StaticResource Faint}" /><Run Text="  →  " Foreground="{StaticResource Faint}" /><Run Text="{Binding New, Mode=OneWay, Converter={StaticResource Tr}}" Foreground="{StaticResource Accent}" /></TextBlock>
                                                 </StackPanel>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
-                                    <TextBlock Text="{Binding MoreText}" Style="{StaticResource Body}" FontSize="12" Foreground="{StaticResource Faint}" Visibility="{Binding HasMore, Converter={StaticResource VisIf}}" />
+                                    <TextBlock Text="{Binding MoreText, Converter={StaticResource Tr}}" Style="{StaticResource Body}" FontSize="12" Foreground="{StaticResource Faint}" Visibility="{Binding HasMore, Converter={StaticResource VisIf}}" />
                                 </StackPanel>
                             </RadioButton>
                         </DataTemplate>
@@ -516,7 +516,7 @@
                     <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding Measure}" IsEnabled="{Binding CanMeasure}">
                         <StackPanel>
                             <TextBlock Text="Prove it: measure before and after" Style="{StaticResource Strong}" />
-                            <TextBlock Text="{Binding MeasureNote}" Style="{StaticResource Body}" FontSize="12.5" />
+                            <TextBlock Text="{Binding MeasureNote, Converter={StaticResource Tr}}" Style="{StaticResource Body}" FontSize="12.5" />
                         </StackPanel>
                     </CheckBox>
                 </Grid>
@@ -537,9 +537,9 @@
                         <DataTemplate>
                             <RadioButton Style="{StaticResource Option}" IsChecked="{Binding IsSelected}" GroupName="target" Margin="0,0,12,0" AutomationProperties.Name="{Binding Name}">
                                 <StackPanel>
-                                    <TextBlock Style="{StaticResource Big}" FontSize="54"><Run Text="{Binding FpsText, Mode=OneWay}" /><Run Text=" FPS" FontSize="18" Foreground="{StaticResource Muted}" /></TextBlock>
-                                    <TextBlock Text="{Binding Name}" Style="{StaticResource Strong}" />
-                                    <TextBlock Text="{Binding Sub}" Style="{StaticResource Body}" FontSize="12.5" />
+                                    <TextBlock Style="{StaticResource Big}" FontSize="54"><Run Text="{Binding FpsText, Mode=OneWay, Converter={StaticResource Tr}}" /><Run Text=" FPS" FontSize="18" Foreground="{StaticResource Muted}" /></TextBlock>
+                                    <TextBlock Text="{Binding Name, Converter={StaticResource Tr}}" Style="{StaticResource Strong}" />
+                                    <TextBlock Text="{Binding Sub, Converter={StaticResource Tr}}" Style="{StaticResource Body}" FontSize="12.5" />
                                 </StackPanel>
                             </RadioButton>
                         </DataTemplate>
@@ -573,24 +573,24 @@
                                         <Grid Margin="0,12">
                                             <Grid.ColumnDefinitions><ColumnDefinition Width="34" /><ColumnDefinition Width="40" /><ColumnDefinition Width="210" /><ColumnDefinition Width="*" /><ColumnDefinition Width="90" /><ColumnDefinition Width="130" /></Grid.ColumnDefinitions>
                                             <CheckBox Style="{StaticResource Tick}" IsChecked="{Binding Include}" VerticalAlignment="Center" AutomationProperties.Name="{Binding Label, StringFormat=Include {0}}" />
-                                            <TextBlock Grid.Column="1" Text="{Binding Index}" Style="{StaticResource Label}" VerticalAlignment="Center" />
+                                            <TextBlock Grid.Column="1" Text="{Binding Index, Converter={StaticResource Tr}}" Style="{StaticResource Label}" VerticalAlignment="Center" />
                                             <Button Grid.Column="2" Style="{StaticResource Plain}" Command="{Binding ToggleCmd}" HorizontalAlignment="Left" AutomationProperties.Name="{Binding Label, StringFormat=Explain {0}}">
-                                                <TextBlock Style="{StaticResource Strong}"><Run Text="{Binding Label, Mode=OneWay}" /><Run Text="  &#xE70D;" FontFamily="{StaticResource Icons}" FontSize="10" Foreground="{StaticResource Faint}" /></TextBlock>
+                                                <TextBlock Style="{StaticResource Strong}"><Run Text="{Binding Label, Mode=OneWay, Converter={StaticResource Tr}}" /><Run Text="  &#xE70D;" FontFamily="{StaticResource Icons}" FontSize="10" Foreground="{StaticResource Faint}" /></TextBlock>
                                             </Button>
                                             <TextBlock Grid.Column="3" Style="{StaticResource Value}" VerticalAlignment="Center" FontSize="15">
-                                                <Run Text="{Binding Old, Mode=OneWay}" Foreground="{StaticResource Faint}" /><Run Text="   →   " Foreground="{StaticResource Faint}" /><Run Text="{Binding New, Mode=OneWay}" />
+                                                <Run Text="{Binding Old, Mode=OneWay, Converter={StaticResource Tr}}" Foreground="{StaticResource Faint}" /><Run Text="   →   " Foreground="{StaticResource Faint}" /><Run Text="{Binding New, Mode=OneWay, Converter={StaticResource Tr}}" />
                                             </TextBlock>
-                                            <TextBlock Grid.Column="4" Text="{Binding LoadText}" Style="{StaticResource Label}" VerticalAlignment="Center" />
+                                            <TextBlock Grid.Column="4" Text="{Binding LoadText, Converter={StaticResource Tr}}" Style="{StaticResource Label}" VerticalAlignment="Center" />
                                             <StackPanel Grid.Column="5" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                                                 <Rectangle Height="6" Width="{Binding BarWidth}" Fill="{StaticResource Accent}" Margin="0,0,10,0" />
-                                                <TextBlock Text="{Binding Gain}" Style="{StaticResource Label}" Foreground="{StaticResource Text}" Width="44" TextAlignment="Right" />
+                                                <TextBlock Text="{Binding Gain, Converter={StaticResource Tr}}" Style="{StaticResource Label}" Foreground="{StaticResource Text}" Width="44" TextAlignment="Right" />
                                             </StackPanel>
                                         </Grid>
                                         <!-- explanation drawer -->
                                         <Grid Margin="74,0,0,14" Visibility="{Binding Open, Converter={StaticResource VisIf}}">
                                             <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition /></Grid.ColumnDefinitions>
-                                            <StackPanel Margin="0,0,24,0"><TextBlock Text="Why it helps" Style="{StaticResource LabelAccent}" /><TextBlock Text="{Binding Why}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" /></StackPanel>
-                                            <StackPanel Grid.Column="1"><TextBlock Text="What you give up" Style="{StaticResource Label}" /><TextBlock Text="{Binding Tradeoff}" Style="{StaticResource Body}" /></StackPanel>
+                                            <StackPanel Margin="0,0,24,0"><TextBlock Text="Why it helps" Style="{StaticResource LabelAccent}" /><TextBlock Text="{Binding Why, Converter={StaticResource Tr}}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" /></StackPanel>
+                                            <StackPanel Grid.Column="1"><TextBlock Text="What you give up" Style="{StaticResource Label}" /><TextBlock Text="{Binding Tradeoff, Converter={StaticResource Tr}}" Style="{StaticResource Body}" /></StackPanel>
                                         </Grid>
                                     </StackPanel>
                                 </DataTemplate>
@@ -598,7 +598,7 @@
                         </ItemsControl>
                         <StackPanel Visibility="{Binding HasRows, Converter={StaticResource VisIfNot}}" MaxWidth="620" HorizontalAlignment="Left" Margin="0,20,0,0">
                             <TextBlock Text="Nothing needed to change" Style="{StaticResource H2}" />
-                            <TextBlock Text="{Binding Empty}" Style="{StaticResource Body}" Margin="0,8,0,0" />
+                            <TextBlock Text="{Binding Empty, Converter={StaticResource Tr}}" Style="{StaticResource Body}" Margin="0,8,0,0" />
                         </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
@@ -609,8 +609,8 @@
                 <Grid>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="{Binding Summary}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=review}" />
-                        <TextBlock Text="{Binding RestartNote}" Style="{StaticResource Body}" FontSize="12.5" />
+                        <TextBlock Text="{Binding Summary, Converter={StaticResource Tr}}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=review}" />
+                        <TextBlock Text="{Binding RestartNote, Converter={StaticResource Tr}}" Style="{StaticResource Body}" FontSize="12.5" />
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                         <Button Style="{StaticResource Ghost}" Content="Back" Command="{Binding BackCmd}" Margin="0,0,10,0" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=review}" />
@@ -629,7 +629,7 @@
                             </Button.Style>
                         </Button>
                         <Button Style="{StaticResource Primary}" Command="{Binding ApplyCmd}" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=review}">
-                            <TextBlock><Run Text="Apply " /><Run Text="{Binding Rows.Count, Mode=OneWay}" /><Run Text=" changes" /></TextBlock>
+                            <TextBlock Text="{Binding ApplyText}" />
                         </Button>
                     </StackPanel>
                 </Grid>
@@ -645,13 +645,13 @@
                 <Grid.Style><Style TargetType="Grid"><Style.Triggers><DataTrigger Binding="{Binding Stage}" Value="results"><Setter Property="Visibility" Value="Collapsed" /></DataTrigger></Style.Triggers></Style></Grid.Style>
                 <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="420" /></Grid.ColumnDefinitions>
                 <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,8,0,24"><Border Width="40" Height="60" CornerRadius="14" Margin="0,0,16,0" VerticalAlignment="Center"><Border.Background><ImageBrush ImageSource="{Binding Game.Art}" Stretch="UniformToFill" /></Border.Background></Border><TextBlock Text="{Binding Title}" Style="{StaticResource H1}" VerticalAlignment="Center" /></StackPanel>
-                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource Prompt}" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=prompt}" Focusable="False" />
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,24"><Border Width="40" Height="60" CornerRadius="14" Margin="0,0,16,0" VerticalAlignment="Center"><Border.Background><ImageBrush ImageSource="{Binding Game.Art}" Stretch="UniformToFill" /></Border.Background></Border><TextBlock Text="{Binding Title, Converter={StaticResource Tr}}" Style="{StaticResource H1}" VerticalAlignment="Center" /></StackPanel>
+                    <ContentControl Content="{Binding Converter={StaticResource Tr}}" ContentTemplate="{StaticResource Prompt}" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=prompt}" Focusable="False" />
                     <StackPanel Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=failed|partial}" Margin="0,0,0,24" MaxWidth="600" HorizontalAlignment="Left">
                         <Border BorderBrush="{StaticResource Bad}" BorderThickness="0" CornerRadius="14" Background="{StaticResource BadSoft}" Padding="20,14">
                             <StackPanel>
                                 <TextBlock Text="Stopped safely" Style="{StaticResource Label}" Foreground="{StaticResource Bad}" />
-                                <TextBlock Text="{Binding Message}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" Margin="0,4,0,0" />
+                                <TextBlock Text="{Binding Message, Converter={StaticResource Tr}}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" Margin="0,4,0,0" />
                             </StackPanel>
                         </Border>
                         <Button Style="{StaticResource Ghost}" Content="Back to the game" Command="{Binding DoneCmd}" HorizontalAlignment="Left" Margin="0,14,0,0" />
@@ -665,8 +665,8 @@
                             <DataTemplate>
                                 <Grid Margin="0,0,0,9">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="170" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding Label}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" />
-                                    <TextBlock Grid.Column="1" Style="{StaticResource Value}" FontSize="13"><Run Text="{Binding Old, Mode=OneWay}" Foreground="{StaticResource Faint}" /><Run Text="  →  " Foreground="{StaticResource Faint}" /><Run Text="{Binding New, Mode=OneWay}" /></TextBlock>
+                                    <TextBlock Text="{Binding Label, Converter={StaticResource Tr}}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" />
+                                    <TextBlock Grid.Column="1" Style="{StaticResource Value}" FontSize="13"><Run Text="{Binding Old, Mode=OneWay, Converter={StaticResource Tr}}" Foreground="{StaticResource Faint}" /><Run Text="  →  " Foreground="{StaticResource Faint}" /><Run Text="{Binding New, Mode=OneWay, Converter={StaticResource Tr}}" /></TextBlock>
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -679,8 +679,8 @@
                 <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
                 <Grid Margin="44,8,44,0">
                     <StackPanel>
-                        <TextBlock Style="{StaticResource LabelAccent}"><Run Text="{Binding Game.Name, Mode=OneWay}" /><Run Text=", result" /></TextBlock>
-                        <TextBlock Text="{Binding HeadlineDone}" Style="{StaticResource H1}" Margin="0,6,0,0" />
+                        <TextBlock Style="{StaticResource LabelAccent}"><Run Text="{Binding Game.Name, Mode=OneWay, Converter={StaticResource Tr}}" /><Run Text=", result" /></TextBlock>
+                        <TextBlock Text="{Binding HeadlineDone, Converter={StaticResource Tr}}" Style="{StaticResource H1}" Margin="0,6,0,0" />
                     </StackPanel>
                     <Border HorizontalAlignment="Right" VerticalAlignment="Top" Padding="8,4" CornerRadius="14" BorderBrush="{StaticResource Warn}" BorderThickness="1" Visibility="{Binding IsDemoData, Converter={StaticResource VisIf}}">
                         <TextBlock Text="Demo data, simulated numbers" Style="{StaticResource Label}" Foreground="{StaticResource Warn}" />
@@ -702,7 +702,7 @@
                                 <TextBlock Text="After, average FPS over 3 runs" Style="{StaticResource Label}" Margin="0,0,0,16" />
                                 <c:CountUp Value="{Binding AfterFps}" Style="{StaticResource Mega}" Foreground="{StaticResource Text}" />
                             </StackPanel>
-                            <TextBlock Text="{Binding DeltaText}" Style="{StaticResource Mid}" Foreground="{StaticResource Accent}" VerticalAlignment="Bottom" Margin="20,0,0,26" />
+                            <TextBlock Text="{Binding DeltaText, Converter={StaticResource Tr}}" Style="{StaticResource Mid}" Foreground="{StaticResource Accent}" VerticalAlignment="Bottom" Margin="20,0,0,26" />
                         </StackPanel>
                         <StackPanel Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,0,18">
                             <Grid Margin="0,0,0,8">
@@ -730,24 +730,24 @@
                                     <Rectangle Width="16" Height="2" Fill="{StaticResource Accent}" VerticalAlignment="Center" Margin="0,0,6,0" /><TextBlock Text="After" Style="{StaticResource Label}" Margin="0,0,18,0" />
                                     <TextBlock Text="FRAME TIME, LAST RUN OF EACH. LOWER AND FLATTER IS BETTER." Style="{StaticResource Label}" />
                                 </StackPanel>
-                                <TextBlock Text="{Binding NoiseText}" Style="{StaticResource Label}" HorizontalAlignment="Right" />
+                                <TextBlock Text="{Binding NoiseText, Converter={StaticResource Tr}}" Style="{StaticResource Label}" HorizontalAlignment="Right" />
                             </Grid>
                             <c:FrameChart Grid.Row="1" Before="{Binding BeforeTrace}" After="{Binding AfterTrace}" TargetMs="{Binding TargetMs}" TargetLabel="{Binding TargetLabel}" Margin="0,8,0,8" MinHeight="120" AutomationProperties.Name="Before and after frame time" />
-                            <TextBlock Grid.Row="2" Text="{Binding Verdict}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" FontSize="14.5" Margin="0,0,0,10" />
+                            <TextBlock Grid.Row="2" Text="{Binding Verdict, Converter={StaticResource Tr}}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" FontSize="14.5" Margin="0,0,0,10" />
                         </Grid>
                     </Grid>
 
                     <!-- applied without proof -->
                     <StackPanel Visibility="{Binding Measured, Converter={StaticResource VisIfNot}}" MaxWidth="720" HorizontalAlignment="Left" Margin="0,12,0,0">
-                        <TextBlock Text="{Binding Message}" Style="{StaticResource Body}" FontSize="15" Foreground="{StaticResource Text}" />
+                        <TextBlock Text="{Binding Message, Converter={StaticResource Tr}}" Style="{StaticResource Body}" FontSize="15" Foreground="{StaticResource Text}" />
                         <ItemsControl ItemsSource="{Binding Applied}" Margin="0,20,0,0" Focusable="False">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Margin="0,0,0,8">
                                         <Grid.ColumnDefinitions><ColumnDefinition Width="40" /><ColumnDefinition Width="220" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
                                         <TextBlock Text="&#xE73E;" Style="{StaticResource Icon}" Foreground="{StaticResource Accent}" />
-                                        <TextBlock Grid.Column="1" Text="{Binding Label}" Style="{StaticResource Strong}" />
-                                        <TextBlock Grid.Column="2" Style="{StaticResource Value}"><Run Text="{Binding Old, Mode=OneWay}" Foreground="{StaticResource Faint}" /><Run Text="  →  " Foreground="{StaticResource Faint}" /><Run Text="{Binding New, Mode=OneWay}" /></TextBlock>
+                                        <TextBlock Grid.Column="1" Text="{Binding Label, Converter={StaticResource Tr}}" Style="{StaticResource Strong}" />
+                                        <TextBlock Grid.Column="2" Style="{StaticResource Value}"><Run Text="{Binding Old, Mode=OneWay, Converter={StaticResource Tr}}" Foreground="{StaticResource Faint}" /><Run Text="  →  " Foreground="{StaticResource Faint}" /><Run Text="{Binding New, Mode=OneWay, Converter={StaticResource Tr}}" /></TextBlock>
                                     </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -773,22 +773,22 @@
         <Grid Margin="44,8,44,24">
             <Grid.ColumnDefinitions><ColumnDefinition Width="460" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
             <StackPanel>
-                <TextBlock Style="{StaticResource LabelAccent}"><Run Text="AUTO-TUNE  ·  " /><Run Text="{Binding Game.Name, Mode=OneWay}" /></TextBlock>
-                <StackPanel Orientation="Horizontal" Margin="0,8,0,0"><Border Width="32" Height="48" CornerRadius="14" Margin="0,0,12,0" VerticalAlignment="Center"><Border.Background><ImageBrush ImageSource="{Binding Game.Art}" Stretch="UniformToFill" /></Border.Background></Border><TextBlock Text="{Binding Status}" Style="{StaticResource H2}" VerticalAlignment="Center" /></StackPanel>
+                <TextBlock Style="{StaticResource LabelAccent}"><Run Text="AUTO-TUNE  ·  " /><Run Text="{Binding Game.Name, Mode=OneWay, Converter={StaticResource Tr}}" /></TextBlock>
+                <StackPanel Orientation="Horizontal" Margin="0,8,0,0"><Border Width="32" Height="48" CornerRadius="14" Margin="0,0,12,0" VerticalAlignment="Center"><Border.Background><ImageBrush ImageSource="{Binding Game.Art}" Stretch="UniformToFill" /></Border.Background></Border><TextBlock Text="{Binding Status, Converter={StaticResource Tr}}" Style="{StaticResource H2}" VerticalAlignment="Center" /></StackPanel>
                 <Grid Width="420" Height="330" HorizontalAlignment="Left" Margin="0,10,0,0">
                     <c:Tach Value="{Binding Now}" Target="{Binding Target}" Max="{Binding GaugeMax}" AutomationProperties.Name="Current FPS against target" />
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,30,0,0">
-                        <TextBlock Text="{Binding NowText}" Style="{StaticResource Mega}" FontSize="112" HorizontalAlignment="Center" />
-                        <TextBlock Style="{StaticResource Label}" HorizontalAlignment="Center" Foreground="{StaticResource Muted}"><Run Text="FPS  ·  TARGET " /><Run Text="{Binding Target, Mode=OneWay}" /></TextBlock>
+                        <TextBlock Text="{Binding NowText, Converter={StaticResource Tr}}" Style="{StaticResource Mega}" FontSize="112" HorizontalAlignment="Center" />
+                        <TextBlock Style="{StaticResource Label}" HorizontalAlignment="Center" Foreground="{StaticResource Muted}"><Run Text="FPS  ·  TARGET " /><Run Text="{Binding Target, Mode=OneWay, Converter={StaticResource Tr}}" /></TextBlock>
                     </StackPanel>
                 </Grid>
-                <TextBlock Text="{Binding Detail}" Style="{StaticResource Body}" MaxWidth="420" HorizontalAlignment="Left" />
+                <TextBlock Text="{Binding Detail, Converter={StaticResource Tr}}" Style="{StaticResource Body}" MaxWidth="420" HorizontalAlignment="Left" />
                 <Border Visibility="{Binding IsDemoData, Converter={StaticResource VisIf}}" HorizontalAlignment="Left" Margin="0,14,0,0" Padding="8,4" CornerRadius="14" BorderBrush="{StaticResource Warn}" BorderThickness="1">
                     <TextBlock Text="Demo data, simulated numbers" Style="{StaticResource Label}" Foreground="{StaticResource Warn}" />
                 </Border>
             </StackPanel>
             <StackPanel Grid.Column="1" Margin="30,0,0,0">
-                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource Prompt}" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=prompt}" Focusable="False" />
+                <ContentControl Content="{Binding Converter={StaticResource Tr}}" ContentTemplate="{StaticResource Prompt}" Visibility="{Binding Stage, Converter={StaticResource VisIf}, ConverterParameter=prompt}" Focusable="False" />
                 <TextBlock Text="Rounds" Style="{StaticResource Label}" Margin="0,0,0,10" />
                 <ItemsControl ItemsSource="{Binding Rounds}" Focusable="False">
                     <ItemsControl.ItemTemplate>
@@ -797,9 +797,9 @@
                                 <Border Style="{StaticResource Rule}" />
                                 <Grid Margin="0,14">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="110" /><ColumnDefinition Width="*" /><ColumnDefinition Width="150" /></Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding Title}" Style="{StaticResource Label}" x:Name="t" Margin="0,3,0,0" />
-                                    <TextBlock Grid.Column="1" Text="{Binding Changes}" Style="{StaticResource Body}" Margin="0,0,16,0" />
-                                    <TextBlock Grid.Column="2" Text="{Binding Result}" Style="{StaticResource Mid}" HorizontalAlignment="Right" />
+                                    <TextBlock Text="{Binding Title, Converter={StaticResource Tr}}" Style="{StaticResource Label}" x:Name="t" Margin="0,3,0,0" />
+                                    <TextBlock Grid.Column="1" Text="{Binding Changes, Converter={StaticResource Tr}}" Style="{StaticResource Body}" Margin="0,0,16,0" />
+                                    <TextBlock Grid.Column="2" Text="{Binding Result, Converter={StaticResource Tr}}" Style="{StaticResource Mid}" HorizontalAlignment="Right" />
                                 </Grid>
                             </StackPanel>
                             <DataTemplate.Triggers>
@@ -819,7 +819,7 @@
                 </StackPanel>
                 <StackPanel Visibility="{Binding Summary, Converter={StaticResource VisIf}}" Margin="0,16,0,0">
                     <Border Style="{StaticResource Rule}" Margin="0,0,0,16" />
-                    <TextBlock Text="{Binding Summary}" Style="{StaticResource Body}" FontSize="15" Foreground="{StaticResource Text}" />
+                    <TextBlock Text="{Binding Summary, Converter={StaticResource Tr}}" Style="{StaticResource Body}" FontSize="15" Foreground="{StaticResource Text}" />
                     <TextBlock Text="Round numbers are measured. The order comes from typical gains for your bottleneck." Style="{StaticResource Body}" FontSize="12.5" Margin="0,6,0,0" />
                     <Button Style="{StaticResource Primary}" Content="Done" Command="{Binding DoneCmd}" HorizontalAlignment="Left" Margin="0,16,0,0" />
                 </StackPanel>
@@ -835,10 +835,10 @@
                 <StackPanel Margin="0,0,40,0">
                     <TextBlock Text="Game session" Style="{StaticResource Label}" />
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding StateText}" Style="{StaticResource Mega}" FontSize="104" x:Name="state" Foreground="{StaticResource Faint}" />
+                        <TextBlock Text="{Binding StateText, Converter={StaticResource Tr}}" Style="{StaticResource Mega}" FontSize="104" x:Name="state" Foreground="{StaticResource Faint}" />
                         <StackPanel VerticalAlignment="Center" Margin="22,10,0,0" MaxWidth="380">
-                            <TextBlock Text="{Binding Headline}" Style="{StaticResource H2}" />
-                            <TextBlock Text="{Binding Sub}" Style="{StaticResource Body}" Margin="0,4,0,0" />
+                            <TextBlock Text="{Binding Headline, Converter={StaticResource Tr}}" Style="{StaticResource H2}" />
+                            <TextBlock Text="{Binding Sub, Converter={StaticResource Tr}}" Style="{StaticResource Body}" Margin="0,4,0,0" />
                         </StackPanel>
                     </StackPanel>
                     <TextBlock Text="For" Style="{StaticResource Label}" Margin="0,18,0,8" />
@@ -848,13 +848,13 @@
                         <Button Style="{StaticResource Ghost}" Content="End session" Command="{Binding StopCmd}" Margin="10,0,0,0" />
                     </StackPanel>
                     <ItemsControl ItemsSource="{Binding Log}" Margin="0,14,0,0" Focusable="False">
-                        <ItemsControl.ItemTemplate><DataTemplate><TextBlock Style="{StaticResource Label}" Foreground="{StaticResource Muted}" Margin="0,0,0,4"><Run Text="›  " Foreground="{StaticResource Accent}" /><Run Text="{Binding Mode=OneWay}" /></TextBlock></DataTemplate></ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemTemplate><DataTemplate><TextBlock Style="{StaticResource Label}" Foreground="{StaticResource Muted}" Margin="0,0,0,4"><Run Text="›  " Foreground="{StaticResource Accent}" /><Run Text="{Binding Mode=OneWay, Converter={StaticResource Tr}}" /></TextBlock></DataTemplate></ItemsControl.ItemTemplate>
                     </ItemsControl>
 
                     <TextBlock Text="What it does" Style="{StaticResource Label}" Margin="0,26,0,0" />
                     <Border Style="{StaticResource Rule}" Margin="0,8,0,0" />
                     <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding PowerPlan}" Margin="0,14">
-                        <StackPanel><TextBlock Text="Fastest power plan" Style="{StaticResource Strong}" /><TextBlock Text="{Binding PlanText}" Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
+                        <StackPanel><TextBlock Text="Fastest power plan" Style="{StaticResource Strong}" /><TextBlock Text="{Binding PlanText, Converter={StaticResource Tr}}" Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
                     </CheckBox>
                     <Border Style="{StaticResource Rule}" />
                     <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding HighPriority}" Margin="0,14">
@@ -890,17 +890,17 @@
                                     <Grid Margin="0,10">
                                         <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="100" /><ColumnDefinition Width="64" /><ColumnDefinition Width="54" /></Grid.ColumnDefinitions>
                                         <StackPanel>
-                                            <TextBlock Text="{Binding Name}" Style="{StaticResource Strong}" FontSize="13.5" />
+                                            <TextBlock Text="{Binding Name, Converter={StaticResource Tr}}" Style="{StaticResource Strong}" FontSize="13.5" />
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Title}" Style="{StaticResource Body}" FontSize="12" MaxWidth="150" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
+                                                <TextBlock Text="{Binding Title, Converter={StaticResource Tr}}" Style="{StaticResource Body}" FontSize="12" MaxWidth="150" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
                                                 <Button Style="{StaticResource Link}" Content="Close now" FontSize="12" Command="{Binding CloseCmd}" Margin="10,0,0,0" Visibility="{Binding CanClose, Converter={StaticResource VisIf}}" />
                                             </StackPanel>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                                             <Rectangle Height="5" Width="{Binding CpuBar}" Fill="{StaticResource Accent}" Margin="0,0,8,0" />
-                                            <TextBlock Text="{Binding Cpu}" Style="{StaticResource Label}" Foreground="{StaticResource Text}" />
+                                            <TextBlock Text="{Binding Cpu, Converter={StaticResource Tr}}" Style="{StaticResource Label}" Foreground="{StaticResource Text}" />
                                         </StackPanel>
-                                        <TextBlock Grid.Column="2" Text="{Binding Mem}" Style="{StaticResource Label}" Foreground="{StaticResource Text}" VerticalAlignment="Center" />
+                                        <TextBlock Grid.Column="2" Text="{Binding Mem, Converter={StaticResource Tr}}" Style="{StaticResource Label}" Foreground="{StaticResource Text}" VerticalAlignment="Center" />
                                         <CheckBox Grid.Column="3" Style="{StaticResource Tick}" IsChecked="{Binding Approved}" HorizontalAlignment="Right" VerticalAlignment="Center" IsEnabled="{Binding CanClose}" AutomationProperties.Name="{Binding Name, StringFormat=Close {0} when a session starts}" />
                                     </Grid>
                                 </StackPanel>
@@ -922,8 +922,8 @@
             <Grid.ColumnDefinitions><ColumnDefinition Width="*" MaxWidth="980" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
             <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False">
                 <StackPanel Margin="0,0,36,24">
-                    <TextBlock Text="{Binding FixHeadline}" Style="{StaticResource H1}" FontSize="34" Margin="0,0,0,6" />
-                    <TextBlock Text="{Binding FixSub}" Style="{StaticResource Body}" MaxWidth="640" HorizontalAlignment="Left" />
+                    <TextBlock Text="{Binding FixHeadline, Converter={StaticResource Tr}}" Style="{StaticResource H1}" FontSize="34" Margin="0,0,0,6" />
+                    <TextBlock Text="{Binding FixSub, Converter={StaticResource Tr}}" Style="{StaticResource Body}" MaxWidth="640" HorizontalAlignment="Left" />
                     <ItemsControl ItemsSource="{Binding Fixes}" Focusable="False" Margin="0,18,0,0">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
@@ -932,12 +932,12 @@
                                         <Grid.ColumnDefinitions><ColumnDefinition Width="36" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
                                         <CheckBox Style="{StaticResource Tick}" IsChecked="{Binding Include}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,2,0,0" AutomationProperties.Name="{Binding Title, StringFormat=Include {0}}" />
                                         <StackPanel Grid.Column="1" Margin="0,0,18,0">
-                                            <TextBlock Text="{Binding Title}" Style="{StaticResource Strong}" />
-                                            <TextBlock Text="{Binding Why}" Style="{StaticResource Body}" FontSize="12.5" Margin="0,3,0,0" />
-                                            <TextBlock Style="{StaticResource Body}" FontSize="12.5" Foreground="{StaticResource Faint}" Margin="0,3,0,0"><Run Text="Trade-off: " /><Run Text="{Binding Tradeoff, Mode=OneWay}" /></TextBlock>
+                                            <TextBlock Text="{Binding Title, Converter={StaticResource Tr}}" Style="{StaticResource Strong}" />
+                                            <TextBlock Text="{Binding Why, Converter={StaticResource Tr}}" Style="{StaticResource Body}" FontSize="12.5" Margin="0,3,0,0" />
+                                            <TextBlock Style="{StaticResource Body}" FontSize="12.5" Foreground="{StaticResource Faint}" Margin="0,3,0,0"><Run Text="Trade-off: " /><Run Text="{Binding Tradeoff, Mode=OneWay, Converter={StaticResource Tr}}" /></TextBlock>
                                         </StackPanel>
                                         <TextBlock Grid.Column="2" Style="{StaticResource Value}" FontSize="15" VerticalAlignment="Top" Margin="0,1,0,0">
-                                            <Run Text="{Binding Now, Mode=OneWay}" Foreground="{StaticResource Faint}" /><Run Text="  →  " Foreground="{StaticResource Faint}" /><Run Text="{Binding After, Mode=OneWay}" Foreground="{StaticResource Accent}" FontWeight="SemiBold" />
+                                            <Run Text="{Binding Now, Mode=OneWay, Converter={StaticResource Tr}}" Foreground="{StaticResource Faint}" /><Run Text="  →  " Foreground="{StaticResource Faint}" /><Run Text="{Binding After, Mode=OneWay, Converter={StaticResource Tr}}" Foreground="{StaticResource Accent}" FontWeight="SemiBold" />
                                         </TextBlock>
                                     </Grid>
                                 </Border>
@@ -945,10 +945,10 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                     <Button Style="{StaticResource Primary}" Command="{Binding ApplyFixesCmd}" HorizontalAlignment="Left" Margin="0,6,0,0" Visibility="{Binding HasFixes, Converter={StaticResource VisIf}}">
-                        <TextBlock Text="{Binding ApplyText}" />
+                        <TextBlock Text="{Binding ApplyText, Converter={StaticResource Tr}}" />
                     </Button>
                     <TextBlock Text="Checks" Style="{StaticResource Label}" Margin="0,30,0,4" />
-                    <TextBlock Text="{Binding Summary}" Style="{StaticResource Body}" Margin="0,0,0,12" />
+                    <TextBlock Text="{Binding Summary, Converter={StaticResource Tr}}" Style="{StaticResource Body}" Margin="0,0,0,12" />
                     <ItemsControl ItemsSource="{Binding Checks}" Focusable="False">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
@@ -956,12 +956,12 @@
                                     <Border Style="{StaticResource Rule}" />
                                     <Grid Margin="0,14">
                                         <Grid.ColumnDefinitions><ColumnDefinition Width="74" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding StateText}" Style="{StaticResource Label}" x:Name="st" Margin="0,3,0,0" />
+                                        <TextBlock Text="{Binding StateText, Converter={StaticResource Tr}}" Style="{StaticResource Label}" x:Name="st" Margin="0,3,0,0" />
                                         <StackPanel Grid.Column="1" Margin="0,0,16,0">
-                                            <TextBlock Text="{Binding Title}" Style="{StaticResource Strong}" />
-                                            <TextBlock Text="{Binding Finding}" Style="{StaticResource Body}" Margin="0,2,0,0" />
+                                            <TextBlock Text="{Binding Title, Converter={StaticResource Tr}}" Style="{StaticResource Strong}" />
+                                            <TextBlock Text="{Binding Finding, Converter={StaticResource Tr}}" Style="{StaticResource Body}" Margin="0,2,0,0" />
                                         </StackPanel>
-                                        <Button Grid.Column="2" Style="{StaticResource Ghost}" Padding="14,7" FontSize="13" Content="{Binding Action}" Command="{Binding ActionCmd}" VerticalAlignment="Top" Visibility="{Binding Action, Converter={StaticResource VisIf}}" />
+                                        <Button Grid.Column="2" Style="{StaticResource Ghost}" Padding="14,7" FontSize="13" Content="{Binding Action, Converter={StaticResource Tr}}" Command="{Binding ActionCmd}" VerticalAlignment="Top" Visibility="{Binding Action, Converter={StaticResource VisIf}}" />
                                     </Grid>
                                 </StackPanel>
                                 <DataTemplate.Triggers>
@@ -985,8 +985,8 @@
                                         <Border Style="{StaticResource Rule}" />
                                         <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding Enabled}" Margin="0,11" AutomationProperties.Name="{Binding Name, StringFormat={}{0} starts with Windows}">
                                             <StackPanel>
-                                                <TextBlock Text="{Binding Name}" Style="{StaticResource Strong}" FontSize="13.5" />
-                                                <TextBlock Text="{Binding Impact}" Style="{StaticResource Body}" FontSize="12" />
+                                                <TextBlock Text="{Binding Name, Converter={StaticResource Tr}}" Style="{StaticResource Strong}" FontSize="13.5" />
+                                                <TextBlock Text="{Binding Impact, Converter={StaticResource Tr}}" Style="{StaticResource Body}" FontSize="12" />
                                             </StackPanel>
                                         </CheckBox>
                                     </StackPanel>
@@ -1006,7 +1006,7 @@
             <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="520" /></Grid.ColumnDefinitions>
             <StackPanel Margin="0,0,36,0">
                 <TextBlock Text="Measure a game" Style="{StaticResource H1}" FontSize="34" Margin="0,0,0,4" />
-                <TextBlock Text="{Binding ToolText}" Style="{StaticResource Body}" Margin="0,0,0,18" />
+                <TextBlock Text="{Binding ToolText, Converter={StaticResource Tr}}" Style="{StaticResource Body}" Margin="0,0,0,18" />
                 <ListBox Style="{StaticResource Chips}" ItemsSource="{Binding Games}" SelectedItem="{Binding Game}" />
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                     <Button Style="{StaticResource Primary}" Content="Capture 30 seconds" Command="{Binding CaptureCmd}" />
@@ -1015,11 +1015,11 @@
                 <ProgressBar Style="{StaticResource Bar}" Value="{Binding Progress}" Margin="0,18,0,0" Visibility="{Binding Busy, Converter={StaticResource VisIf}}" />
                 <StackPanel Visibility="{Binding Result, Converter={StaticResource VisIf}}" Margin="0,24,0,0">
                     <TextBlock Style="{StaticResource Big}" FontSize="80"><Run Text="{Binding Result.AvgFps, Mode=OneWay, StringFormat=0}" /><Run Text=" FPS" FontSize="24" Foreground="{StaticResource Muted}" /></TextBlock>
-                    <TextBlock Text="{Binding ResultText}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" />
+                    <TextBlock Text="{Binding ResultText, Converter={StaticResource Tr}}" Style="{StaticResource Body}" Foreground="{StaticResource Text}" />
                     <c:FrameChart After="{Binding Result.Trace}" Height="110" Margin="0,14,0,10" TargetMs="{Binding Game.TargetMs}" TargetLabel="{Binding Game.TargetLabel}" />
-                    <TextBlock Text="{Binding Bottleneck.Headline}" Style="{StaticResource Strong}" />
-                    <TextBlock Text="{Binding Bottleneck.Detail}" Style="{StaticResource Body}" />
-                    <TextBlock Text="{Binding Throttle}" Style="{StaticResource Body}" Foreground="{StaticResource Warn}" Margin="0,8,0,0" Visibility="{Binding Throttle, Converter={StaticResource VisIf}}" />
+                    <TextBlock Text="{Binding Bottleneck.Headline, Converter={StaticResource Tr}}" Style="{StaticResource Strong}" />
+                    <TextBlock Text="{Binding Bottleneck.Detail, Converter={StaticResource Tr}}" Style="{StaticResource Body}" />
+                    <TextBlock Text="{Binding Throttle, Converter={StaticResource Tr}}" Style="{StaticResource Body}" Foreground="{StaticResource Warn}" Margin="0,8,0,0" Visibility="{Binding Throttle, Converter={StaticResource VisIf}}" />
                 </StackPanel>
             </StackPanel>
             <Border Grid.Column="1" BorderBrush="{StaticResource Line}" BorderThickness="1,0,0,0" Padding="28,0,0,0">
@@ -1036,11 +1036,11 @@
                                     <Border Style="{StaticResource Rule}" />
                                     <Grid Margin="0,9">
                                         <Grid.ColumnDefinitions><ColumnDefinition Width="110" /><ColumnDefinition Width="*" /><ColumnDefinition Width="54" /><ColumnDefinition Width="54" /><ColumnDefinition Width="80" /></Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding When}" Style="{StaticResource Label}" Foreground="{StaticResource Muted}" />
-                                        <TextBlock Grid.Column="1" Style="{StaticResource Body}" Foreground="{StaticResource Text}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"><Run Text="{Binding Game, Mode=OneWay}" /><Run Text="  " /><Run Text="{Binding Label, Mode=OneWay}" Foreground="{StaticResource Faint}" FontSize="11" /></TextBlock>
-                                        <TextBlock Grid.Column="2" Text="{Binding Fps}" Style="{StaticResource Mid}" FontSize="18" TextAlignment="Right" />
-                                        <TextBlock Grid.Column="3" Text="{Binding Low}" Style="{StaticResource Mid}" FontSize="18" Foreground="{StaticResource Muted}" TextAlignment="Right" />
-                                        <TextBlock Grid.Column="4" Text="{Binding Source}" Style="{StaticResource Label}" TextAlignment="Right" VerticalAlignment="Center" />
+                                        <TextBlock Text="{Binding When, Converter={StaticResource Tr}}" Style="{StaticResource Label}" Foreground="{StaticResource Muted}" />
+                                        <TextBlock Grid.Column="1" Style="{StaticResource Body}" Foreground="{StaticResource Text}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"><Run Text="{Binding Game, Mode=OneWay, Converter={StaticResource Tr}}" /><Run Text="  " /><Run Text="{Binding Label, Mode=OneWay, Converter={StaticResource Tr}}" Foreground="{StaticResource Faint}" FontSize="11" /></TextBlock>
+                                        <TextBlock Grid.Column="2" Text="{Binding Fps, Converter={StaticResource Tr}}" Style="{StaticResource Mid}" FontSize="18" TextAlignment="Right" />
+                                        <TextBlock Grid.Column="3" Text="{Binding Low, Converter={StaticResource Tr}}" Style="{StaticResource Mid}" FontSize="18" Foreground="{StaticResource Muted}" TextAlignment="Right" />
+                                        <TextBlock Grid.Column="4" Text="{Binding Source, Converter={StaticResource Tr}}" Style="{StaticResource Label}" TextAlignment="Right" VerticalAlignment="Center" />
                                     </Grid>
                                 </StackPanel>
                             </DataTemplate>
@@ -1058,7 +1058,7 @@
             <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
             <Grid>
                 <StackPanel>
-                    <TextBlock Text="{Binding Summary}" Style="{StaticResource H1}" FontSize="34" Margin="0,0,220,18" TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding Summary, Converter={StaticResource Tr}}" Style="{StaticResource H1}" FontSize="34" Margin="0,0,220,18" TextWrapping="Wrap" />
                 </StackPanel>
                 <Button Style="{StaticResource Ghost}" Content="Undo everything" Command="{Binding UndoAllCmd}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,0,0" />
             </Grid>
@@ -1069,7 +1069,7 @@
                             <DataTemplate>
                                 <StackPanel Margin="0,0,0,26">
                                     <Grid>
-                                        <TextBlock Style="{StaticResource Label}"><Run Text="{Binding When, Mode=OneWay}" Foreground="{StaticResource Muted}" /><Run Text="   ·   " /><Run Text="{Binding Scope, Mode=OneWay}" Foreground="{StaticResource Text}" /><Run Text="   ·   " /><Run Text="{Binding Where, Mode=OneWay}" /></TextBlock>
+                                        <TextBlock Style="{StaticResource Label}"><Run Text="{Binding When, Mode=OneWay, Converter={StaticResource Tr}}" Foreground="{StaticResource Muted}" /><Run Text="   ·   " /><Run Text="{Binding Scope, Mode=OneWay, Converter={StaticResource Tr}}" Foreground="{StaticResource Text}" /><Run Text="   ·   " /><Run Text="{Binding Where, Mode=OneWay, Converter={StaticResource Tr}}" /></TextBlock>
                                         <Button Style="{StaticResource Link}" Content="Undo this set" Command="{Binding UndoCmd}" HorizontalAlignment="Right" FontSize="12.5" Visibility="{Binding AnyActive, Converter={StaticResource VisIf}}" />
                                     </Grid>
                                     <ItemsControl ItemsSource="{Binding Rows}" Margin="0,8,0,0" Focusable="False">
@@ -1079,9 +1079,9 @@
                                                     <Border Style="{StaticResource Rule}" />
                                                     <Grid Margin="0,10">
                                                         <Grid.ColumnDefinitions><ColumnDefinition Width="240" /><ColumnDefinition Width="*" /><ColumnDefinition Width="110" /><ColumnDefinition Width="60" /></Grid.ColumnDefinitions>
-                                                        <TextBlock Text="{Binding Label}" Style="{StaticResource Strong}" FontSize="13.5" TextTrimming="CharacterEllipsis" />
-                                                        <TextBlock Grid.Column="1" Style="{StaticResource Value}" FontSize="13.5" TextTrimming="CharacterEllipsis"><Run Text="{Binding Old, Mode=OneWay}" Foreground="{StaticResource Faint}" /><Run Text="  →  " Foreground="{StaticResource Faint}" /><Run Text="{Binding New, Mode=OneWay}" /></TextBlock>
-                                                        <TextBlock Grid.Column="2" Text="{Binding StatusText}" Style="{StaticResource Label}" x:Name="s" VerticalAlignment="Center" />
+                                                        <TextBlock Text="{Binding Label, Converter={StaticResource Tr}}" Style="{StaticResource Strong}" FontSize="13.5" TextTrimming="CharacterEllipsis" />
+                                                        <TextBlock Grid.Column="1" Style="{StaticResource Value}" FontSize="13.5" TextTrimming="CharacterEllipsis"><Run Text="{Binding Old, Mode=OneWay, Converter={StaticResource Tr}}" Foreground="{StaticResource Faint}" /><Run Text="  →  " Foreground="{StaticResource Faint}" /><Run Text="{Binding New, Mode=OneWay, Converter={StaticResource Tr}}" /></TextBlock>
+                                                        <TextBlock Grid.Column="2" Text="{Binding StatusText, Converter={StaticResource Tr}}" Style="{StaticResource Label}" x:Name="s" VerticalAlignment="Center" />
                                                         <Button Grid.Column="3" Style="{StaticResource Link}" Content="Undo" FontSize="12.5" Command="{Binding UndoCmd}" HorizontalAlignment="Right" Visibility="{Binding IsActive, Converter={StaticResource VisIf}}" />
                                                     </Grid>
                                                 </StackPanel>
@@ -1109,6 +1109,26 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False">
             <StackPanel Margin="44,8,44,24" MaxWidth="720" HorizontalAlignment="Left">
                 <TextBlock Text="Settings" Style="{StaticResource H1}" FontSize="34" Margin="0,0,0,18" />
+                <Border Style="{StaticResource Rule}" />
+                <Grid Margin="0,14">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Language" Style="{StaticResource Strong}" />
+                        <TextBlock Text="Language · Язык" Style="{StaticResource Body}" FontSize="12.5" />
+                    </StackPanel>
+                    <Border Grid.Column="1" BorderBrush="{StaticResource Line2}" BorderThickness="1,1,0,1" CornerRadius="5" VerticalAlignment="Center" ClipToBounds="True">
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton Style="{StaticResource Seg}" Content="Automatic" IsChecked="{Binding LangAuto}" GroupName="lang" AutomationProperties.Name="Language: automatic" />
+                            <RadioButton Style="{StaticResource Seg}" Content="English" IsChecked="{Binding LangEn}" GroupName="lang" />
+                            <RadioButton Style="{StaticResource Seg}" Content="Русский" IsChecked="{Binding LangRu}" GroupName="lang" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+                <Grid Margin="0,0,0,14" Visibility="{Binding LanguageChanged, Converter={StaticResource VisIf}}">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                    <TextBlock Text="Restart Framecalm to switch the language." Style="{StaticResource Body}" FontSize="12.5" Foreground="{StaticResource Accent}" VerticalAlignment="Center" />
+                    <Button Grid.Column="1" Style="{StaticResource Ghost}" Content="Restart now" Command="{Binding RestartCmd}" Padding="14,7" FontSize="13" />
+                </Grid>
                 <Border Style="{StaticResource Rule}" />
                 <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding ReduceMotion}" Margin="0,14">
                     <StackPanel><TextBlock Text="Reduce motion" Style="{StaticResource Strong}" /><TextBlock Text="Stops the moving light, page transitions and counting numbers. Turn it on if motion bothers you or on a very slow PC." Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
@@ -1139,7 +1159,7 @@
                 </CheckBox>
                 <Border Style="{StaticResource Rule}" />
                 <Grid Margin="0,14">
-                    <StackPanel Margin="0,0,140,0"><TextBlock Text="Backups and history" Style="{StaticResource Strong}" /><TextBlock Text="{Binding DataPath}" Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
+                    <StackPanel Margin="0,0,140,0"><TextBlock Text="Backups and history" Style="{StaticResource Strong}" /><TextBlock Text="{Binding DataPath, Converter={StaticResource Tr}}" Style="{StaticResource Body}" FontSize="12.5" /></StackPanel>
                     <Button Style="{StaticResource Link}" Content="Open folder" Command="{Binding OpenDataCmd}" HorizontalAlignment="Right" VerticalAlignment="Center" />
                 </Grid>
                 <Border Style="{StaticResource Rule}" />
@@ -1149,7 +1169,7 @@
                 </Grid>
                 <Border Style="{StaticResource Rule}" />
                 <TextBlock Text="About" Style="{StaticResource Label}" Margin="0,22,0,6" />
-                <TextBlock Style="{StaticResource Body}"><Run Text="Framecalm " /><Run Text="{Binding Version, Mode=OneWay}" /><Run Text=", free and open source (MIT)" /></TextBlock>
+                <TextBlock Style="{StaticResource Body}"><Run Text="{Binding AboutLine, Mode=OneWay}" /></TextBlock>
                 <TextBlock Style="{StaticResource Body}" Text="No account, no ads, no telemetry. Works offline. Frame capture uses PresentMon (MIT), made by Intel." />
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                     <Button Style="{StaticResource Link}" Content="Source code" Command="{Binding CodeCmd}" Margin="0,0,20,0" />
@@ -1165,14 +1185,14 @@
         <Border Width="560" Background="{StaticResource Surface2}" BorderBrush="{StaticResource Line2}" BorderThickness="1" CornerRadius="14" Padding="28,24">
             <StackPanel>
                 <TextBlock Text="Conflict" Style="{StaticResource Label}" Foreground="{StaticResource Warn}" />
-                <TextBlock Text="{Binding Title}" Style="{StaticResource H2}" Margin="0,6,0,8" />
+                <TextBlock Text="{Binding Title, Converter={StaticResource Tr}}" Style="{StaticResource H2}" Margin="0,6,0,8" />
                 <TextBlock Style="{StaticResource Body}" Text="Framecalm set these, then something changed them again (you, or the game). Undoing now would overwrite that, so it's your call." />
                 <ItemsControl ItemsSource="{Binding Rows}" Margin="0,14,0,0" Focusable="False">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="0,0,0,10">
-                                <TextBlock Text="{Binding Label}" Style="{StaticResource Strong}" />
-                                <TextBlock Style="{StaticResource Value}" FontSize="13"><Run Text="original " Foreground="{StaticResource Faint}" /><Run Text="{Binding Original, Mode=OneWay}" /><Run Text="   ·   framecalm set " Foreground="{StaticResource Faint}" /><Run Text="{Binding Ours, Mode=OneWay}" /><Run Text="   ·   now " Foreground="{StaticResource Faint}" /><Run Text="{Binding Now, Mode=OneWay}" Foreground="{StaticResource Accent}" /></TextBlock>
+                                <TextBlock Text="{Binding Label, Converter={StaticResource Tr}}" Style="{StaticResource Strong}" />
+                                <TextBlock Style="{StaticResource Value}" FontSize="13"><Run Text="original " Foreground="{StaticResource Faint}" /><Run Text="{Binding Original, Mode=OneWay, Converter={StaticResource Tr}}" /><Run Text="   ·   framecalm set " Foreground="{StaticResource Faint}" /><Run Text="{Binding Ours, Mode=OneWay, Converter={StaticResource Tr}}" /><Run Text="   ·   now " Foreground="{StaticResource Faint}" /><Run Text="{Binding Now, Mode=OneWay, Converter={StaticResource Tr}}" Foreground="{StaticResource Accent}" /></TextBlock>
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

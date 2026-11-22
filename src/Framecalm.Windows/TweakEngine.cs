@@ -362,7 +362,7 @@ public static class TweakIo
             var parts = key.Split('|');
             Guid scheme = Active(), sub = Guid.Parse(parts[1]), set = Guid.Parse(parts[2]);
             var r = PowerWriteACValueIndex(IntPtr.Zero, ref scheme, ref sub, ref set, uint.Parse(value, CultureInfo.InvariantCulture));
-            if (r != 0) throw new InvalidOperationException($"Windows refused the power setting (error {r}).");
+            if (r != 0) throw new InvalidOperationException(L.F("Windows refused the power setting (error {0}).", r));
             PowerSetActiveScheme(IntPtr.Zero, ref scheme);
         }
     }

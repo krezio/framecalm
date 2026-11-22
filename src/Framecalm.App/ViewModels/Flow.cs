@@ -9,8 +9,8 @@ namespace Framecalm.App.ViewModels;
 public sealed class ProfileOption(Profile p, string name, string blurb, int level, Action<ProfileOption> pick) : Observable
 {
     public Profile Profile => p;
-    public string Name => name;
-    public string Blurb => blurb;
+    public string Name => L.T(name);
+    public string Blurb => L.T(blurb);
     public bool L1 => level >= 1; public bool L2 => level >= 2; public bool L3 => level >= 3; public bool L4 => level >= 4;
     bool _sel;
     public bool IsSelected { get => _sel; set { if (Set(ref _sel, value) && value) pick(this); } }
@@ -28,8 +28,8 @@ public sealed class TargetOption(int fps, string name, string sub, Action<Target
 {
     public int Fps => fps;
     public string FpsText => fps.ToString();
-    public string Name => name;
-    public string Sub => sub;
+    public string Name => L.T(name);
+    public string Sub => L.T(sub);
     bool _sel;
     public bool IsSelected { get => _sel; set { if (Set(ref _sel, value) && value) pick(this); } }
 }
@@ -47,12 +47,12 @@ public sealed class ChangeRowVM : Observable
     public string Label => Change.Setting.Label;
     public string Old => Change.OldLabel;
     public string New => Change.NewLabel;
-    public string Why => Change.Setting.Why;
-    public string Tradeoff => Change.Setting.Tradeoff;
+    public string Why => L.T(Change.Setting.Why);
+    public string Tradeoff => L.T(Change.Setting.Tradeoff);
     public string LoadText => Change.Setting.Load switch { Load.Cpu => "CPU", Load.Gpu => "GPU", _ => "CPU + GPU" };
     public double Bar { get; }
     public double BarWidth => 4 + Bar * 76;
-    public string Gain => Change.Setting.Special == "refresh" ? "Uncaps" : Change.Setting.TypicalGain >= 1 ? $"+{Change.Setting.TypicalGain:0}%" : "Small";
+    public string Gain => Change.Setting.Special == "refresh" ? L.T("Uncaps") : Change.Setting.TypicalGain >= 1 ? $"+{Change.Setting.TypicalGain:0}%" : L.T("Small");
     bool _include = true, _open;
     public bool Include { get => _include; set => Set(ref _include, value); }
     public bool Open { get => _open; set => Set(ref _open, value); }
@@ -78,7 +78,7 @@ public sealed class TuneVM : Observable
         var hz = m.Hw.RefreshHz;
         Targets =
         [
-            new(hz, $"Match my {hz} Hz screen", "Every refresh gets a new frame", PickT),
+            new(hz, L.F("Match my {0} Hz screen", hz), "Every refresh gets a new frame", PickT),
             new(60, "Steady 60", "Smooth and quiet, good for laptops", PickT),
             new(hz >= 165 ? 144 : 120, hz >= 165 ? "144" : "120", "A middle ground", PickT),
             new(240, "240", "Competitive, needs a fast screen", PickT),
@@ -99,18 +99,18 @@ public sealed class TuneVM : Observable
         {
             if (!cfg.check.Ok || cfg.text is null || Game.G.Definition is null)
             {
-                o.CountText = "Can't read the settings file yet";
+                o.CountText = L.T("Can't read the settings file yet");
                 continue;
             }
             var text = cfg.text;
             var props = Recommender.Propose(Game.G.Definition, s => _m.S.CurrentValue(Game.G, text, s), _m.Hw, o.Profile)
                 .OrderByDescending(p => p.Setting.Special == "refresh" ? 999 : p.Setting.TypicalGain).ToList();
-            if (props.Count == 0) { o.CountText = "Nothing to change: already at or below this"; continue; }
+            if (props.Count == 0) { o.CountText = L.T("Nothing to change: already at or below this"); continue; }
             var est = AutoTunePlanner.Estimate(100, props, Core.Bottleneck.Mixed) - 100;
-            var gain = est >= 1 ? $"typically +{est:0}% FPS" : props.Any(p => p.Setting.Special == "refresh") ? "removes a frame cap" : "small gain";
-            o.CountText = $"{props.Count} setting{(props.Count == 1 ? "" : "s")} change, {gain}";
+            var gain = est >= 1 ? L.F("typically +{0:0}% FPS", est) : L.T(props.Any(p => p.Setting.Special == "refresh") ? "removes a frame cap" : "small gain");
+            o.CountText = L.F("{0} {0|setting change|settings change}, {1}", props.Count, gain);
             o.Preview = props.Take(4).Select(p => new PreviewLine(p.Setting.Label, p.OldLabel, p.NewLabel)).ToList();
-            o.MoreText = props.Count > 4 ? $"and {props.Count - 4} more" : "";
+            o.MoreText = props.Count > 4 ? L.F("and {0} more", props.Count - 4) : "";
         }
     }
     public ObservableCollection<TargetOption> Targets { get; }
@@ -127,15 +127,15 @@ public sealed class TuneVM : Observable
     public bool Measure { get => _measure; set => Set(ref _measure, value); }
     public bool CanMeasure => _m.S.Bench.Available;
     public string MeasureNote => _m.S.Bench.Available
-        ? "3 runs of 30 seconds before and after, in the same spot in the game. Takes about 4 minutes."
-        : _m.S.Bench.UnavailableReason ?? "";
+        ? L.T("3 runs of 30 seconds before and after, in the same spot in the game. Takes about 4 minutes.")
+        : L.T(_m.S.Bench.UnavailableReason ?? "");
 
     string _stage = "pick";
     public string Stage { get => _stage; set => Set(ref _stage, value); }
     public ObservableCollection<ChangeRowVM> Rows { get; } = [];
     public string Summary { get; private set; } = "";
     public string Empty { get; private set; } = "";
-    public string RestartNote => Game.G.Definition?.RestartNote ?? "";
+    public string RestartNote => L.T(Game.G.Definition?.RestartNote ?? "");
     public string ProfileName => Profiles.First(p => p.Profile == _profile).Name;
 
     public ICommand ReviewCmd => new Cmd(Review);
@@ -158,7 +158,7 @@ public sealed class TuneVM : Observable
         Rows.Clear();
         if (!check.Ok || text is null)
         {
-            Empty = $"Framecalm can't change this file safely: {check.Reason} Nothing was touched. The game page has the steps to do it by hand.";
+            Empty = L.F("Framecalm can't change this file safely: {0} Nothing was touched. The game page has the steps to do it by hand.", check.Reason);
         }
         else
         {
@@ -167,21 +167,22 @@ public sealed class TuneVM : Observable
             var i = 1;
             foreach (var p in props.OrderByDescending(p => p.Setting.Special == "refresh" ? 999 : p.Setting.TypicalGain)) Rows.Add(new ChangeRowVM(i++, p, max));
             Empty = Rows.Count == 0
-                ? $"Nothing needs to change for {ProfileName}. Your {Game.Name} settings are already at or below it, and Framecalm never makes anything heavier. Try a stronger profile, or auto-tune to a target."
+                ? L.F("Nothing needs to change for {0}. Your {1} settings are already at or below it, and Framecalm never makes anything heavier. Try a stronger profile, or auto-tune to a target.", ProfileName, Game.Name)
                 : "";
             var est = AutoTunePlanner.Estimate(100, props, Core.Bottleneck.Mixed) - 100;
-            Summary = $"{Rows.Count} change{(Rows.Count == 1 ? "" : "s")} · typically +{est:0}% FPS on PCs like yours · measure to see yours";
+            Summary = L.F("{0} {0|change|changes} · typically +{1:0}% FPS on PCs like yours · measure to see yours", Rows.Count, est);
         }
-        Raise(nameof(Empty)); Raise(nameof(Summary)); Raise(nameof(HasRows));
+        Raise(nameof(Empty)); Raise(nameof(Summary)); Raise(nameof(HasRows)); Raise(nameof(ApplyText));
         Stage = "review";
     }
 
     public bool HasRows => Rows.Count > 0;
+    public string ApplyText => L.F("Apply {0} {0|change|changes}", Rows.Count);
 }
 
 public sealed class StepVM : Observable
 {
-    public StepVM(string title) => Title = title;
+    public StepVM(string title) => Title = L.T(title);
     public string Title { get; }
     string _state = "wait", _detail = "";
     double _progress;
@@ -189,7 +190,7 @@ public sealed class StepVM : Observable
     public string Detail { get => _detail; set => Set(ref _detail, value); }
     public double Progress { get => _progress; set => Set(ref _progress, value); }
     public string Glyph => State switch { "done" => "", "fail" => "", "run" => "", "skip" => "", _ => "" };
-    public string StateText => State switch { "done" => "Done", "fail" => "Failed", "run" => "Now", "skip" => "Skipped", _ => "" };
+    public string StateText => L.T(State switch { "done" => "Done", "fail" => "Failed", "run" => "Now", "skip" => "Skipped", _ => "" });
 }
 
 /// <summary>Shared by apply and auto-tune: pauses for the player (start/close the game) in real mode, runs straight through in demo mode.</summary>
@@ -214,7 +215,7 @@ public abstract class FlowVM(MainVM m, GameVM game) : Observable
     protected async Task<bool> Ask(string title, string body, string button, Func<bool>? autoWhen = null)
     {
         if (M.IsDemo) { await Task.Delay(400); return true; }
-        PromptTitle = title; PromptBody = body; PromptButton = button;
+        PromptTitle = L.T(title); PromptBody = L.T(body); PromptButton = L.T(button);
         var before = Stage;
         Stage = "prompt";
         _wait = new TaskCompletionSource<bool>();
@@ -228,7 +229,7 @@ public abstract class FlowVM(MainVM m, GameVM game) : Observable
     protected async Task<SavedRun?> CaptureAsync(StepVM step, string label, int seconds = 30)
     {
         step.State = "run";
-        var p = new Progress<double>(v => { step.Progress = v; step.Detail = $"{v * seconds:0} / {seconds} s"; });
+        var p = new Progress<double>(v => { step.Progress = v; step.Detail = L.F("{0:0} / {1} s", v * seconds, seconds); });
         try
         {
             var cap = await M.S.Bench.CaptureAsync(Game.G.ProcessName ?? "", seconds, p, _cts.Token);
@@ -236,18 +237,18 @@ public abstract class FlowVM(MainVM m, GameVM game) : Observable
             var run = SavedRun.From(cap, label);
             M.S.SaveCapture(Game.Id, run);
             step.State = "done";
-            step.Detail = $"{run.AvgFps:0} FPS avg · 1% low {1000 / run.P99Ms:0}{(cap.Source == CaptureSource.Demo ? " · demo" : "")}";
+            step.Detail = L.F("{0:0} FPS avg · 1% low {1:0}", run.AvgFps, 1000 / run.P99Ms) + (cap.Source == CaptureSource.Demo ? " · " + L.T("demo") : "");
             return run;
         }
-        catch (OperationCanceledException) { step.State = "skip"; step.Detail = "Cancelled"; return null; }
-        catch (Exception ex) { step.State = "fail"; step.Detail = ex.Message; return null; }
+        catch (OperationCanceledException) { step.State = "skip"; step.Detail = L.T("Cancelled"); return null; }
+        catch (Exception ex) { step.State = "fail"; step.Detail = L.T(ex.Message); return null; }
     }
 
     protected Task<bool> WaitClosed() => M.S.IsRunning(Game.G)
-        ? Ask($"Close {Game.Name}", $"{Game.Name} keeps its settings in memory and writes them back when it closes, which would undo the changes. Close it, and Framecalm continues by itself.", "It's closed", () => !M.S.IsRunning(Game.G))
+        ? Ask(L.F("Close {0}", Game.Name), L.F("{0} keeps its settings in memory and writes them back when it closes, which would undo the changes. Close it, and Framecalm continues by itself.", Game.Name), "It's closed", () => !M.S.IsRunning(Game.G))
         : Task.FromResult(true);
 
-    protected Task<bool> WaitRunning(string why) => Ask($"Start {Game.Name}", why, "Start measuring", null);
+    protected Task<bool> WaitRunning(string why) => Ask(L.F("Start {0}", Game.Name), why, "Start measuring", null);
 
     public ICommand DoneCmd => new Cmd(() => { Game.Refresh(); M.Open(Game, remember: false); });
 }
@@ -261,16 +262,16 @@ public sealed class RunVM : FlowVM
     public RunVM(MainVM m, GameVM game, List<ProposedChange> changes, bool measure, string profile) : base(m, game)
     {
         _changes = changes; _measure = measure; _profile = profile;
-        if (measure) for (int i = 1; i <= 3; i++) Steps.Add(new($"Measure before · run {i} of 3"));
+        if (measure) for (int i = 1; i <= 3; i++) Steps.Add(new(L.F("Measure before · run {0} of 3", i)));
         Steps.Add(new("Back up the original settings"));
-        Steps.Add(new($"Write {changes.Count} change{(changes.Count == 1 ? "" : "s")}"));
+        Steps.Add(new(L.F("Write {0} {0|change|changes}", changes.Count)));
         Steps.Add(new("Read back and verify"));
-        if (measure) for (int i = 1; i <= 3; i++) Steps.Add(new($"Measure after · run {i} of 3"));
+        if (measure) for (int i = 1; i <= 3; i++) Steps.Add(new(L.F("Measure after · run {0} of 3", i)));
         Applied = new(changes.Select((c, i) => new ChangeRowVM(i + 1, c, 1)));
         _ = RunAsync();
     }
 
-    public string Title => $"Tuning {Game.Name}";
+    public string Title => L.F("Tuning {0}", Game.Name);
     public ObservableCollection<ChangeRowVM> Applied { get; }
     public string? Message { get; private set; }
     public Comparison? Cmp { get; private set; }
@@ -287,12 +288,12 @@ public sealed class RunVM : FlowVM
     public double AfterMedian => Cmp?.AfterMedian ?? 0;
     public string Verdict => Cmp?.Verdict() ?? "";
     public bool Within => Cmp is { IsReal: false };
-    public string NoiseText => Cmp is null ? "" : $"RUN-TO-RUN NOISE {Cmp.RunToRunNoisePct:0.0}%";
+    public string NoiseText => Cmp is null ? "" : L.F("RUN-TO-RUN NOISE {0:0.0}%", Cmp.RunToRunNoisePct);
     public double[]? BeforeTrace { get; private set; }
     public double[]? AfterTrace { get; private set; }
     public double TargetMs => Game.TargetMs;
     public string TargetLabel => Game.TargetLabel;
-    public string HeadlineDone => Measured ? (Within ? "No measurable change" : Delta > 0 ? "Faster. Measured." : "Slower than before") : "Applied and verified";
+    public string HeadlineDone => L.T(Measured ? (Within ? "No measurable change" : Delta > 0 ? "Faster. Measured." : "Slower than before") : "Applied and verified");
 
     async Task RunAsync()
     {
@@ -302,7 +303,7 @@ public sealed class RunVM : FlowVM
         var after = new List<SavedRun>();
         if (_measure)
         {
-            if (!await WaitRunning($"Load into a spot you can return to exactly (same map, same view), then press Start. Framecalm records 3 runs of 30 seconds. Keep playing normally or stand still; just do the same thing each run.")) { Cancelled(); return; }
+            if (!await WaitRunning("Load into a spot you can return to exactly (same map, same view), then press Start. Framecalm records 3 runs of 30 seconds. Keep playing normally or stand still; just do the same thing each run.")) { Cancelled(); return; }
             for (; i < 3; i++) { var r = await CaptureAsync(Steps[i], "before"); if (r is null) { Fail("A measurement didn't finish, so nothing was changed."); return; } before.Add(r); }
         }
         if (!await WaitClosed()) { Cancelled(); return; }
@@ -332,31 +333,31 @@ public sealed class RunVM : FlowVM
             return;
         }
         for (int k = bi; k < bi + 3; k++) { Steps[k].State = "done"; }
-        Steps[bi].Detail = "Original saved";
-        Steps[bi + 1].Detail = $"{_changes.Count} settings";
-        Steps[bi + 2].Detail = "Every value reads back correctly";
+        Steps[bi].Detail = L.T("Original saved");
+        Steps[bi + 1].Detail = L.F("{0} {0|setting|settings}", _changes.Count);
+        Steps[bi + 2].Detail = L.T("Every value reads back correctly");
         i = bi + 3;
         Game.Refresh();
 
         if (_measure)
         {
-            if (!await WaitRunning($"Start {Game.Name} again and go back to the same spot as before. Then press Start for the 3 after-runs.")) { Partial(); return; }
+            if (!await WaitRunning(L.F("Start {0} again and go back to the same spot as before. Then press Start for the 3 after-runs.", Game.Name))) { Partial(); return; }
             for (int k = 0; k < 3; k++, i++) { var r = await CaptureAsync(Steps[i], "after"); if (r is null) { Partial(); return; } after.Add(r); }
             Cmp = new Comparison { Before = before.Select(r => r.Stats).ToList(), After = after.Select(r => r.Stats).ToList() };
             BeforeTrace = before.Last().Trace;
             AfterTrace = after.Last().Trace;
         }
-        Message = Measured ? null : $"{_changes.Count} change{(_changes.Count == 1 ? "" : "s")} applied ({_profile}). Want proof? Run a benchmark from the game page; numbers you see in the meantime are typical, not yours.";
+        Message = Measured ? null : L.F("{0} {0|change|changes} applied ({1}). Want proof? Run a benchmark from the game page; numbers you see in the meantime are typical, not yours.", _changes.Count, _profile);
         Game.Refresh();
         RaiseAll();
         Stage = "results";
     }
 
-    void Fail(string msg) { Message = msg; Raise(nameof(Message)); Stage = "failed"; }
-    void Cancelled() { Message = "Stopped. Nothing was changed."; Raise(nameof(Message)); Stage = "failed"; }
+    void Fail(string msg) { Message = L.T(msg); Raise(nameof(Message)); Stage = "failed"; }
+    void Cancelled() { Message = L.T("Stopped. Nothing was changed."); Raise(nameof(Message)); Stage = "failed"; }
     void Partial()
     {
-        Message = "Your changes are applied and verified, but the after-runs didn't finish, so there's no proof chart yet. You can measure any time from the game page.";
+        Message = L.T("Your changes are applied and verified, but the after-runs didn't finish, so there's no proof chart yet. You can measure any time from the game page.");
         Raise(nameof(Message));
         Stage = "partial";
     }
@@ -364,7 +365,7 @@ public sealed class RunVM : FlowVM
     public ICommand UndoCmd => new AsyncCmd(async () =>
     {
         var ids = M.S.Tx.History().Where(c => c.Scope == Game.Id && c.Status == ChangeStatus.Applied && _changes.Any(x => x.Setting.Key == c.Key)).Select(c => c.Id).ToList();
-        await M.HistoryPage.UndoAsync(ids, "these changes");
+        await M.HistoryPage.UndoAsync(ids, L.T("these changes"));
         Game.Refresh();
         M.Open(Game, remember: false);
     });
@@ -394,7 +395,7 @@ public sealed class AutoTuneVM : FlowVM
     public string NowText => Now <= 0 ? "--" : $"{Now:0}";
     public double GaugeMax => Math.Max(Target * 1.35, 90);
     public ObservableCollection<RoundVM> Rounds { get; } = [];
-    string _status = "Measuring where you start";
+    string _status = L.T("Measuring where you start");
     public string Status { get => _status; set => Set(ref _status, value); }
     string _detail = "";
     public string Detail { get => _detail; set => Set(ref _detail, value); }
@@ -408,12 +409,12 @@ public sealed class AutoTuneVM : FlowVM
 
     async Task RunAsync()
     {
-        var baseRound = new RoundVM { Title = "Baseline", Changes = "Your current settings, one 30-second run" };
+        var baseRound = new RoundVM { Title = L.T("Baseline"), Changes = L.T("Your current settings, one 30-second run") };
         Rounds.Add(baseRound);
-        if (!await WaitRunning($"Load into a spot you can return to (same map, same view). Auto-tune measures 30 seconds, then asks you to close the game while it changes settings, then measures again. Usually 2 or 3 rounds.")) { Stage = "failed"; Summary = "Stopped. Nothing was changed."; Raise(nameof(Summary)); return; }
+        if (!await WaitRunning("Load into a spot you can return to (same map, same view). Auto-tune measures 30 seconds, then asks you to close the game while it changes settings, then measures again. Usually 2 or 3 rounds.")) { Stage = "failed"; Summary = L.T("Stopped. Nothing was changed."); Raise(nameof(Summary)); return; }
         baseRound.State = "run";
         var b = await CaptureAsync(_probe, "round-0");
-        if (b is null) { baseRound.State = "fail"; Summary = "The baseline run didn't finish, so nothing was changed. " + _probe.Detail; Raise(nameof(Summary)); Stage = "failed"; return; }
+        if (b is null) { baseRound.State = "fail"; Summary = L.T("The baseline run didn't finish, so nothing was changed.") + " " + _probe.Detail; Raise(nameof(Summary)); Stage = "failed"; return; }
         Now = b.AvgFps;
         baseRound.State = "done";
         baseRound.Result = $"{b.AvgFps:0} FPS";
@@ -421,24 +422,24 @@ public sealed class AutoTuneVM : FlowVM
         var demoFrames = Enumerable.Repeat(new FrameSample(b.FrameMs, b.GpuMs, 0), 60).ToList();
         Bottleneck = BottleneckAnalyzer.Analyze(demoFrames, M.Hw.RefreshHz);
         Raise(nameof(Bottleneck));
-        Detail = Bottleneck.Headline + ". " + Bottleneck.Detail;
+        Detail = L.T(Bottleneck.Headline) + ". " + Bottleneck.Detail;
 
         if (Now >= Target * 0.98)
         {
-            Summary = $"Already there. You're at {Now:0} FPS against a target of {Target}, so nothing needed to change.";
+            Summary = L.F("Already there. You're at {0:0} FPS against a target of {1}, so nothing needed to change.", Now, Target);
             Raise(nameof(Summary));
             Stage = "done";
             return;
         }
 
         var (check, text) = M.S.ReadConfig(Game.G);
-        if (!check.Ok || text is null) { Summary = check.Reason; Raise(nameof(Summary)); Stage = "failed"; return; }
+        if (!check.Ok || text is null) { Summary = L.T(check.Reason); Raise(nameof(Summary)); Stage = "failed"; return; }
         var candidates = Recommender.Propose(Game.G.Definition!, s => M.S.CurrentValue(Game.G, text, s), M.Hw, Profile.MaxFps);
         var ordered = AutoTunePlanner.Order(candidates, Bottleneck.Kind);
         var plan = AutoTunePlanner.Rounds(ordered, Now, Target, Bottleneck.Kind);
         if (plan.Count == 0)
         {
-            Summary = $"Nothing sensible left to lower. You're at {Now:0} FPS and every setting that helps is already at its fastest. The rest is hardware: see Health for heat, power and drivers.";
+            Summary = L.F("Nothing sensible left to lower. You're at {0:0} FPS and every setting that helps is already at its fastest. The rest is hardware: see Health for heat, power and drivers.", Now);
             Raise(nameof(Summary));
             Stage = "done";
             return;
@@ -448,18 +449,18 @@ public sealed class AutoTuneVM : FlowVM
         var n = 1;
         foreach (var round in plan)
         {
-            var r = new RoundVM { Title = $"Round {n}", Changes = string.Join("  ·  ", round.Select(c => $"{c.Setting.Label} {c.OldLabel} → {c.NewLabel}")) };
+            var r = new RoundVM { Title = L.F("Round {0}", n), Changes = string.Join("  ·  ", round.Select(c => $"{c.Setting.Label} {c.OldLabel} → {c.NewLabel}")) };
             Rounds.Add(r);
             r.State = "run";
-            Status = $"Round {n}: changing {round.Count} setting{(round.Count == 1 ? "" : "s")}";
+            Status = L.F("Round {0}: changing {1} {1|setting|settings}", n, round.Count);
             if (!await WaitClosed()) { r.State = "skip"; break; }
             var recs = round.Select(c => new ChangeRecord { Scope = Game.Id, ScopeName = Game.Name, Key = c.Setting.Key, Label = c.Setting.Label, Old = c.Old, New = c.New, OldLabel = c.OldLabel, NewLabel = c.NewLabel }).ToList();
             // values may have moved since planning (previous rounds); re-read old values from the file
             foreach (var rec in recs) rec.Old = target.Read(rec.Key);
             var res = await Task.Run(() => M.S.Tx.Apply(target, recs));
-            if (!res.Ok) { r.State = "fail"; r.Result = "Not applied"; Summary = res.Message; Raise(nameof(Summary)); Stage = "failed"; return; }
-            if (!await WaitRunning($"Start {Game.Name} and go back to the same spot. Then press Start.")) { r.State = "skip"; break; }
-            Status = $"Round {n}: measuring";
+            if (!res.Ok) { r.State = "fail"; r.Result = L.T("Not applied"); Summary = L.T(res.Message); Raise(nameof(Summary)); Stage = "failed"; return; }
+            if (!await WaitRunning(L.F("Start {0} and go back to the same spot. Then press Start.", Game.Name))) { r.State = "skip"; break; }
+            Status = L.F("Round {0}: measuring", n);
             var m = await CaptureAsync(_probe, $"round-{n}");
             if (m is null) { r.State = "fail"; break; }
             r.State = "done";
@@ -471,10 +472,10 @@ public sealed class AutoTuneVM : FlowVM
         }
         Game.Refresh();
         Summary = Now >= Target * 0.98
-            ? $"Target reached: {Now:0} FPS against {Target}, measured. Each round's number is a real measurement; the order came from what limits your PC."
-            : $"Got to {Now:0} FPS (from {b.AvgFps:0}). Going further would mean settings that cost more looks than they buy, so auto-tune stopped here. Undo any round in History.";
+            ? L.F("Target reached: {0:0} FPS against {1}, measured. Each round's number is a real measurement; the order came from what limits your PC.", Now, Target)
+            : L.F("Got to {0:0} FPS (from {1:0}). Going further would mean settings that cost more looks than they buy, so auto-tune stopped here. Undo any round in History.", Now, b.AvgFps);
         Raise(nameof(Summary));
-        Status = "Finished";
+        Status = L.T("Finished");
         Stage = "done";
     }
 }

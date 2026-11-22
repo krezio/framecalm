@@ -71,11 +71,11 @@ public sealed class Comparison
     public string Verdict()
     {
         if (!IsReal)
-            return $"Within noise. The difference ({FpsDeltaPct:+0.0;-0.0}%) is smaller than how much your runs varied ({RunToRunNoisePct:0.0}%). Nothing measurable changed.";
-        var smooth = AfterP99 < BeforeP99 * 0.9 ? $" Stutter dropped too: your slowest 1% of frames went from {BeforeP99:0.0} ms to {AfterP99:0.0} ms." : "";
+            return L.F("Within noise. The difference ({0:+0.0;-0.0}%) is smaller than how much your runs varied ({1:0.0}%). Nothing measurable changed.", FpsDeltaPct, RunToRunNoisePct);
+        var smooth = AfterP99 < BeforeP99 * 0.9 ? " " + L.F("Stutter dropped too: your slowest 1% of frames went from {0:0.0} ms to {1:0.0} ms.", BeforeP99, AfterP99) : "";
         return FpsDelta > 0
-            ? $"Faster by {FpsDelta:0} FPS on average ({FpsDeltaPct:+0}%), measured over 3 runs each.{smooth}"
-            : $"Slower by {-FpsDelta:0} FPS ({FpsDeltaPct:0}%). Undo is one click, and we'd suggest it.";
+            ? L.F("Faster by {0:0} FPS on average ({1:+0}%), measured over 3 runs each.", FpsDelta, FpsDeltaPct) + smooth
+            : L.F("Slower by {0:0} FPS ({1:0}%). Undo is one click, and we'd suggest it.", -FpsDelta, FpsDeltaPct);
     }
 }
 
@@ -98,15 +98,15 @@ public static class BottleneckAnalyzer
 
         if (capLikely || (Math.Abs(fps - refreshHz) < 2 && share < 0.8))
             return new(Bottleneck.Capped, share, ft, gpu, cpu, "Held back by a frame cap",
-                $"You're sitting right at {Math.Round(fps)} FPS with the GPU only busy {share:P0} of each frame. A frame cap or V-Sync is the limit, not your hardware.");
+                L.F("You're sitting right at {0} FPS with the GPU only busy {1:P0} of each frame. A frame cap or V-Sync is the limit, not your hardware.", Math.Round(fps), share));
         if (share >= 0.85)
             return new(Bottleneck.Gpu, share, ft, gpu, cpu, "Your graphics card sets the pace",
-                $"The GPU is busy {share:P0} of every frame. Shadows, effects, anti-aliasing and render scale matter most here; view distance and simulation barely move it.");
+                L.F("The GPU is busy {0:P0} of every frame. Shadows, effects, anti-aliasing and render scale matter most here; view distance and simulation barely move it.", share));
         if (share <= 0.65)
             return new(Bottleneck.Cpu, share, ft, gpu, cpu, "Your CPU sets the pace",
-                $"The GPU is only busy {share:P0} of each frame and waits on the CPU the rest. Lowering shadows won't help much: reduce view/render distance, simulation and crowd settings instead.");
+                L.F("The GPU is only busy {0:P0} of each frame and waits on the CPU the rest. Lowering shadows won't help much: reduce view/render distance, simulation and crowd settings instead.", share));
         return new(Bottleneck.Mixed, share, ft, gpu, cpu, "CPU and GPU are close",
-            $"The GPU is busy {share:P0} of each frame, so both sides matter. Expect smaller gains from any single setting.");
+            L.F("The GPU is busy {0:P0} of each frame, so both sides matter. Expect smaller gains from any single setting.", share));
     }
 
     /// <summary>Clock or temperature sagging through a capture while load stays the same suggests throttling.</summary>
@@ -121,9 +121,10 @@ public static class BottleneckAnalyzer
         var c0 = Avg(first, f => f.CpuClock); var c1 = Avg(last, f => f.CpuClock);
         var t1 = Avg(last, f => f.GpuTemp);
         if (g0 > 0 && g1 < g0 * 0.85)
-            return $"GPU clock fell {(1 - g1 / g0):P0} during the run{(t1 > 0 ? $" while it reached {t1:0}°C" : "")}. That's thermal or power throttling: clean the vents, raise the laptop's back, or use a cooling pad.";
+            return t1 > 0 ? L.F("GPU clock fell {0:P0} during the run while it reached {1:0}°C. That's thermal or power throttling: clean the vents, raise the laptop's back, or use a cooling pad.", 1 - g1 / g0, t1)
+                          : L.F("GPU clock fell {0:P0} during the run. That's thermal or power throttling: clean the vents, raise the laptop's back, or use a cooling pad.", 1 - g1 / g0);
         if (c0 > 0 && c1 < c0 * 0.85)
-            return $"CPU clock fell {(1 - c1 / c0):P0} during the run. Likely heat or a power limit. Plugging in a laptop and keeping vents clear usually fixes it.";
+            return L.F("CPU clock fell {0:P0} during the run. Likely heat or a power limit. Plugging in a laptop and keeping vents clear usually fixes it.", 1 - c1 / c0);
         return null;
     }
 }

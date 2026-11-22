@@ -1,3 +1,4 @@
+using Framecalm.Core;
 using System.Windows;
 using Framecalm.App.ViewModels;
 
@@ -25,9 +26,11 @@ public partial class App : Application
             }
             catch { }
             if (Array.IndexOf(e.Args, "--peek") >= 0 || Array.IndexOf(e.Args, "--shots") >= 0) { ex.Handled = true; return; }
-            MessageBox.Show(ex.Exception.Message, "Framecalm hit a snag", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(L.T(ex.Exception.Message), L.T("Framecalm hit a snag"), MessageBoxButton.OK, MessageBoxImage.Warning);
             ex.Handled = true;
         };
+
+        Services.Translate.Choose(Arg("--lang"));
 
         if (Arg("--export-icon") is { } iconPath) { IconExporter.Export(iconPath); Shutdown(); return; }
         if (Arg("--export-store-art") is { } artDir) { IconExporter.ExportStoreArt(artDir); Shutdown(); return; }

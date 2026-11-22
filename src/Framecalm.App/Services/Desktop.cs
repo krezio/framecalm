@@ -1,3 +1,4 @@
+using Framecalm.Core;
 using System.IO;
 using System.Diagnostics;
 using System.Net.Http;
@@ -142,10 +143,10 @@ public sealed class Tray : IDisposable
             Visible = true,
         };
         var menu = new System.Windows.Forms.ContextMenuStrip();
-        menu.Items.Add("Open Framecalm", null, (_, _) => open());
-        menu.Items.Add("Optimize now", null, (_, _) => optimize());
+        menu.Items.Add(L.T("Open Framecalm"), null, (_, _) => open());
+        menu.Items.Add(L.T("Optimize now"), null, (_, _) => optimize());
         menu.Items.Add(new System.Windows.Forms.ToolStripSeparator());
-        menu.Items.Add("Quit", null, (_, _) => quit());
+        menu.Items.Add(L.T("Quit"), null, (_, _) => quit());
         _icon.ContextMenuStrip = menu;
         _icon.DoubleClick += (_, _) => open();
     }
@@ -154,8 +155,8 @@ public sealed class Tray : IDisposable
     {
         if (_toldOnce) return;
         _toldOnce = true;
-        _icon.ShowBalloonTip(4000, "Framecalm is still running",
-            "It's in the tray, keeping Game Session ready. Right-click the icon to quit, or change this in Settings.", System.Windows.Forms.ToolTipIcon.None);
+        _icon.ShowBalloonTip(4000, L.T("Framecalm is still running"),
+            L.T("It's in the tray, keeping Game Session ready. Right-click the icon to quit, or change this in Settings."), System.Windows.Forms.ToolTipIcon.None);
     }
 
     public void Dispose() { _icon.Visible = false; _icon.Dispose(); }

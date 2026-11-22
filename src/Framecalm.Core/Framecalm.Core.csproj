@@ -2,4 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Framecalm.Core</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Data/ru.json" LogicalName="Framecalm.Core.Data.ru.json" />
+  </ItemGroup>
 </Project>
