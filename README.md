@@ -129,7 +129,7 @@ Tweaks are data: each one is an entry in [`tweaks.json`](src/Framecalm.Windows/D
 Every string is looked up by its English text, so a new language is one file: `src/Framecalm.Core/Data/<lang>.json`, mapping English to the translation (see `ru.json`). Anything left out simply stays English.
 
 - Keep placeholders like `{0}` and `{1:0.0}` exactly as they are.
-- Plurals are written `{0|one|few|many}` (use as many forms as your language needs), for example `{0|изменение|изменения|изменений}`.
+- Plurals are written `{0|one|other}` (English-style) or `{0|one|few|many}` (Russian, Ukrainian, Polish style), for example `{0|изменение|изменения|изменений}`. Other plural rules would need a small change in `Loc.cs`.
 - In-game menu names (Render distance, Fancy, Low) stay as the games show them.
 - `dotnet run --project src/Framecalm.App -- --demo --lang ru` shows the demo PC in a given language. Set `FRAMECALM_L10N_MISSES` to a file path and every untranslated string the app shows is written there.
 
