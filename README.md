@@ -67,6 +67,10 @@ No account, no ads, no telemetry. Works offline. Two things can use the network,
 
 Cover art belongs to each game's publisher. It is fetched to your PC for display, like any launcher does, and is never bundled with Framecalm or stored in this repository. With downloads off, Framecalm draws its own covers.
 
+## Languages
+
+English and Russian (Русский). Framecalm follows the Windows display language; change it any time in Settings › Language.
+
 ## Install
 
 Grab **Framecalm-Setup.exe** (per-user, no admin needed to install) or the portable zip from [Releases](https://github.com/krezio/framecalm/releases/latest). Or get it from the [Microsoft Store](https://apps.microsoft.com/detail/9P0ZH5T16R81), which installs and updates without the SmartScreen warning.
@@ -119,6 +123,17 @@ Bug reports and ideas are welcome in [Issues](https://github.com/krezio/framecal
 Tweaks are data: each one is an entry in [`tweaks.json`](src/Framecalm.Windows/Data/tweaks.json) with its registry values or power settings, tier, trade-off and default. The elevated helper only accepts keys listed there, and the tests check every entry. A new tweak needs a clear, measurable reason to exist.
 
 **Also from krezio:** [Roomy](https://github.com/krezio/roomy), a free Windows disk cleaner that shows what's filling your C: drive and safely clears the junk.
+
+## Translating
+
+Every string is looked up by its English text, so a new language is one file: `src/Framecalm.Core/Data/<lang>.json`, mapping English to the translation (see `ru.json`). Anything left out simply stays English.
+
+- Keep placeholders like `{0}` and `{1:0.0}` exactly as they are.
+- Plurals are written `{0|one|few|many}` (use as many forms as your language needs), for example `{0|изменение|изменения|изменений}`.
+- In-game menu names (Render distance, Fancy, Low) stay as the games show them.
+- `dotnet run --project src/Framecalm.App -- --demo --lang ru` shows the demo PC in a given language. Set `FRAMECALM_L10N_MISSES` to a file path and every untranslated string the app shows is written there.
+
+The tests check that every translation keeps its placeholders.
 
 ## Credits
 
